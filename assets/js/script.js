@@ -60,4 +60,3 @@ if (this.files[0] ) {
 
 
 
-    
