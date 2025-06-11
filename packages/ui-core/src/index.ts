@@ -1,11 +1,11 @@
 // Atoms
-export * from './components/atoms';
+export * from "./components/atoms";
 
-// Molecules  
-export * from './components/molecules';
+// Molecules
+export * from "./components/molecules";
 
 // Organisms
-export * from './components/organisms';
+export * from "./components/organisms";
 
 // Base styles
-export './styles/base/global.css';
+import "./styles/base/global.css";
