@@ -23,3 +23,14 @@ export type {
   Notification,
 } from "./NotificationsPanel";
 export type { PostCardProps } from "./PostCard";
+export type { CommentSectionProps, Comment } from "./CommentSection";
+export type { StoryViewerProps, Story } from "./StoryViewer";
+export type { GroupCardProps } from "./GroupCard";
+export type { EventCardProps } from "./EventCard";
+export type { UserProfileProps } from "./UserProfile";
+export type { FriendsListProps, Friend } from "./FriendsList";
+export type { MessageThreadProps, Message, Participant } from "./MessageThread";
+export type { CreatePostProps } from "./CreatePost";
+export type { SearchResultsProps, SearchResult } from "./SearchResults";
+export type { SettingsPanelProps } from "./SettingsPanel";
+export type { MediaGalleryProps, MediaItem } from "./MediaGallery";
