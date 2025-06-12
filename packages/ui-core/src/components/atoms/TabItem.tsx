@@ -1,115 +1,175 @@
-import React from "react";
-import { Icon } from "./Icon";
-import { Badge } from "./Badge";
+import React, { forwardRef } from 'react';
+import type { BaseComponentProps, Size } from '../../utils/hooks/types/component-props';
 
-export interface TabItemProps
-  extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  children: React.ReactNode;
-  isActive?: boolean;
-  icon?: string;
-  badge?: string | number;
-  variant?: "default" | "pills" | "underline" | "bordered";
-  size?: "sm" | "md" | "lg";
-  orientation?: "horizontal" | "vertical";
-  fullWidth?: boolean;
-  className?: string;
+export interface TabItemProps extends BaseComponentProps {
+  /** Whether the tab is active */
+  active?: boolean;
+  /** Whether the tab is disabled */
+  disabled?: boolean;
+  /** Tab variant */
+  variant?: 'underline' | 'pills' | 'buttons' | 'cards';
+  /** Tab size */
+  size?: Size;
+  /** Icon to display */
+  icon?: React.ReactNode;
+  /** Badge content */
+  badge?: React.ReactNode;
+  /** Close button callback */
+  onClose?: () => void;
+  /** Click handler */
+  onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
+  /** Loading state */
+  loading?: boolean;
+  /** Orientation for vertical tabs */
+  orientation?: 'horizontal' | 'vertical';
+  /** Tab value/identifier */
+  value?: string;
 }
 
-export const TabItem: React.FC<TabItemProps> = ({
-  children,
-  isActive = false,
-  icon,
-  badge,
-  variant = "default",
-  size = "md",
-  orientation = "horizontal",
-  fullWidth = false,
-  className = "",
-  ...props
-}) => {
-  const getSizeClass = () => {
-    const sizes = {
-      sm: "px-3 py-2 text-sm",
-      md: "px-4 py-2.5 text-sm",
-      lg: "px-6 py-3 text-base",
+export const TabItem = forwardRef<HTMLButtonElement, TabItemProps>(
+  (
+    {
+      children,
+      active = false,
+      disabled = false,
+      variant = 'underline',
+      size = 'md',
+      icon,
+      badge,
+      onClose,
+      onClick,
+      loading = false,
+      orientation = 'horizontal',
+      value,
+      className = '',
+      ...props
+    },
+    ref
+  ) => {
+    const baseClasses = 'tab-item';
+
+    const variantClasses = {
+      underline: 'tab-item--underline',
+      pills: 'tab-item--pills',
+      buttons: 'tab-item--buttons',
+      cards: 'tab-item--cards',
     };
-    return sizes[size];
-  };
 
-  const getVariantClass = () => {
-    if (variant === "pills") {
-      return isActive
-        ? "bg-blue-600 text-white rounded-full"
-        : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-800 rounded-full";
-    }
+    const sizeClasses = {
+      xs: 'tab-item--xs',
+      sm: 'tab-item--sm',
+      md: 'tab-item--md',
+      lg: 'tab-item--lg',
+      xl: 'tab-item--xl',
+      '2xl': 'tab-item--xl',
+    };
 
-    if (variant === "underline") {
-      return isActive
-        ? "text-blue-600 dark:text-blue-400 border-b-2 border-blue-600 dark:border-blue-400"
-        : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white border-b-2 border-transparent hover:border-gray-300 dark:hover:border-gray-600";
-    }
+    const classes = [
+      baseClasses,
+      variantClasses[variant],
+      sizeClasses[size],
+      active && 'tab-item--active',
+      disabled && 'tab-item--disabled',
+      loading && 'tab-item--loading',
+      orientation === 'vertical' && 'tab-item--vertical',
+      className,
+    ]
+      .filter(Boolean)
+      .join(' ');
 
-    if (variant === "bordered") {
-      return isActive
-        ? "bg-white dark:bg-gray-800 text-blue-600 dark:text-blue-400 border border-gray-200 dark:border-gray-700 rounded-lg shadow-sm"
-        : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-gray-800 border border-transparent rounded-lg";
-    }
+    const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+      if (disabled || loading) return;
+      onClick?.(event);
+    };
 
-    // Default variant
-    return isActive
-      ? "bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 rounded-lg"
-      : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg";
-  };
+    const handleCloseClick = (event: React.MouseEvent) => {
+      event.stopPropagation();
+      onClose?.();
+    };
 
-  const getOrientationClass = () => {
-    if (orientation === "vertical") {
-      return "flex-col justify-start w-full text-left";
-    }
-    return "flex-row justify-center text-center";
-  };
+    return (
+      <button
+        ref={ref}
+        type="button"
+        role="tab"
+        aria-selected={active}
+        aria-disabled={disabled}
+        tabIndex={active ? 0 : -1}
+        data-value={value}
+        className={classes}
+        onClick={handleClick}
+        {...props}
+      >
+        {loading && (
+          <svg
+            className="tab-item__spinner"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <circle
+              cx="12"
+              cy="12"
+              r="10"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeDasharray="32"
+              strokeDashoffset="32"
+            >
+              <animate
+                attributeName="stroke-dasharray"
+                dur="2s"
+                values="0 32;16 16;0 32;0 32"
+                repeatCount="indefinite"
+              />
+              <animate
+                attributeName="stroke-dashoffset"
+                dur="2s"
+                values="0;-16;-32;-32"
+                repeatCount="indefinite"
+              />
+            </circle>
+          </svg>
+        )}
 
-  return (
-    <button
-      type="button"
-      className={`
-        ${getSizeClass()}
-        ${getVariantClass()}
-        ${getOrientationClass()}
-        ${fullWidth ? "w-full" : ""}
-        inline-flex items-center gap-2 font-medium transition-all duration-200
-        focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2
-        dark:focus:ring-offset-gray-800
-        disabled:opacity-50 disabled:cursor-not-allowed
-        ${className}
-      `}
-      role="tab"
-      aria-selected={isActive}
-      tabIndex={isActive ? 0 : -1}
-      {...props}
-    >
-      {icon && (
-        <Icon
-          name={icon}
-          className={`
-            ${size === "sm" ? "w-4 h-4" : size === "lg" ? "w-6 h-6" : "w-5 h-5"}
-            ${orientation === "vertical" ? "mr-0" : ""}
-          `}
-        />
-      )}
+        {icon && (
+          <span className={onClose ? 'tab-item__icon' : 'tab-item__icon--only'}>{icon}</span>
+        )}
 
-      <span className={orientation === "vertical" ? "mt-1" : ""}>
-        {children}
-      </span>
+        {children && <span className="tab-item__text">{children}</span>}
 
-      {badge && (
-        <Badge
-          variant={isActive ? "primary" : "secondary"}
-          size="sm"
-          className={orientation === "vertical" ? "ml-auto" : ""}
-        >
-          {badge}
-        </Badge>
-      )}
-    </button>
-  );
-};
+        {badge && <span className="tab-item__badge">{badge}</span>}
+
+        {onClose && (
+          <button
+            type="button"
+            className="tab-item__close"
+            onClick={handleCloseClick}
+            aria-label="Close tab"
+          >
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 16 16"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M12 4L4 12M4 4L12 12"
+                stroke="currentColor"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+          </button>
+        )}
+      </button>
+    );
+  }
+);
+
+TabItem.displayName = 'TabItem';
+
+export default TabItem;
