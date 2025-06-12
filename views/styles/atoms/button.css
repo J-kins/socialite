@@ -1,0 +1,178 @@
+/**
+ * Button Atom Styles
+ * Comprehensive button styling with variants and states
+ */
+
+.button {
+  @apply inline-flex items-center justify-center rounded-lg font-medium transition-all duration-200;
+  @apply focus:outline-none focus:ring-2 focus:ring-offset-2;
+  @apply disabled:opacity-60 disabled:cursor-not-allowed;
+  @apply relative overflow-hidden;
+}
+
+/* Size variants */
+.button--sm {
+  @apply px-3 py-1.5 text-sm h-8;
+}
+
+.button--md {
+  @apply px-4 py-2 text-sm h-10;
+}
+
+.button--lg {
+  @apply px-6 py-3 text-base h-12;
+}
+
+/* Color variants */
+.button--primary {
+  @apply bg-blue-600 text-white border-transparent;
+  @apply hover:bg-blue-700 focus:ring-blue-500 shadow-sm;
+}
+
+.button--secondary {
+  @apply bg-gray-100 text-gray-900 border-transparent;
+  @apply hover:bg-gray-200 focus:ring-gray-500;
+  @apply dark:bg-gray-700 dark:text-gray-100 dark:hover:bg-gray-600;
+}
+
+.button--outline {
+  @apply bg-transparent text-gray-700 border border-gray-300;
+  @apply hover:bg-gray-50 focus:ring-gray-500;
+  @apply dark:text-gray-300 dark:border-gray-600 dark:hover:bg-gray-800;
+}
+
+.button--ghost {
+  @apply bg-transparent text-gray-700 border-transparent;
+  @apply hover:bg-gray-100 focus:ring-gray-500;
+  @apply dark:text-gray-300 dark:hover:bg-gray-800;
+}
+
+.button--danger {
+  @apply bg-red-600 text-white border-transparent;
+  @apply hover:bg-red-700 focus:ring-red-500 shadow-sm;
+}
+
+/* Full width variant */
+.button--full-width {
+  @apply w-full;
+}
+
+/* Loading state */
+.button--loading {
+  @apply pointer-events-none;
+}
+
+.button--loading .button__spinner {
+  @apply animate-spin -ml-1 mr-2 h-4 w-4;
+}
+
+/* Icon spacing */
+.button__left-icon {
+  @apply mr-2 flex-shrink-0;
+}
+
+.button__right-icon {
+  @apply ml-2 flex-shrink-0;
+}
+
+/* Ripple effect styles */
+.button.ripple-effect:active {
+  @apply transform scale-95;
+}
+
+.button .ripple {
+  @apply absolute rounded-full pointer-events-none;
+  background: rgba(255, 255, 255, 0.3);
+  transform: scale(0);
+  animation: ripple-animation 0.6s linear;
+}
+
+@keyframes ripple-animation {
+  to {
+    transform: scale(4);
+    opacity: 0;
+  }
+}
+
+/* Button group styles */
+.button-group {
+  @apply inline-flex rounded-lg shadow-sm;
+}
+
+.button-group .button {
+  @apply rounded-none border-r-0 focus:z-10;
+}
+
+.button-group .button:first-child {
+  @apply rounded-l-lg;
+}
+
+.button-group .button:last-child {
+  @apply rounded-r-lg border-r;
+}
+
+.button-group .button:only-child {
+  @apply rounded-lg border-r;
+}
+
+/* Floating action button */
+.button--fab {
+  @apply fixed bottom-6 right-6 w-14 h-14 rounded-full shadow-lg;
+  @apply bg-blue-600 text-white hover:bg-blue-700;
+  @apply focus:ring-4 focus:ring-blue-300 z-50;
+}
+
+.button--fab:hover {
+  @apply shadow-xl transform scale-105;
+}
+
+/* Icon-only button */
+.button--icon-only {
+  @apply p-2 rounded-full;
+}
+
+/* Social media button variants */
+.button--facebook {
+  @apply bg-blue-600 text-white hover:bg-blue-700;
+}
+
+.button--twitter {
+  @apply bg-sky-500 text-white hover:bg-sky-600;
+}
+
+.button--google {
+  @apply bg-red-500 text-white hover:bg-red-600;
+}
+
+.button--github {
+  @apply bg-gray-800 text-white hover:bg-gray-900;
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .button--outline {
+    @apply border-2;
+  }
+
+  .button:focus {
+    @apply ring-4;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .button {
+    @apply transition-none;
+  }
+
+  .button .ripple {
+    display: none;
+  }
+}
+
+/* Print styles */
+@media print {
+  .button {
+    @apply border border-gray-400 bg-transparent text-gray-800;
+  }
+}

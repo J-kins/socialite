@@ -1,0 +1,200 @@
+/**
+ * Avatar Atom Styles
+ * User avatar component styling with online indicators and fallbacks
+ */
+
+.avatar {
+  @apply relative inline-flex items-center justify-center rounded-full;
+  @apply bg-gray-100 dark:bg-gray-700 overflow-hidden flex-shrink-0;
+}
+
+/* Size variants */
+.avatar--xs {
+  @apply w-6 h-6 text-xs;
+}
+
+.avatar--sm {
+  @apply w-8 h-8 text-sm;
+}
+
+.avatar--md {
+  @apply w-10 h-10 text-base;
+}
+
+.avatar--lg {
+  @apply w-14 h-14 text-lg;
+}
+
+.avatar--xl {
+  @apply w-20 h-20 text-xl;
+}
+
+/* Avatar image */
+.avatar__image {
+  @apply w-full h-full object-cover rounded-full;
+}
+
+/* Fallback initials */
+.avatar__initials {
+  @apply font-medium text-gray-600 dark:text-gray-300 select-none;
+}
+
+/* Online indicator */
+.avatar__online-indicator {
+  @apply absolute bg-green-500 border-2 border-white dark:border-gray-800 rounded-full;
+}
+
+.avatar--xs .avatar__online-indicator {
+  @apply w-2 h-2 -bottom-0.5 -right-0.5;
+}
+
+.avatar--sm .avatar__online-indicator {
+  @apply w-2.5 h-2.5 -bottom-0.5 -right-0.5;
+}
+
+.avatar--md .avatar__online-indicator {
+  @apply w-3 h-3 -bottom-0.5 -right-0.5;
+}
+
+.avatar--lg .avatar__online-indicator {
+  @apply w-4 h-4 -bottom-1 -right-1;
+}
+
+.avatar--xl .avatar__online-indicator {
+  @apply w-5 h-5 -bottom-1 -right-1;
+}
+
+/* Clickable state */
+.avatar--clickable {
+  @apply cursor-pointer transition-opacity duration-200;
+}
+
+.avatar--clickable:hover {
+  @apply opacity-80;
+}
+
+/* Avatar group */
+.avatar-group {
+  @apply flex -space-x-2;
+}
+
+.avatar-group .avatar {
+  @apply border-2 border-white dark:border-gray-800;
+}
+
+.avatar-group .avatar:hover {
+  @apply z-10 scale-110;
+}
+
+/* Avatar with badge */
+.avatar--with-badge {
+  @apply relative;
+}
+
+.avatar__badge {
+  @apply absolute -top-1 -right-1 z-10;
+}
+
+/* Status variants */
+.avatar--online .avatar__status {
+  @apply bg-green-500;
+}
+
+.avatar--away .avatar__status {
+  @apply bg-yellow-500;
+}
+
+.avatar--busy .avatar__status {
+  @apply bg-red-500;
+}
+
+.avatar--offline .avatar__status {
+  @apply bg-gray-400;
+}
+
+/* Avatar placeholder animation */
+.avatar--loading {
+  @apply animate-pulse bg-gray-200 dark:bg-gray-700;
+}
+
+/* Square variant */
+.avatar--square {
+  @apply rounded-lg;
+}
+
+.avatar--square .avatar__image {
+  @apply rounded-lg;
+}
+
+/* Bordered variant */
+.avatar--bordered {
+  @apply border-2 border-gray-200 dark:border-gray-600;
+}
+
+/* Shadow variant */
+.avatar--shadow {
+  @apply shadow-lg;
+}
+
+/* Gradient background for initials */
+.avatar--gradient-blue {
+  @apply bg-gradient-to-br from-blue-400 to-blue-600 text-white;
+}
+
+.avatar--gradient-green {
+  @apply bg-gradient-to-br from-green-400 to-green-600 text-white;
+}
+
+.avatar--gradient-purple {
+  @apply bg-gradient-to-br from-purple-400 to-purple-600 text-white;
+}
+
+.avatar--gradient-pink {
+  @apply bg-gradient-to-br from-pink-400 to-pink-600 text-white;
+}
+
+.avatar--gradient-orange {
+  @apply bg-gradient-to-br from-orange-400 to-orange-600 text-white;
+}
+
+/* Error state for broken images */
+.avatar__image--error {
+  display: none;
+}
+
+.avatar__image--error + .avatar__initials {
+  display: flex;
+}
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+  .avatar {
+    @apply border-2 border-gray-800 dark:border-gray-200;
+  }
+
+  .avatar__online-indicator {
+    @apply border-4;
+  }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .avatar {
+    @apply transition-none;
+  }
+
+  .avatar-group .avatar:hover {
+    @apply scale-100;
+  }
+}
+
+/* Print styles */
+@media print {
+  .avatar {
+    @apply border border-gray-400;
+  }
+
+  .avatar__online-indicator {
+    display: none;
+  }
+}
