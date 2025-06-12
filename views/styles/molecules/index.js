@@ -3,7 +3,7 @@
  * Imports all molecule CSS files for PostCSS processing
  */
 
-// UI Core Molecules
+// UI Core Molecules (14)
 import "./search-box.css";
 import "./avatar-with-name.css";
 import "./dropdown-item.css";
@@ -18,23 +18,25 @@ import "./accordion-item.css";
 import "./toast.css";
 import "./recent-search-item.css";
 
-// Social/Post Molecules
+// Previously Specified Molecules (10)
+import "./create-post-option.css";
 import "./social-action-button.css";
 import "./file-uploader.css";
 import "./gallery-item.css";
 import "./post-card.css";
 import "./comment-input.css";
 import "./comment-list-item.css";
-import "./create-post-option.css";
 
-// Grid/Table Molecules (AngularJS)
+// Grid/Table Molecules - AngularJS (4)
 import "./grid-view.css";
 import "./table-row.css";
 import "./table-view.css";
 import "./view-toggle.css";
 
-// Navigation/Form Molecules
+// Inferred from Root HTML/CSS (1)
 import "./nav-item.css";
+
+// Additional Necessary Molecules (1)
 import "./accessible-form-group.css";
 
 // Export statement for module compatibility
