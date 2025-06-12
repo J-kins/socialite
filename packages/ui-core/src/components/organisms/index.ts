@@ -1,36 +1,24 @@
-export { Header } from "./Header";
-export { Sidebar } from "./Sidebar";
-export { ChatSidebar } from "./ChatSidebar";
-export { NotificationsPanel } from "./NotificationsPanel";
-export { PostCard } from "./PostCard";
-export { CommentSection } from "./CommentSection";
-export { StoryViewer } from "./StoryViewer";
-export { GroupCard } from "./GroupCard";
-export { EventCard } from "./EventCard";
-export { UserProfile } from "./UserProfile";
-export { FriendsList } from "./FriendsList";
-export { MessageThread } from "./MessageThread";
-export { CreatePost } from "./CreatePost";
-export { SearchResults } from "./SearchResults";
-export { SettingsPanel } from "./SettingsPanel";
-export { MediaGallery } from "./MediaGallery";
+// Organism components exports
+export { default as ChatSidebar } from './ChatSidebar';
+export { default as CommentSection } from './CommentSection';
+export { default as CreatePost } from './CreatePost';
+export { default as CreatePostSlider } from './CreatePostSlider';
+export { default as EventCard } from './EventCard';
+export { default as FriendsList } from './FriendsList';
+export { default as GroupCard } from './GroupCard';
+export { default as Header } from './Header';
+export { default as MediaGallery } from './MediaGallery';
+export { default as MessageThread } from './MessageThread';
+export { default as ModalDialog } from './ModalDialog';
+export { default as NotificationsPanel } from './NotificationsPanel';
+export { default as PostCard } from './PostCard';
+export { default as ProfileDropdown } from './ProfileDropdown';
+export { default as SearchResults } from './SearchResults';
+export { default as SettingsPanel } from './SettingsPanel';
+export { default as Sidebar } from './Sidebar';
+export { default as StoryViewer } from './StoryViewer';
+export { default as UserProfile } from './UserProfile';
 
-export type { HeaderProps } from "./Header";
-export type { SidebarProps } from "./Sidebar";
-export type { ChatSidebarProps, ChatContact } from "./ChatSidebar";
-export type {
-  NotificationsPanelProps,
-  Notification,
-} from "./NotificationsPanel";
-export type { PostCardProps } from "./PostCard";
-export type { CommentSectionProps, Comment } from "./CommentSection";
-export type { StoryViewerProps, Story } from "./StoryViewer";
-export type { GroupCardProps } from "./GroupCard";
-export type { EventCardProps } from "./EventCard";
-export type { UserProfileProps } from "./UserProfile";
-export type { FriendsListProps, Friend } from "./FriendsList";
-export type { MessageThreadProps, Message, Participant } from "./MessageThread";
-export type { CreatePostProps } from "./CreatePost";
-export type { SearchResultsProps, SearchResult } from "./SearchResults";
-export type { SettingsPanelProps } from "./SettingsPanel";
-export type { MediaGalleryProps, MediaItem } from "./MediaGallery";
+// Angular components
+export { GridViewPanel } from './GridViewPanel.component';
+export { TableViewPanel } from './TableViewPanel.component';
