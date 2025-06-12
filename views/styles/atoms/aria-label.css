@@ -1,0 +1,178 @@
+/**
+ * AriaLabel Atom Styles
+ * Screen reader only accessible content
+ */
+
+.aria-label {
+  @apply sr-only;
+}
+
+/* Screen reader only utility - more robust implementation */
+.sr-only {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
+/* Focusable screen reader content */
+.sr-only-focusable:focus {
+  position: static !important;
+  width: auto !important;
+  height: auto !important;
+  padding: inherit !important;
+  margin: inherit !important;
+  overflow: visible !important;
+  clip: auto !important;
+  white-space: normal !important;
+}
+
+/* Skip links for keyboard navigation */
+.skip-link {
+  @apply sr-only-focusable;
+  @apply absolute top-0 left-0 z-50;
+  @apply bg-blue-600 text-white px-4 py-2 rounded-md;
+  @apply font-medium text-sm;
+  @apply transition-all duration-200;
+  transform: translateY(-100%);
+}
+
+.skip-link:focus {
+  transform: translateY(0);
+}
+
+/* Visually hidden but available to assistive technology */
+.visually-hidden {
+  @apply sr-only;
+}
+
+/* Live region for dynamic content announcements */
+.live-region {
+  @apply sr-only;
+}
+
+.live-region[aria-live="polite"] {
+  /* Announced after current speech */
+}
+
+.live-region[aria-live="assertive"] {
+  /* Announced immediately, interrupting current speech */
+}
+
+/* Status messages */
+.status-message {
+  @apply sr-only;
+}
+
+.status-message--visible {
+  @apply not-sr-only;
+  @apply fixed bottom-4 right-4 z-50;
+  @apply bg-gray-800 text-white px-4 py-2 rounded-lg;
+  @apply text-sm font-medium;
+}
+
+/* Accessible form labels and descriptions */
+.accessible-description {
+  @apply sr-only;
+}
+
+.accessible-description--visible {
+  @apply not-sr-only;
+  @apply text-sm text-gray-600 dark:text-gray-400 mt-1;
+}
+
+/* Error announcements */
+.error-announcement {
+  @apply sr-only;
+}
+
+.error-announcement[role="alert"] {
+  /* Automatically announced as alert */
+}
+
+/* Loading announcements */
+.loading-announcement {
+  @apply sr-only;
+}
+
+/* Navigation landmarks */
+.nav-landmark {
+  /* Hidden visual label for navigation landmarks */
+  @apply sr-only;
+}
+
+/* Utility to make sr-only content visible for debugging */
+.debug-a11y .sr-only,
+.debug-a11y .aria-label,
+.debug-a11y .visually-hidden {
+  position: static !important;
+  width: auto !important;
+  height: auto !important;
+  padding: 2px 4px !important;
+  margin: 2px !important;
+  overflow: visible !important;
+  clip: auto !important;
+  white-space: normal !important;
+  border: 2px solid red !important;
+  background: yellow !important;
+  color: black !important;
+  font-size: 12px !important;
+  opacity: 0.8 !important;
+}
+
+/* High contrast mode enhancements */
+@media (prefers-contrast: high) {
+  .skip-link {
+    @apply border-2 border-white;
+  }
+
+  .status-message--visible {
+    @apply border-2 border-white;
+  }
+}
+
+/* Print styles - ensure hidden content stays hidden */
+@media print {
+  .sr-only,
+  .aria-label,
+  .visually-hidden,
+  .skip-link,
+  .live-region,
+  .status-message,
+  .loading-announcement {
+    display: none !important;
+  }
+}
+
+/* Focus management utilities */
+.focus-trap {
+  /* Container for focus trapping */
+}
+
+.focus-trap-active {
+  /* When focus trap is active, hide other content from screen readers */
+}
+
+.focus-trap-active > *:not(.focus-trap-content) {
+  visibility: hidden;
+}
+
+.focus-trap-content {
+  visibility: visible;
+}
+
+/* Reduced motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  .skip-link {
+    transition: none;
+  }
+
+  .status-message--visible {
+    transition: none;
+  }
+}

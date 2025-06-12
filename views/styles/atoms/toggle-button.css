@@ -1,0 +1,226 @@
+/**
+ * ToggleButton Atom Styles
+ * Button that toggles between active and inactive states
+ */
+
+.toggle-button {
+  @apply inline-flex items-center justify-center rounded-lg font-medium;
+  @apply transition-all duration-200 ease-in-out;
+  @apply focus:outline-none focus:ring-2 focus:ring-offset-2;
+  @apply disabled:opacity-60 disabled:cursor-not-allowed;
+  @apply relative overflow-hidden;
+}
+
+/* Size variants */
+.toggle-button--sm {
+  @apply px-3 py-1.5 text-sm h-8;
+}
+
+.toggle-button--md {
+  @apply px-4 py-2 text-sm h-10;
+}
+
+.toggle-button--lg {
+  @apply px-6 py-3 text-base h-12;
+}
+
+/* State variants */
+.toggle-button[data-active="false"] {
+  @apply bg-transparent text-gray-700 border border-gray-300;
+  @apply hover:bg-gray-50 focus:ring-gray-500;
+  @apply dark:text-gray-300 dark:border-gray-600 dark:hover:bg-gray-800;
+}
+
+.toggle-button[data-active="true"] {
+  @apply bg-blue-600 text-white border border-transparent;
+  @apply hover:bg-blue-700 focus:ring-blue-500 shadow-sm;
+  @apply dark:bg-blue-600 dark:hover:bg-blue-700;
+}
+
+/* Variant styles */
+.toggle-button--primary[data-active="true"] {
+  @apply bg-blue-600 hover:bg-blue-700 focus:ring-blue-500;
+}
+
+.toggle-button--success[data-active="true"] {
+  @apply bg-green-600 hover:bg-green-700 focus:ring-green-500;
+}
+
+.toggle-button--warning[data-active="true"] {
+  @apply bg-yellow-600 hover:bg-yellow-700 focus:ring-yellow-500;
+}
+
+.toggle-button--error[data-active="true"] {
+  @apply bg-red-600 hover:bg-red-700 focus:ring-red-500;
+}
+
+/* Icon toggle buttons */
+.toggle-button--icon-only {
+  @apply p-2 rounded-full;
+}
+
+.toggle-button--icon-only[data-active="false"] {
+  @apply text-gray-500 hover:text-gray-700 hover:bg-gray-100;
+  @apply dark:text-gray-400 dark:hover:text-gray-300 dark:hover:bg-gray-700;
+}
+
+.toggle-button--icon-only[data-active="true"] {
+  @apply text-blue-600 bg-blue-100 hover:bg-blue-200;
+  @apply dark:text-blue-400 dark:bg-blue-900 dark:hover:bg-blue-800;
+}
+
+/* Pill-shaped toggle button */
+.toggle-button--pill {
+  @apply rounded-full;
+}
+
+/* Toggle button with loading state */
+.toggle-button--loading {
+  @apply pointer-events-none;
+}
+
+.toggle-button--loading .toggle-button__spinner {
+  @apply animate-spin -ml-1 mr-2 h-4 w-4;
+}
+
+/* Toggle button group */
+.toggle-button-group {
+  @apply inline-flex rounded-lg shadow-sm;
+}
+
+.toggle-button-group .toggle-button {
+  @apply rounded-none border-r-0 focus:z-10;
+}
+
+.toggle-button-group .toggle-button:first-child {
+  @apply rounded-l-lg;
+}
+
+.toggle-button-group .toggle-button:last-child {
+  @apply rounded-r-lg border-r;
+}
+
+.toggle-button-group .toggle-button:only-child {
+  @apply rounded-lg border-r;
+}
+
+/* Toggle switch style */
+.toggle-button--switch {
+  @apply relative w-12 h-6 p-0;
+  @apply bg-gray-300 rounded-full;
+  @apply transition-colors duration-200;
+}
+
+.toggle-button--switch[data-active="true"] {
+  @apply bg-blue-600;
+}
+
+.toggle-button--switch::before {
+  content: "";
+  @apply absolute top-0.5 left-0.5 w-5 h-5;
+  @apply bg-white rounded-full shadow-sm;
+  @apply transition-transform duration-200;
+}
+
+.toggle-button--switch[data-active="true"]::before {
+  @apply transform translate-x-6;
+}
+
+/* Segmented control style */
+.toggle-button--segmented {
+  @apply bg-gray-100 dark:bg-gray-800;
+  @apply border-0 rounded-lg;
+}
+
+.toggle-button--segmented[data-active="false"] {
+  @apply text-gray-600 dark:text-gray-400;
+  @apply hover:text-gray-900 dark:hover:text-gray-200;
+}
+
+.toggle-button--segmented[data-active="true"] {
+  @apply bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100;
+  @apply shadow-sm;
+}
+
+/* Card-style toggle button */
+.toggle-button--card {
+  @apply flex-col p-4 border-2 rounded-lg;
+  @apply min-h-20 justify-center;
+}
+
+.toggle-button--card[data-active="false"] {
+  @apply border-gray-200 bg-white hover:border-gray-300;
+  @apply dark:border-gray-700 dark:bg-gray-800 dark:hover:border-gray-600;
+}
+
+.toggle-button--card[data-active="true"] {
+  @apply border-blue-500 bg-blue-50;
+  @apply dark:border-blue-400 dark:bg-blue-900/20;
+}
+
+.toggle-button--card .toggle-button__title {
+  @apply font-semibold text-sm;
+}
+
+.toggle-button--card .toggle-button__description {
+  @apply text-xs text-gray-600 dark:text-gray-400 mt-1;
+}
+
+/* Animation for state changes */
+.toggle-button {
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.toggle-button:active {
+  @apply transform scale-95;
+}
+
+/* Ripple effect for toggle buttons */
+.toggle-button.ripple-effect:active {
+  @apply transform scale-95;
+}
+
+.toggle-button .ripple {
+  @apply absolute rounded-full pointer-events-none;
+  background: rgba(255, 255, 255, 0.3);
+  transform: scale(0);
+  animation: ripple-animation 0.6s linear;
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .toggle-button {
+    @apply border-2;
+  }
+
+  .toggle-button[data-active="true"] {
+    @apply border-4;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .toggle-button {
+    @apply transition-none;
+  }
+
+  .toggle-button--switch::before {
+    @apply transition-none;
+  }
+
+  .toggle-button:active {
+    @apply transform-none;
+  }
+}
+
+/* Print styles */
+@media print {
+  .toggle-button {
+    @apply border border-gray-400 bg-transparent text-gray-800;
+  }
+
+  .toggle-button[data-active="true"]::after {
+    content: " (Active)";
+    @apply font-normal;
+  }
+}

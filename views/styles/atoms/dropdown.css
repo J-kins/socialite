@@ -1,0 +1,223 @@
+/**
+ * Dropdown Atom Styles
+ * Select dropdown component styling
+ */
+
+.dropdown {
+  @apply block w-full px-3 py-2 border border-gray-300 rounded-lg;
+  @apply bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100;
+  @apply focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500;
+  @apply transition-colors duration-200;
+  @apply appearance-none;
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
+  background-position: right 8px center;
+  background-repeat: no-repeat;
+  background-size: 16px 12px;
+  padding-right: 40px;
+}
+
+.dropdown:disabled {
+  @apply opacity-60 cursor-not-allowed bg-gray-100 dark:bg-gray-700;
+}
+
+/* Size variants */
+.dropdown--sm {
+  @apply px-2 py-1 text-sm;
+  background-size: 14px 10px;
+  padding-right: 32px;
+}
+
+.dropdown--md {
+  @apply px-3 py-2 text-sm;
+  background-size: 16px 12px;
+  padding-right: 40px;
+}
+
+.dropdown--lg {
+  @apply px-4 py-3 text-base;
+  background-size: 18px 14px;
+  padding-right: 48px;
+}
+
+/* State variants */
+.dropdown--error {
+  @apply border-red-300 text-red-900 dark:text-red-100;
+  @apply focus:border-red-500 focus:ring-red-500;
+  @apply bg-red-50 dark:bg-red-900/20;
+}
+
+.dropdown--success {
+  @apply border-green-300 text-green-900 dark:text-green-100;
+  @apply focus:border-green-500 focus:ring-green-500;
+  @apply bg-green-50 dark:bg-green-900/20;
+}
+
+.dropdown--warning {
+  @apply border-yellow-300 text-yellow-900 dark:text-yellow-100;
+  @apply focus:border-yellow-500 focus:ring-yellow-500;
+  @apply bg-yellow-50 dark:bg-yellow-900/20;
+}
+
+/* Dark mode dropdown arrow */
+.dark .dropdown {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%239ca3af' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
+}
+
+/* Dropdown options styling */
+.dropdown option {
+  @apply bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100;
+  @apply py-2 px-3;
+}
+
+.dropdown option:checked {
+  @apply bg-blue-600 text-white;
+}
+
+.dropdown option:disabled {
+  @apply text-gray-400 dark:text-gray-600;
+}
+
+/* Multiple select variant */
+.dropdown[multiple] {
+  @apply py-2;
+  background-image: none;
+  padding-right: 12px;
+}
+
+.dropdown[multiple] option {
+  @apply py-1 px-3 rounded;
+  @apply hover:bg-gray-100 dark:hover:bg-gray-700;
+}
+
+/* Custom dropdown container for advanced styling */
+.dropdown-container {
+  @apply relative;
+}
+
+.dropdown-container .dropdown {
+  @apply w-full;
+}
+
+.dropdown-container .dropdown-icon {
+  @apply absolute right-3 top-1/2 transform -translate-y-1/2;
+  @apply pointer-events-none text-gray-400;
+}
+
+/* Searchable dropdown */
+.dropdown--searchable {
+  @apply cursor-text;
+}
+
+.dropdown--searchable:focus {
+  @apply cursor-text;
+}
+
+/* Dropdown with prefix */
+.dropdown--with-prefix {
+  @apply pl-10;
+}
+
+.dropdown-container--with-prefix .dropdown-prefix {
+  @apply absolute left-3 top-1/2 transform -translate-y-1/2;
+  @apply text-gray-400 pointer-events-none;
+}
+
+/* Loading state */
+.dropdown--loading {
+  @apply cursor-wait;
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24'%3e%3ccircle cx='12' cy='12' r='10' stroke='%236b7280' stroke-width='4' fill='none' opacity='0.25'/%3e%3cpath fill='%236b7280' opacity='0.75' d='M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z'/%3e%3c/svg%3e");
+  animation: spin 1s linear infinite;
+}
+
+/* Native mobile dropdown styling */
+@media (max-width: 640px) {
+  .dropdown {
+    @apply text-base; /* Prevent zoom on iOS */
+  }
+}
+
+/* Floating label variant */
+.dropdown-group--floating {
+  @apply relative;
+}
+
+.dropdown-group--floating .dropdown {
+  @apply pt-6 pb-2;
+}
+
+.dropdown-group--floating .dropdown-label {
+  @apply absolute left-3 top-2 text-xs text-gray-500 dark:text-gray-400;
+  @apply pointer-events-none transition-all duration-200;
+}
+
+.dropdown-group--floating .dropdown:placeholder-shown + .dropdown-label {
+  @apply top-1/2 -translate-y-1/2 text-sm text-gray-400;
+}
+
+.dropdown-group--floating .dropdown:focus + .dropdown-label,
+.dropdown-group--floating .dropdown:not(:placeholder-shown) + .dropdown-label {
+  @apply top-2 text-xs text-blue-600 dark:text-blue-400;
+}
+
+/* Dropdown group */
+.dropdown-group {
+  @apply space-y-1;
+}
+
+.dropdown-group .dropdown-label {
+  @apply block text-sm font-medium text-gray-700 dark:text-gray-300;
+}
+
+.dropdown-group .dropdown-help {
+  @apply text-sm text-gray-600 dark:text-gray-400;
+}
+
+.dropdown-group .dropdown-error {
+  @apply text-sm text-red-600 dark:text-red-400;
+}
+
+/* Inline dropdown */
+.dropdown--inline {
+  @apply inline-block w-auto min-w-0;
+}
+
+/* Borderless dropdown */
+.dropdown--borderless {
+  @apply border-0 bg-transparent focus:ring-0;
+  background-image: none;
+  padding-right: 12px;
+}
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+  .dropdown {
+    @apply border-2;
+  }
+
+  .dropdown:focus {
+    @apply ring-4;
+  }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .dropdown {
+    @apply transition-none;
+  }
+
+  .dropdown--loading {
+    animation: none;
+  }
+}
+
+/* Print styles */
+@media print {
+  .dropdown {
+    @apply border border-gray-400 bg-transparent;
+    background-image: none;
+  }
+
+  .dropdown option:checked::after {
+    content: " ✓";
+  }
+}

@@ -1,0 +1,284 @@
+/**
+ * Spinner Atom Styles
+ * Loading spinner animations and variants
+ */
+
+.spinner {
+  @apply inline-block border-4 border-blue-600 border-t-transparent rounded-full animate-spin;
+  @apply w-6 h-6;
+}
+
+/* Size variants */
+.spinner--xs {
+  @apply w-3 h-3 border-2;
+}
+
+.spinner--sm {
+  @apply w-4 h-4 border-2;
+}
+
+.spinner--md {
+  @apply w-6 h-6 border-4;
+}
+
+.spinner--lg {
+  @apply w-8 h-8 border-4;
+}
+
+.spinner--xl {
+  @apply w-12 h-12 border-4;
+}
+
+/* Color variants */
+.spinner--primary {
+  @apply border-blue-600 border-t-transparent;
+}
+
+.spinner--secondary {
+  @apply border-gray-600 border-t-transparent;
+}
+
+.spinner--success {
+  @apply border-green-600 border-t-transparent;
+}
+
+.spinner--warning {
+  @apply border-yellow-600 border-t-transparent;
+}
+
+.spinner--error {
+  @apply border-red-600 border-t-transparent;
+}
+
+.spinner--white {
+  @apply border-white border-t-transparent;
+}
+
+.spinner--light {
+  @apply border-gray-300 border-t-transparent;
+}
+
+/* Dots spinner variant */
+.spinner--dots {
+  @apply flex space-x-1;
+  animation: none;
+  border: none;
+  border-radius: 0;
+}
+
+.spinner--dots::before,
+.spinner--dots::after {
+  content: "";
+  @apply w-2 h-2 bg-current rounded-full;
+  animation: spinner-dots 1.4s ease-in-out infinite both;
+}
+
+.spinner--dots::before {
+  animation-delay: -0.32s;
+}
+
+.spinner--dots::after {
+  animation-delay: -0.16s;
+}
+
+@keyframes spinner-dots {
+  0%,
+  80%,
+  100% {
+    transform: scale(0);
+    opacity: 0.5;
+  }
+  40% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* Pulse spinner variant */
+.spinner--pulse {
+  @apply rounded-full bg-current;
+  animation: spinner-pulse 1.5s ease-in-out infinite;
+  border: none;
+}
+
+@keyframes spinner-pulse {
+  0% {
+    transform: scale(0);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 0;
+  }
+}
+
+/* Bars spinner variant */
+.spinner--bars {
+  @apply flex space-x-1;
+  animation: none;
+  border: none;
+  border-radius: 0;
+}
+
+.spinner--bars::before,
+.spinner--bars::after {
+  content: "";
+  @apply w-1 h-4 bg-current;
+  animation: spinner-bars 1.2s infinite ease-in-out;
+}
+
+.spinner--bars::before {
+  animation-delay: -1.1s;
+}
+
+.spinner--bars::after {
+  animation-delay: -1s;
+}
+
+@keyframes spinner-bars {
+  0%,
+  40%,
+  100% {
+    transform: scaleY(0.4);
+  }
+  20% {
+    transform: scaleY(1);
+  }
+}
+
+/* Ring spinner variant */
+.spinner--ring {
+  @apply border-2 border-gray-200;
+  border-top-color: currentColor;
+}
+
+/* Growing spinner variant */
+.spinner--grow {
+  @apply bg-current rounded-full;
+  animation: spinner-grow 0.75s linear infinite;
+  border: none;
+}
+
+@keyframes spinner-grow {
+  0% {
+    transform: scale(0);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0);
+  }
+}
+
+/* Centered spinner container */
+.spinner-container {
+  @apply flex items-center justify-center;
+}
+
+.spinner-container--full {
+  @apply min-h-screen;
+}
+
+.spinner-container--section {
+  @apply min-h-64;
+}
+
+/* Spinner with text */
+.spinner-with-text {
+  @apply flex flex-col items-center space-y-2;
+}
+
+.spinner-with-text .spinner-text {
+  @apply text-sm text-gray-600 dark:text-gray-400;
+}
+
+/* Overlay spinner */
+.spinner-overlay {
+  @apply fixed inset-0 bg-white bg-opacity-75 dark:bg-gray-900 dark:bg-opacity-75;
+  @apply flex items-center justify-center z-50;
+}
+
+.spinner-overlay .spinner {
+  @apply w-8 h-8;
+}
+
+/* Inline spinner */
+.spinner--inline {
+  @apply inline-block align-middle;
+}
+
+/* Button spinner */
+.spinner--button {
+  @apply w-4 h-4 border-2;
+}
+
+/* Fast spinner */
+.spinner--fast {
+  animation-duration: 0.5s;
+}
+
+/* Slow spinner */
+.spinner--slow {
+  animation-duration: 2s;
+}
+
+/* Reverse spinner */
+.spinner--reverse {
+  animation-direction: reverse;
+}
+
+/* Custom spin animation for better performance */
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.spinner {
+  animation: spin 1s linear infinite;
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .spinner {
+    animation: none;
+    @apply border-l-transparent;
+  }
+
+  .spinner--dots::before,
+  .spinner--dots::after {
+    animation: none;
+    @apply opacity-50;
+  }
+
+  .spinner--pulse {
+    animation: none;
+    @apply opacity-50;
+  }
+
+  .spinner--bars::before,
+  .spinner--bars::after {
+    animation: none;
+  }
+}
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+  .spinner {
+    @apply border-4;
+  }
+}
+
+/* Print styles */
+@media print {
+  .spinner,
+  .spinner-overlay {
+    display: none;
+  }
+}
