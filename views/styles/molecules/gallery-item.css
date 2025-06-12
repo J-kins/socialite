@@ -1,0 +1,341 @@
+/**
+ * GalleryItem Molecule Styles
+ * Gallery item display styling
+ */
+
+.gallery-item {
+  @apply bg-white rounded-lg shadow-sm overflow-hidden;
+  @apply hover:shadow-md transition-shadow duration-200 cursor-pointer;
+}
+
+.gallery-item:focus-within {
+  @apply ring-2 ring-blue-500 ring-offset-2 outline-none;
+}
+
+/* Media container */
+.gallery-item .gallery-media {
+  @apply relative overflow-hidden aspect-square;
+}
+
+.gallery-item .gallery-media img,
+.gallery-item .gallery-media video {
+  @apply w-full h-full object-cover transition-transform duration-300;
+}
+
+.gallery-item:hover .gallery-media img,
+.gallery-item:hover .gallery-media video {
+  @apply transform scale-105;
+}
+
+/* Media overlay */
+.gallery-item .gallery-overlay {
+  @apply absolute inset-0 bg-black bg-opacity-0 hover:bg-opacity-20;
+  @apply transition-all duration-300 flex items-center justify-center;
+}
+
+.gallery-item .gallery-overlay .play-icon {
+  @apply w-12 h-12 text-white opacity-0 hover:opacity-100;
+  @apply transition-opacity duration-300;
+}
+
+/* Caption area */
+.gallery-item .gallery-caption {
+  @apply p-3;
+}
+
+.gallery-item .gallery-caption-text {
+  @apply text-sm text-gray-700 text-center line-clamp-2;
+}
+
+/* Size variants */
+.gallery-item.gallery-item--small {
+  @apply rounded-md;
+}
+
+.gallery-item.gallery-item--small .gallery-media {
+  @apply aspect-square;
+}
+
+.gallery-item.gallery-item--small .gallery-caption {
+  @apply p-2;
+}
+
+.gallery-item.gallery-item--small .gallery-caption-text {
+  @apply text-xs;
+}
+
+.gallery-item.gallery-item--large {
+  @apply rounded-xl;
+}
+
+.gallery-item.gallery-item--large .gallery-caption {
+  @apply p-4;
+}
+
+.gallery-item.gallery-item--large .gallery-caption-text {
+  @apply text-base;
+}
+
+/* Aspect ratio variants */
+.gallery-item.gallery-item--portrait .gallery-media {
+  @apply aspect-[3/4];
+}
+
+.gallery-item.gallery-item--landscape .gallery-media {
+  @apply aspect-[4/3];
+}
+
+.gallery-item.gallery-item--wide .gallery-media {
+  @apply aspect-[16/9];
+}
+
+/* Style variants */
+.gallery-item.gallery-item--borderless {
+  @apply shadow-none border border-gray-200;
+}
+
+.gallery-item.gallery-item--minimal {
+  @apply bg-transparent shadow-none rounded-none;
+}
+
+.gallery-item.gallery-item--minimal .gallery-caption {
+  @apply p-1;
+}
+
+/* Media type indicators */
+.gallery-item .media-type-badge {
+  @apply absolute top-2 right-2 px-2 py-1 bg-black bg-opacity-50;
+  @apply text-white text-xs rounded-full flex items-center gap-1;
+}
+
+.gallery-item .media-type-badge.video::before {
+  content: "🎥";
+}
+
+.gallery-item .media-type-badge.audio::before {
+  content: "🎵";
+}
+
+.gallery-item .media-type-badge.document::before {
+  content: "📄";
+}
+
+/* Selection state */
+.gallery-item.gallery-item--selected {
+  @apply ring-2 ring-blue-500 ring-offset-2;
+}
+
+.gallery-item.gallery-item--selected::after {
+  content: "✓";
+  @apply absolute top-2 left-2 w-6 h-6 bg-blue-500 text-white;
+  @apply rounded-full flex items-center justify-center text-sm font-bold;
+}
+
+.gallery-item {
+  @apply relative;
+}
+
+/* Loading state */
+.gallery-item.gallery-item--loading {
+  @apply opacity-60;
+}
+
+.gallery-item.gallery-item--loading .gallery-media {
+  @apply bg-gray-200 animate-pulse;
+}
+
+.gallery-item.gallery-item--loading .gallery-caption-text {
+  @apply bg-gray-200 text-transparent animate-pulse rounded;
+}
+
+/* Error state */
+.gallery-item.gallery-item--error {
+  @apply border-red-200;
+}
+
+.gallery-item.gallery-item--error .gallery-media {
+  @apply bg-red-50 flex items-center justify-center;
+}
+
+.gallery-item.gallery-item--error .error-icon {
+  @apply w-8 h-8 text-red-400;
+}
+
+/* Hover effects */
+.gallery-item .gallery-actions {
+  @apply absolute top-2 right-2 opacity-0 transition-opacity duration-200;
+  @apply flex gap-1;
+}
+
+.gallery-item:hover .gallery-actions {
+  @apply opacity-100;
+}
+
+.gallery-item .gallery-action {
+  @apply p-1.5 bg-black bg-opacity-50 text-white rounded-full;
+  @apply hover:bg-opacity-70 transition-all duration-200;
+}
+
+/* Metadata overlay */
+.gallery-item .gallery-metadata {
+  @apply absolute bottom-0 left-0 right-0 p-2;
+  @apply bg-gradient-to-t from-black to-transparent text-white;
+  @apply transform translate-y-full transition-transform duration-300;
+}
+
+.gallery-item:hover .gallery-metadata {
+  @apply transform translate-y-0;
+}
+
+.gallery-item .gallery-metadata .metadata-item {
+  @apply text-xs flex items-center gap-1 mb-1;
+}
+
+/* Grid layout support */
+.gallery-grid {
+  @apply grid gap-4;
+}
+
+.gallery-grid.gallery-grid--2 {
+  @apply grid-cols-2;
+}
+
+.gallery-grid.gallery-grid--3 {
+  @apply grid-cols-3;
+}
+
+.gallery-grid.gallery-grid--4 {
+  @apply grid-cols-4;
+}
+
+.gallery-grid.gallery-grid--auto {
+  @apply grid-cols-[repeat(auto-fill,minmax(200px,1fr))];
+}
+
+/* Masonry layout */
+.gallery-masonry {
+  @apply columns-2 sm:columns-3 lg:columns-4 gap-4;
+}
+
+.gallery-masonry .gallery-item {
+  @apply break-inside-avoid mb-4;
+}
+
+/* Mobile responsive */
+@media (max-width: 640px) {
+  .gallery-item .gallery-caption {
+    @apply p-2;
+  }
+
+  .gallery-item .gallery-caption-text {
+    @apply text-xs;
+  }
+
+  .gallery-item .gallery-actions {
+    @apply opacity-100;
+  }
+
+  .gallery-item .gallery-metadata {
+    @apply transform translate-y-0;
+  }
+
+  .gallery-grid {
+    @apply grid-cols-2 gap-2;
+  }
+
+  .gallery-masonry {
+    @apply columns-2 gap-2;
+  }
+}
+
+/* Touch devices */
+@media (pointer: coarse) {
+  .gallery-item .gallery-action {
+    @apply p-2 min-w-[44px] min-h-[44px] flex items-center justify-center;
+  }
+
+  .gallery-item .gallery-actions {
+    @apply opacity-100;
+  }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .gallery-item {
+    @apply bg-gray-800 border-gray-700;
+  }
+
+  .gallery-item .gallery-caption-text {
+    @apply text-gray-300;
+  }
+
+  .gallery-item.gallery-item--borderless {
+    @apply border-gray-700;
+  }
+
+  .gallery-item.gallery-item--error {
+    @apply border-red-700;
+  }
+
+  .gallery-item.gallery-item--error .gallery-media {
+    @apply bg-red-900/20;
+  }
+
+  .gallery-item.gallery-item--loading .gallery-media,
+  .gallery-item.gallery-item--loading .gallery-caption-text {
+    @apply bg-gray-700;
+  }
+}
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+  .gallery-item {
+    @apply border-2 border-black;
+  }
+
+  .gallery-item:focus-within {
+    @apply ring-4 ring-blue-600;
+  }
+
+  .gallery-item .gallery-caption-text {
+    @apply text-black font-bold;
+  }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .gallery-item {
+    @apply transition-none;
+  }
+
+  .gallery-item:hover .gallery-media img,
+  .gallery-item:hover .gallery-media video {
+    @apply transform-none scale-100;
+  }
+
+  .gallery-item .gallery-overlay,
+  .gallery-item .gallery-actions,
+  .gallery-item .gallery-metadata {
+    @apply transition-none;
+  }
+
+  .gallery-item.gallery-item--loading .gallery-media,
+  .gallery-item.gallery-item--loading .gallery-caption-text {
+    @apply animate-none;
+  }
+}
+
+/* Print styles */
+@media print {
+  .gallery-item .gallery-actions {
+    @apply hidden;
+  }
+
+  .gallery-item .gallery-overlay {
+    @apply hidden;
+  }
+
+  .gallery-item .media-type-badge {
+    @apply hidden;
+  }
+}

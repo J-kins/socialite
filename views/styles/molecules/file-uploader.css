@@ -1,0 +1,276 @@
+/**
+ * FileUploader Molecule Styles
+ * File upload interface styling
+ */
+
+.file-uploader {
+  @apply flex items-center gap-3 p-4 border-2 border-dashed border-gray-300;
+  @apply rounded-lg hover:border-gray-400 transition-colors duration-200;
+}
+
+.file-uploader.file-uploader--dragover {
+  @apply border-blue-500 bg-blue-50;
+}
+
+.file-uploader.file-uploader--error {
+  @apply border-red-500 bg-red-50;
+}
+
+.file-uploader.file-uploader--success {
+  @apply border-green-500 bg-green-50;
+}
+
+/* Upload area */
+.file-uploader .upload-area {
+  @apply flex-1 text-center;
+}
+
+.file-uploader .upload-icon {
+  @apply w-8 h-8 text-gray-400 mx-auto mb-2;
+}
+
+.file-uploader .upload-text {
+  @apply text-sm text-gray-600 mb-1;
+}
+
+.file-uploader .upload-hint {
+  @apply text-xs text-gray-500;
+}
+
+/* Upload button */
+.file-uploader .upload-button {
+  @apply flex-shrink-0;
+}
+
+/* Progress indicator */
+.file-uploader .upload-progress {
+  @apply w-full bg-gray-200 rounded-full h-2 mt-2;
+}
+
+.file-uploader .upload-progress-bar {
+  @apply bg-blue-600 h-2 rounded-full transition-all duration-300;
+}
+
+/* File list */
+.file-uploader .file-list {
+  @apply mt-4 space-y-2;
+}
+
+.file-uploader .file-item {
+  @apply flex items-center gap-3 p-2 bg-gray-50 rounded border;
+}
+
+.file-uploader .file-item .file-icon {
+  @apply w-6 h-6 text-gray-500 flex-shrink-0;
+}
+
+.file-uploader .file-item .file-info {
+  @apply flex-1 min-w-0;
+}
+
+.file-uploader .file-item .file-name {
+  @apply font-medium text-sm text-gray-900 truncate;
+}
+
+.file-uploader .file-item .file-size {
+  @apply text-xs text-gray-500;
+}
+
+.file-uploader .file-item .file-remove {
+  @apply flex-shrink-0 p-1 text-gray-400 hover:text-red-500;
+  @apply hover:bg-red-50 rounded transition-colors;
+}
+
+/* Size variants */
+.file-uploader.file-uploader--small {
+  @apply p-3;
+}
+
+.file-uploader.file-uploader--small .upload-icon {
+  @apply w-6 h-6;
+}
+
+.file-uploader.file-uploader--small .upload-text {
+  @apply text-xs;
+}
+
+.file-uploader.file-uploader--large {
+  @apply p-6;
+}
+
+.file-uploader.file-uploader--large .upload-icon {
+  @apply w-12 h-12;
+}
+
+.file-uploader.file-uploader--large .upload-text {
+  @apply text-base;
+}
+
+/* Style variants */
+.file-uploader.file-uploader--solid {
+  @apply border-solid bg-gray-50;
+}
+
+.file-uploader.file-uploader--minimal {
+  @apply border-0 bg-transparent p-2;
+}
+
+/* Loading state */
+.file-uploader.file-uploader--loading {
+  @apply opacity-60 pointer-events-none;
+}
+
+.file-uploader.file-uploader--loading .upload-icon {
+  @apply animate-pulse;
+}
+
+/* Multiple files */
+.file-uploader.file-uploader--multiple .upload-hint::after {
+  content: " You can select multiple files.";
+}
+
+/* Drag and drop states */
+.file-uploader.file-uploader--drag-active {
+  @apply border-blue-500 bg-blue-50 transform scale-105;
+}
+
+.file-uploader.file-uploader--drag-reject {
+  @apply border-red-500 bg-red-50;
+}
+
+/* File type restrictions */
+.file-uploader.file-uploader--images-only .upload-hint::before {
+  content: "Images only: ";
+}
+
+.file-uploader.file-uploader--documents-only .upload-hint::before {
+  content: "Documents only: ";
+}
+
+/* Error messages */
+.file-uploader .upload-error {
+  @apply text-red-600 text-xs mt-2;
+}
+
+.file-uploader .upload-error .error-icon {
+  @apply inline w-4 h-4 mr-1;
+}
+
+/* Success message */
+.file-uploader .upload-success {
+  @apply text-green-600 text-xs mt-2;
+}
+
+.file-uploader .upload-success .success-icon {
+  @apply inline w-4 h-4 mr-1;
+}
+
+/* Mobile responsive */
+@media (max-width: 640px) {
+  .file-uploader {
+    @apply p-3 flex-col text-center;
+  }
+
+  .file-uploader .upload-button {
+    @apply w-full mt-2;
+  }
+
+  .file-uploader .file-item {
+    @apply p-2;
+  }
+
+  .file-uploader .file-item .file-name {
+    @apply text-xs;
+  }
+}
+
+/* Touch devices */
+@media (pointer: coarse) {
+  .file-uploader {
+    @apply p-6;
+  }
+
+  .file-uploader .file-item .file-remove {
+    @apply p-2 min-w-[44px] min-h-[44px] flex items-center justify-center;
+  }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .file-uploader {
+    @apply border-gray-600 hover:border-gray-500;
+  }
+
+  .file-uploader.file-uploader--dragover {
+    @apply border-blue-400 bg-blue-900/20;
+  }
+
+  .file-uploader.file-uploader--error {
+    @apply border-red-400 bg-red-900/20;
+  }
+
+  .file-uploader.file-uploader--success {
+    @apply border-green-400 bg-green-900/20;
+  }
+
+  .file-uploader .upload-text {
+    @apply text-gray-300;
+  }
+
+  .file-uploader .upload-hint {
+    @apply text-gray-400;
+  }
+
+  .file-uploader .file-item {
+    @apply bg-gray-800 border-gray-700;
+  }
+
+  .file-uploader .file-item .file-name {
+    @apply text-gray-100;
+  }
+
+  .file-uploader .upload-progress {
+    @apply bg-gray-700;
+  }
+}
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+  .file-uploader {
+    @apply border-4 border-black;
+  }
+
+  .file-uploader.file-uploader--dragover {
+    @apply border-blue-600;
+  }
+
+  .file-uploader .upload-text {
+    @apply text-black font-bold;
+  }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .file-uploader {
+    @apply transition-none;
+  }
+
+  .file-uploader.file-uploader--drag-active {
+    @apply transform-none scale-100;
+  }
+
+  .file-uploader .upload-progress-bar {
+    @apply transition-none;
+  }
+
+  .file-uploader.file-uploader--loading .upload-icon {
+    @apply animate-none;
+  }
+}
+
+/* Print styles */
+@media print {
+  .file-uploader {
+    @apply hidden;
+  }
+}

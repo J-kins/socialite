@@ -1,0 +1,393 @@
+/**
+ * TableView Molecule Styles (AngularJS)
+ * Full table layout styling
+ */
+
+.table-view {
+  @apply w-full border-collapse bg-white shadow-sm rounded-lg overflow-hidden;
+}
+
+.table-view thead {
+  @apply bg-gray-50;
+}
+
+.table-view thead tr {
+  @apply border-b border-gray-200;
+}
+
+.table-view tbody tr {
+  @apply border-b border-gray-100 last:border-b-0;
+}
+
+.table-view tfoot {
+  @apply bg-gray-50 border-t border-gray-200;
+}
+
+/* Size variants */
+.table-view.table-view--small {
+  @apply text-xs;
+}
+
+.table-view.table-view--small th,
+.table-view.table-view--small td {
+  @apply px-3 py-2;
+}
+
+.table-view.table-view--large {
+  @apply text-base;
+}
+
+.table-view.table-view--large th,
+.table-view.table-view--large td {
+  @apply px-6 py-4;
+}
+
+/* Style variants */
+.table-view.table-view--bordered {
+  @apply border border-gray-200;
+}
+
+.table-view.table-view--bordered th,
+.table-view.table-view--bordered td {
+  @apply border-r border-gray-200 last:border-r-0;
+}
+
+.table-view.table-view--striped tbody tr:nth-child(even) {
+  @apply bg-gray-50;
+}
+
+.table-view.table-view--hover tbody tr:hover {
+  @apply bg-gray-50;
+}
+
+.table-view.table-view--borderless {
+  @apply shadow-none;
+}
+
+.table-view.table-view--borderless thead tr,
+.table-view.table-view--borderless tbody tr,
+.table-view.table-view--borderless tfoot {
+  @apply border-0;
+}
+
+/* Responsive variants */
+.table-view.table-view--responsive {
+  @apply block md:table overflow-x-auto whitespace-nowrap;
+}
+
+.table-view.table-view--responsive thead,
+.table-view.table-view--responsive tbody,
+.table-view.table-view--responsive th,
+.table-view.table-view--responsive td,
+.table-view.table-view--responsive tr {
+  @apply block md:table-header-group md:table-row-group md:table-cell md:table-row;
+}
+
+.table-view.table-view--responsive thead tr {
+  @apply absolute -top-full -left-full md:static md:top-auto md:left-auto;
+}
+
+.table-view.table-view--responsive tbody tr {
+  @apply border border-gray-200 rounded mb-2 md:border-0 md:rounded-none md:mb-0;
+}
+
+.table-view.table-view--responsive td {
+  @apply border-0 border-b border-gray-100 last:border-b-0 pl-[50%] md:pl-4 relative;
+}
+
+.table-view.table-view--responsive td::before {
+  content: attr(data-label) ": ";
+  @apply absolute left-2 top-3 font-semibold text-gray-700 md:hidden;
+}
+
+/* Fixed layout */
+.table-view.table-view--fixed {
+  @apply table-fixed;
+}
+
+/* Sticky header */
+.table-view.table-view--sticky-header thead th {
+  @apply sticky top-0 bg-gray-50 z-10;
+}
+
+/* Loading state */
+.table-view.table-view--loading {
+  @apply opacity-60 pointer-events-none;
+}
+
+.table-view.table-view--loading tbody tr {
+  @apply animate-pulse;
+}
+
+.table-view.table-view--loading td {
+  @apply bg-gray-200 text-transparent;
+}
+
+/* Empty state */
+.table-view.table-view--empty tbody {
+  @apply relative;
+}
+
+.table-view.table-view--empty tbody::after {
+  content: "No data available";
+  @apply absolute inset-0 flex items-center justify-center text-gray-500 bg-white;
+}
+
+/* Sortable headers */
+.table-view .sortable {
+  @apply cursor-pointer select-none hover:bg-gray-100 transition-colors;
+}
+
+.table-view .sortable::after {
+  content: "";
+  @apply inline-block w-4 h-4 ml-2 opacity-50;
+  background: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='currentColor'%3e%3cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4'/%3e%3c/svg%3e")
+    no-repeat center;
+}
+
+.table-view .sortable.sort-asc::after {
+  background: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='currentColor'%3e%3cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M3 4h13M3 8h9m-9 4h6m4 0l4-4m0 0l4 4m-4-4v12'/%3e%3c/svg%3e")
+    no-repeat center;
+  @apply opacity-100;
+}
+
+.table-view .sortable.sort-desc::after {
+  background: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='currentColor'%3e%3cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M3 4h13M3 8h9m-9 4h9m5-4v12m0 0l-4-4m4 4l4-4'/%3e%3c/svg%3e")
+    no-repeat center;
+  @apply opacity-100;
+}
+
+/* Selection column */
+.table-view .select-column {
+  @apply w-12 text-center;
+}
+
+.table-view .select-all {
+  @apply w-4 h-4 cursor-pointer;
+}
+
+.table-view .select-row {
+  @apply w-4 h-4 cursor-pointer;
+}
+
+/* Action column */
+.table-view .action-column {
+  @apply w-24 text-right;
+}
+
+.table-view .action-menu {
+  @apply inline-flex items-center p-1 text-gray-400 hover:text-gray-600;
+  @apply hover:bg-gray-100 rounded transition-colors;
+}
+
+/* Resizable columns */
+.table-view.table-view--resizable th {
+  @apply relative;
+}
+
+.table-view.table-view--resizable th::after {
+  content: "";
+  @apply absolute top-0 right-0 bottom-0 w-1 cursor-col-resize;
+  @apply hover:bg-blue-500 transition-colors;
+}
+
+/* Scrollable table container */
+.table-container {
+  @apply overflow-x-auto;
+}
+
+.table-container.table-container--shadow {
+  @apply shadow-inner;
+}
+
+.table-container.table-container--max-height {
+  @apply max-h-96 overflow-y-auto;
+}
+
+/* Table pagination */
+.table-pagination {
+  @apply flex items-center justify-between px-4 py-3 bg-white border-t border-gray-200;
+}
+
+.table-pagination .pagination-info {
+  @apply text-sm text-gray-700;
+}
+
+.table-pagination .pagination-controls {
+  @apply flex items-center gap-2;
+}
+
+.table-pagination .pagination-button {
+  @apply px-3 py-1 border border-gray-300 rounded text-sm;
+  @apply hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed;
+}
+
+/* AngularJS specific animations */
+.table-view tbody tr.ng-enter {
+  @apply opacity-0 transform translate-y-4 transition-all duration-300;
+}
+
+.table-view tbody tr.ng-enter-active {
+  @apply opacity-100 transform translate-y-0;
+}
+
+.table-view tbody tr.ng-leave {
+  @apply opacity-100 transition-all duration-300;
+}
+
+.table-view tbody tr.ng-leave-active {
+  @apply opacity-0 transform -translate-y-4;
+}
+
+/* Mobile responsive */
+@media (max-width: 640px) {
+  .table-view {
+    @apply text-xs;
+  }
+
+  .table-view th,
+  .table-view td {
+    @apply px-2 py-2;
+  }
+
+  .table-view .action-column {
+    @apply w-16;
+  }
+
+  .table-view .select-column {
+    @apply w-8;
+  }
+
+  .table-pagination {
+    @apply flex-col gap-2;
+  }
+
+  .table-pagination .pagination-controls {
+    @apply justify-center;
+  }
+}
+
+/* Touch devices */
+@media (pointer: coarse) {
+  .table-view .sortable {
+    @apply py-3;
+  }
+
+  .table-view .action-menu {
+    @apply p-2 min-w-[44px] min-h-[44px] flex items-center justify-center;
+  }
+
+  .table-view .select-all,
+  .table-view .select-row {
+    @apply w-6 h-6;
+  }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .table-view {
+    @apply bg-gray-800;
+  }
+
+  .table-view thead {
+    @apply bg-gray-700;
+  }
+
+  .table-view thead tr,
+  .table-view tbody tr,
+  .table-view tfoot {
+    @apply border-gray-600;
+  }
+
+  .table-view th,
+  .table-view td {
+    @apply text-gray-100;
+  }
+
+  .table-view.table-view--striped tbody tr:nth-child(even) {
+    @apply bg-gray-700;
+  }
+
+  .table-view.table-view--hover tbody tr:hover {
+    @apply bg-gray-700;
+  }
+
+  .table-view .sortable:hover {
+    @apply bg-gray-600;
+  }
+
+  .table-view .action-menu {
+    @apply text-gray-400 hover:text-gray-200 hover:bg-gray-700;
+  }
+
+  .table-pagination {
+    @apply bg-gray-800 border-gray-600;
+  }
+
+  .table-pagination .pagination-info {
+    @apply text-gray-300;
+  }
+
+  .table-pagination .pagination-button {
+    @apply border-gray-600 text-gray-300 hover:bg-gray-700;
+  }
+}
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+  .table-view {
+    @apply border-2 border-black;
+  }
+
+  .table-view th,
+  .table-view td {
+    @apply border border-black text-black font-medium;
+  }
+
+  .table-view .sortable:hover {
+    @apply bg-yellow-200;
+  }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .table-view .sortable {
+    @apply transition-none;
+  }
+
+  .table-view .action-menu {
+    @apply transition-none;
+  }
+
+  .table-view tbody tr.ng-enter,
+  .table-view tbody tr.ng-leave {
+    @apply transition-none;
+  }
+
+  .table-view.table-view--loading tbody tr {
+    @apply animate-none;
+  }
+}
+
+/* Print styles */
+@media print {
+  .table-view {
+    @apply shadow-none text-xs;
+  }
+
+  .table-view .action-column {
+    @apply hidden;
+  }
+
+  .table-view .select-column {
+    @apply hidden;
+  }
+
+  .table-pagination {
+    @apply hidden;
+  }
+
+  .table-view tbody tr:hover {
+    @apply bg-transparent;
+  }
+}

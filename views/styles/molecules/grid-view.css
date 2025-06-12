@@ -1,0 +1,358 @@
+/**
+ * GridView Molecule Styles (AngularJS)
+ * Grid layout for items styling
+ */
+
+.grid-view {
+  @apply grid gap-4;
+}
+
+/* Grid size variants */
+.grid-view.grid-view--1 {
+  @apply grid-cols-1;
+}
+
+.grid-view.grid-view--2 {
+  @apply grid-cols-2;
+}
+
+.grid-view.grid-view--3 {
+  @apply grid-cols-3;
+}
+
+.grid-view.grid-view--4 {
+  @apply grid-cols-4;
+}
+
+.grid-view.grid-view--5 {
+  @apply grid-cols-5;
+}
+
+.grid-view.grid-view--6 {
+  @apply grid-cols-6;
+}
+
+.grid-view.grid-view--auto {
+  @apply grid-cols-[repeat(auto-fit,minmax(200px,1fr))];
+}
+
+.grid-view.grid-view--auto-small {
+  @apply grid-cols-[repeat(auto-fit,minmax(150px,1fr))];
+}
+
+.grid-view.grid-view--auto-large {
+  @apply grid-cols-[repeat(auto-fit,minmax(300px,1fr))];
+}
+
+/* Gap variants */
+.grid-view.grid-view--gap-none {
+  @apply gap-0;
+}
+
+.grid-view.grid-view--gap-small {
+  @apply gap-2;
+}
+
+.grid-view.grid-view--gap-large {
+  @apply gap-6;
+}
+
+.grid-view.grid-view--gap-xl {
+  @apply gap-8;
+}
+
+/* Responsive grid */
+.grid-view.grid-view--responsive {
+  @apply grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4;
+}
+
+.grid-view.grid-view--responsive-large {
+  @apply grid-cols-1 sm:grid-cols-2 lg:grid-cols-3;
+}
+
+.grid-view.grid-view--responsive-small {
+  @apply grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6;
+}
+
+/* Masonry-style layout */
+.grid-view.grid-view--masonry {
+  @apply columns-2 sm:columns-3 lg:columns-4 gap-4;
+}
+
+.grid-view.grid-view--masonry .grid-item {
+  @apply break-inside-avoid mb-4;
+}
+
+/* Dense packing */
+.grid-view.grid-view--dense {
+  grid-auto-flow: dense;
+}
+
+/* Alignment options */
+.grid-view.grid-view--align-start {
+  @apply items-start;
+}
+
+.grid-view.grid-view--align-center {
+  @apply items-center;
+}
+
+.grid-view.grid-view--align-end {
+  @apply items-end;
+}
+
+.grid-view.grid-view--align-stretch {
+  @apply items-stretch;
+}
+
+/* Justify content */
+.grid-view.grid-view--justify-start {
+  @apply justify-items-start;
+}
+
+.grid-view.grid-view--justify-center {
+  @apply justify-items-center;
+}
+
+.grid-view.grid-view--justify-end {
+  @apply justify-items-end;
+}
+
+.grid-view.grid-view--justify-stretch {
+  @apply justify-items-stretch;
+}
+
+/* Grid item styling */
+.grid-view .grid-item {
+  @apply relative transition-all duration-200;
+}
+
+.grid-view .grid-item:hover {
+  @apply transform scale-105 z-10;
+}
+
+.grid-view .grid-item.grid-item--selected {
+  @apply ring-2 ring-blue-500 ring-offset-2;
+}
+
+.grid-view .grid-item.grid-item--disabled {
+  @apply opacity-50 pointer-events-none;
+}
+
+/* Grid item sizes */
+.grid-view .grid-item.grid-item--span-2 {
+  @apply col-span-2;
+}
+
+.grid-view .grid-item.grid-item--span-3 {
+  @apply col-span-3;
+}
+
+.grid-view .grid-item.grid-item--span-4 {
+  @apply col-span-4;
+}
+
+.grid-view .grid-item.grid-item--span-full {
+  @apply col-span-full;
+}
+
+/* Row spanning */
+.grid-view .grid-item.grid-item--row-span-2 {
+  @apply row-span-2;
+}
+
+.grid-view .grid-item.grid-item--row-span-3 {
+  @apply row-span-3;
+}
+
+/* Loading state */
+.grid-view.grid-view--loading {
+  @apply opacity-60;
+}
+
+.grid-view.grid-view--loading .grid-item {
+  @apply animate-pulse bg-gray-200 rounded;
+}
+
+/* Empty state */
+.grid-view.grid-view--empty {
+  @apply flex items-center justify-center py-12;
+}
+
+.grid-view.grid-view--empty .empty-message {
+  @apply text-gray-500 text-center;
+}
+
+.grid-view.grid-view--empty .empty-icon {
+  @apply w-12 h-12 text-gray-300 mx-auto mb-4;
+}
+
+/* Sorting animation */
+.grid-view.grid-view--sorting .grid-item {
+  @apply transition-all duration-500 ease-in-out;
+}
+
+/* Selection mode */
+.grid-view.grid-view--selection-mode .grid-item {
+  @apply cursor-pointer hover:bg-blue-50 hover:ring-2 hover:ring-blue-200;
+}
+
+.grid-view.grid-view--selection-mode .grid-item::before {
+  content: "";
+  @apply absolute top-2 left-2 w-5 h-5 border-2 border-gray-300 rounded bg-white z-10;
+}
+
+.grid-view.grid-view--selection-mode .grid-item.grid-item--selected::before {
+  @apply border-blue-500 bg-blue-500;
+}
+
+.grid-view.grid-view--selection-mode .grid-item.grid-item--selected::after {
+  content: "✓";
+  @apply absolute top-2.5 left-2.5 text-white text-xs font-bold z-10;
+}
+
+/* AngularJS specific classes */
+.grid-view[ng-repeat] .grid-item {
+  @apply animate-fadeIn;
+}
+
+@keyframes fadeIn {
+  from {
+    @apply opacity-0 transform scale-95;
+  }
+  to {
+    @apply opacity-100 transform scale-100;
+  }
+}
+
+.grid-view .ng-enter {
+  @apply opacity-0 transform scale-95 transition-all duration-300;
+}
+
+.grid-view .ng-enter-active {
+  @apply opacity-100 transform scale-100;
+}
+
+.grid-view .ng-leave {
+  @apply opacity-100 transform scale-100 transition-all duration-300;
+}
+
+.grid-view .ng-leave-active {
+  @apply opacity-0 transform scale-95;
+}
+
+/* Mobile responsive */
+@media (max-width: 640px) {
+  .grid-view {
+    @apply gap-2;
+  }
+
+  .grid-view.grid-view--3 {
+    @apply grid-cols-2;
+  }
+
+  .grid-view.grid-view--4,
+  .grid-view.grid-view--5,
+  .grid-view.grid-view--6 {
+    @apply grid-cols-2;
+  }
+
+  .grid-view.grid-view--masonry {
+    @apply columns-2 gap-2;
+  }
+
+  .grid-view .grid-item:hover {
+    @apply transform-none scale-100;
+  }
+
+  .grid-view .grid-item.grid-item--span-2,
+  .grid-view .grid-item.grid-item--span-3,
+  .grid-view .grid-item.grid-item--span-4 {
+    @apply col-span-1;
+  }
+}
+
+/* Tablet responsive */
+@media (min-width: 641px) and (max-width: 1024px) {
+  .grid-view.grid-view--4 {
+    @apply grid-cols-3;
+  }
+
+  .grid-view.grid-view--5,
+  .grid-view.grid-view--6 {
+    @apply grid-cols-4;
+  }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .grid-view.grid-view--loading .grid-item {
+    @apply bg-gray-700;
+  }
+
+  .grid-view.grid-view--empty .empty-message {
+    @apply text-gray-400;
+  }
+
+  .grid-view.grid-view--empty .empty-icon {
+    @apply text-gray-600;
+  }
+
+  .grid-view.grid-view--selection-mode .grid-item {
+    @apply hover:bg-blue-900/20 hover:ring-blue-400;
+  }
+
+  .grid-view.grid-view--selection-mode .grid-item::before {
+    @apply border-gray-600 bg-gray-800;
+  }
+}
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+  .grid-view .grid-item.grid-item--selected {
+    @apply ring-4 ring-blue-600;
+  }
+
+  .grid-view.grid-view--selection-mode .grid-item::before {
+    @apply border-4 border-black;
+  }
+
+  .grid-view.grid-view--selection-mode .grid-item.grid-item--selected::before {
+    @apply border-blue-600 bg-blue-600;
+  }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .grid-view .grid-item {
+    @apply transition-none;
+  }
+
+  .grid-view .grid-item:hover {
+    @apply transform-none scale-100;
+  }
+
+  .grid-view.grid-view--sorting .grid-item {
+    @apply transition-none;
+  }
+
+  .grid-view.grid-view--loading .grid-item {
+    @apply animate-none;
+  }
+
+  .grid-view .ng-enter,
+  .grid-view .ng-leave {
+    @apply transition-none;
+  }
+}
+
+/* Print styles */
+@media print {
+  .grid-view {
+    @apply grid-cols-2 gap-2;
+  }
+
+  .grid-view .grid-item:hover {
+    @apply transform-none scale-100;
+  }
+}

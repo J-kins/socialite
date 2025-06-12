@@ -1,0 +1,318 @@
+/**
+ * CommentInput Molecule Styles
+ * Comment input field styling
+ */
+
+.comment-input {
+  @apply flex items-start gap-3 p-3 bg-gray-50 rounded-lg;
+}
+
+.comment-input .comment-avatar {
+  @apply flex-shrink-0;
+}
+
+.comment-input .comment-form {
+  @apply flex-1 space-y-2;
+}
+
+.comment-input .comment-field {
+  @apply w-full p-3 border border-gray-200 rounded-lg;
+  @apply focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500;
+  @apply resize-none transition-all duration-200;
+}
+
+.comment-input .comment-field:focus {
+  @apply bg-white shadow-sm;
+}
+
+.comment-input .comment-actions {
+  @apply flex items-center justify-between;
+}
+
+.comment-input .comment-tools {
+  @apply flex items-center gap-2;
+}
+
+.comment-input .comment-tool {
+  @apply p-1.5 text-gray-400 hover:text-gray-600 hover:bg-gray-200;
+  @apply rounded transition-colors cursor-pointer;
+}
+
+.comment-input .comment-submit {
+  @apply flex items-center gap-2;
+}
+
+/* Size variants */
+.comment-input.comment-input--small {
+  @apply p-2;
+}
+
+.comment-input.comment-input--small .comment-field {
+  @apply p-2 text-sm;
+}
+
+.comment-input.comment-input--small .comment-tool {
+  @apply p-1;
+}
+
+.comment-input.comment-input--large {
+  @apply p-4;
+}
+
+.comment-input.comment-input--large .comment-field {
+  @apply p-4 text-base;
+}
+
+/* Style variants */
+.comment-input.comment-input--borderless {
+  @apply bg-transparent;
+}
+
+.comment-input.comment-input--borderless .comment-field {
+  @apply border-0 bg-gray-100 focus:bg-white;
+}
+
+.comment-input.comment-input--inline {
+  @apply bg-transparent p-0;
+}
+
+.comment-input.comment-input--inline .comment-field {
+  @apply border-0 bg-transparent p-2 text-sm;
+  @apply placeholder-gray-400 focus:bg-gray-50;
+}
+
+/* States */
+.comment-input.comment-input--focused .comment-field {
+  @apply ring-2 ring-blue-500 border-blue-500;
+}
+
+.comment-input.comment-input--error .comment-field {
+  @apply border-red-500 ring-2 ring-red-500;
+}
+
+.comment-input.comment-input--disabled {
+  @apply opacity-50 pointer-events-none;
+}
+
+/* Character counter */
+.comment-input .comment-counter {
+  @apply text-xs text-gray-500 ml-auto;
+}
+
+.comment-input .comment-counter.comment-counter--warning {
+  @apply text-yellow-600;
+}
+
+.comment-input .comment-counter.comment-counter--error {
+  @apply text-red-600;
+}
+
+/* Emoji picker */
+.comment-input .emoji-picker {
+  @apply absolute bottom-full left-0 mb-2 bg-white border border-gray-200;
+  @apply rounded-lg shadow-lg p-2 z-10 w-64 max-h-48 overflow-y-auto;
+}
+
+.comment-input .emoji-picker.hidden {
+  @apply opacity-0 invisible;
+}
+
+.comment-input .emoji-picker .emoji-grid {
+  @apply grid grid-cols-8 gap-1;
+}
+
+.comment-input .emoji-picker .emoji-item {
+  @apply p-1 hover:bg-gray-100 rounded cursor-pointer text-lg;
+}
+
+.comment-input {
+  @apply relative;
+}
+
+/* Mentions dropdown */
+.comment-input .mentions-dropdown {
+  @apply absolute top-full left-0 right-0 mt-1 bg-white border border-gray-200;
+  @apply rounded-lg shadow-lg max-h-32 overflow-y-auto z-20;
+}
+
+.comment-input .mention-item {
+  @apply flex items-center gap-2 px-3 py-2 hover:bg-gray-100 cursor-pointer;
+}
+
+.comment-input .mention-item .mention-avatar {
+  @apply w-6 h-6 rounded-full;
+}
+
+.comment-input .mention-item .mention-name {
+  @apply font-medium text-sm;
+}
+
+.comment-input .mention-item .mention-username {
+  @apply text-xs text-gray-500;
+}
+
+/* File attachment */
+.comment-input .comment-attachment {
+  @apply mt-2 p-2 bg-gray-100 rounded border border-gray-200;
+}
+
+.comment-input .attachment-preview {
+  @apply flex items-center gap-2;
+}
+
+.comment-input .attachment-icon {
+  @apply w-4 h-4 text-gray-500;
+}
+
+.comment-input .attachment-name {
+  @apply text-sm text-gray-700 flex-1 truncate;
+}
+
+.comment-input .attachment-remove {
+  @apply p-1 text-gray-400 hover:text-red-500 rounded;
+}
+
+/* Reply indicator */
+.comment-input.comment-input--reply {
+  @apply border-l-4 border-blue-500;
+}
+
+.comment-input.comment-input--reply .reply-indicator {
+  @apply text-sm text-blue-600 mb-2 flex items-center gap-1;
+}
+
+.comment-input.comment-input--reply .reply-cancel {
+  @apply ml-auto text-gray-400 hover:text-gray-600 cursor-pointer;
+}
+
+/* Loading state */
+.comment-input.comment-input--loading .comment-submit {
+  @apply opacity-60 pointer-events-none;
+}
+
+.comment-input.comment-input--loading .submit-spinner {
+  @apply animate-spin w-4 h-4;
+}
+
+/* Mobile responsive */
+@media (max-width: 640px) {
+  .comment-input {
+    @apply p-2;
+  }
+
+  .comment-input .comment-field {
+    @apply p-2 text-sm;
+  }
+
+  .comment-input .comment-tools {
+    @apply gap-1;
+  }
+
+  .comment-input .comment-tool {
+    @apply p-1;
+  }
+
+  .comment-input .emoji-picker {
+    @apply w-full;
+  }
+
+  .comment-input .mentions-dropdown {
+    @apply text-sm;
+  }
+}
+
+/* Touch devices */
+@media (pointer: coarse) {
+  .comment-input .comment-tool {
+    @apply p-2 min-w-[44px] min-h-[44px] flex items-center justify-center;
+  }
+
+  .comment-input .emoji-picker .emoji-item {
+    @apply p-2 min-w-[44px] min-h-[44px] flex items-center justify-center;
+  }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .comment-input {
+    @apply bg-gray-800;
+  }
+
+  .comment-input .comment-field {
+    @apply border-gray-600 bg-gray-700 text-gray-100;
+    @apply focus:border-blue-400 focus:ring-blue-400;
+  }
+
+  .comment-input .comment-field:focus {
+    @apply bg-gray-600;
+  }
+
+  .comment-input .comment-tool {
+    @apply text-gray-400 hover:text-gray-200 hover:bg-gray-700;
+  }
+
+  .comment-input .emoji-picker {
+    @apply bg-gray-800 border-gray-600;
+  }
+
+  .comment-input .emoji-picker .emoji-item {
+    @apply hover:bg-gray-700;
+  }
+
+  .comment-input .mentions-dropdown {
+    @apply bg-gray-800 border-gray-600;
+  }
+
+  .comment-input .mention-item {
+    @apply hover:bg-gray-700;
+  }
+
+  .comment-input .mention-name {
+    @apply text-gray-200;
+  }
+
+  .comment-input .comment-attachment {
+    @apply bg-gray-700 border-gray-600;
+  }
+
+  .comment-input .attachment-name {
+    @apply text-gray-200;
+  }
+}
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+  .comment-input .comment-field {
+    @apply border-2 border-black;
+  }
+
+  .comment-input .comment-field:focus {
+    @apply ring-4 ring-blue-600;
+  }
+
+  .comment-input.comment-input--error .comment-field {
+    @apply ring-4 ring-red-600;
+  }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .comment-input .comment-field {
+    @apply transition-none;
+  }
+
+  .comment-input.comment-input--loading .submit-spinner {
+    @apply animate-none;
+  }
+
+  .comment-input .emoji-picker {
+    @apply transition-none;
+  }
+}
+
+/* Print styles */
+@media print {
+  .comment-input {
+    @apply hidden;
+  }
+}

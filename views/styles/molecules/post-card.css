@@ -1,0 +1,356 @@
+/**
+ * PostCard Molecule Styles
+ * Social post card styling
+ */
+
+.post-card {
+  @apply bg-white rounded-lg shadow-sm border border-gray-200 mb-4;
+  @apply overflow-hidden transition-shadow duration-200;
+}
+
+.post-card:hover {
+  @apply shadow-md;
+}
+
+/* Post header */
+.post-card .post-header {
+  @apply flex items-center gap-3 p-4 pb-2;
+}
+
+.post-card .post-avatar {
+  @apply flex-shrink-0;
+}
+
+.post-card .post-user-info {
+  @apply flex-1 min-w-0;
+}
+
+.post-card .post-username {
+  @apply font-semibold text-gray-900 hover:text-blue-600;
+  @apply cursor-pointer transition-colors;
+}
+
+.post-card .post-timestamp {
+  @apply text-sm text-gray-500;
+}
+
+.post-card .post-menu {
+  @apply flex-shrink-0 p-1 text-gray-400 hover:text-gray-600;
+  @apply hover:bg-gray-100 rounded-full transition-colors cursor-pointer;
+}
+
+/* Post content */
+.post-card .post-content {
+  @apply px-4 pb-2;
+}
+
+.post-card .post-text {
+  @apply text-gray-900 leading-relaxed mb-3;
+}
+
+.post-card .post-text .hashtag {
+  @apply text-blue-600 hover:text-blue-700 cursor-pointer;
+}
+
+.post-card .post-text .mention {
+  @apply text-blue-600 hover:text-blue-700 cursor-pointer font-medium;
+}
+
+.post-card .post-text .link {
+  @apply text-blue-600 hover:text-blue-700 cursor-pointer underline;
+}
+
+/* Post media */
+.post-card .post-media {
+  @apply mx-4 mb-3 rounded-lg overflow-hidden;
+}
+
+.post-card .post-media img,
+.post-card .post-media video {
+  @apply w-full h-auto cursor-pointer;
+}
+
+.post-card .post-media.post-media--multiple {
+  @apply grid gap-1;
+}
+
+.post-card .post-media.post-media--2 {
+  @apply grid-cols-2;
+}
+
+.post-card .post-media.post-media--3 {
+  @apply grid-cols-2 grid-rows-2;
+}
+
+.post-card .post-media.post-media--3 .media-item:first-child {
+  @apply row-span-2;
+}
+
+.post-card .post-media.post-media--4 {
+  @apply grid-cols-2 grid-rows-2;
+}
+
+/* Post actions */
+.post-card .post-actions {
+  @apply px-4 py-2 border-t border-gray-100;
+}
+
+.post-card .post-stats {
+  @apply flex items-center justify-between text-sm text-gray-500 mb-2;
+}
+
+.post-card .post-stats .stats-item {
+  @apply hover:text-blue-600 cursor-pointer transition-colors;
+}
+
+/* Size variants */
+.post-card.post-card--compact {
+  @apply shadow-none border-b border-gray-200 rounded-none mb-0;
+}
+
+.post-card.post-card--compact .post-header {
+  @apply p-3 pb-1;
+}
+
+.post-card.post-card--compact .post-content {
+  @apply px-3 pb-1;
+}
+
+.post-card.post-card--compact .post-actions {
+  @apply px-3 py-1;
+}
+
+.post-card.post-card--large {
+  @apply p-6;
+}
+
+.post-card.post-card--large .post-header {
+  @apply p-0 mb-4;
+}
+
+.post-card.post-card--large .post-content {
+  @apply px-0;
+}
+
+.post-card.post-card--large .post-actions {
+  @apply px-0 pt-4;
+}
+
+/* Style variants */
+.post-card.post-card--borderless {
+  @apply border-0 shadow-none bg-transparent;
+}
+
+.post-card.post-card--highlighted {
+  @apply border-blue-200 bg-blue-50/30;
+}
+
+.post-card.post-card--pinned {
+  @apply border-yellow-200 bg-yellow-50/30;
+}
+
+.post-card.post-card--pinned::before {
+  content: "📌";
+  @apply absolute top-2 right-2 text-yellow-600;
+}
+
+.post-card {
+  @apply relative;
+}
+
+/* Post types */
+.post-card.post-card--shared {
+  @apply border-l-4 border-green-500;
+}
+
+.post-card.post-card--promoted {
+  @apply border-l-4 border-purple-500;
+}
+
+.post-card.post-card--promoted .post-header::after {
+  content: "Promoted";
+  @apply ml-auto text-xs text-purple-600 bg-purple-100 px-2 py-1 rounded-full;
+}
+
+/* Quoted post */
+.post-card .quoted-post {
+  @apply border border-gray-200 rounded-lg p-3 mt-3 bg-gray-50;
+}
+
+.post-card .quoted-post .quoted-header {
+  @apply flex items-center gap-2 mb-2;
+}
+
+.post-card .quoted-post .quoted-avatar {
+  @apply w-6 h-6 rounded-full;
+}
+
+.post-card .quoted-post .quoted-username {
+  @apply text-sm font-medium text-gray-700;
+}
+
+.post-card .quoted-post .quoted-content {
+  @apply text-sm text-gray-600;
+}
+
+/* Loading state */
+.post-card.post-card--loading {
+  @apply opacity-60;
+}
+
+.post-card.post-card--loading .post-content {
+  @apply space-y-2;
+}
+
+.post-card.post-card--loading .skeleton-line {
+  @apply h-4 bg-gray-200 rounded animate-pulse;
+}
+
+.post-card.post-card--loading .skeleton-line.short {
+  @apply w-3/4;
+}
+
+.post-card.post-card--loading .skeleton-line.long {
+  @apply w-full;
+}
+
+/* Error state */
+.post-card.post-card--error {
+  @apply border-red-200 bg-red-50;
+}
+
+.post-card.post-card--error .error-message {
+  @apply text-red-600 text-sm p-4 text-center;
+}
+
+/* Deleted/hidden post */
+.post-card.post-card--deleted {
+  @apply opacity-50 pointer-events-none;
+}
+
+.post-card.post-card--deleted::after {
+  content: "This post has been deleted";
+  @apply absolute inset-0 bg-gray-500 bg-opacity-75 text-white;
+  @apply flex items-center justify-center text-sm font-medium;
+}
+
+/* Mobile responsive */
+@media (max-width: 640px) {
+  .post-card {
+    @apply mx-0 rounded-none border-x-0;
+  }
+
+  .post-card .post-header {
+    @apply p-3;
+  }
+
+  .post-card .post-content {
+    @apply px-3;
+  }
+
+  .post-card .post-actions {
+    @apply px-3;
+  }
+
+  .post-card .post-media {
+    @apply mx-0 rounded-none;
+  }
+
+  .post-card .post-media.post-media--3,
+  .post-card .post-media.post-media--4 {
+    @apply grid-cols-2;
+  }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .post-card {
+    @apply bg-gray-800 border-gray-700;
+  }
+
+  .post-card .post-username {
+    @apply text-gray-100 hover:text-blue-400;
+  }
+
+  .post-card .post-timestamp {
+    @apply text-gray-400;
+  }
+
+  .post-card .post-text {
+    @apply text-gray-200;
+  }
+
+  .post-card .post-actions {
+    @apply border-gray-700;
+  }
+
+  .post-card .post-stats {
+    @apply text-gray-400;
+  }
+
+  .post-card .quoted-post {
+    @apply border-gray-700 bg-gray-900;
+  }
+
+  .post-card.post-card--highlighted {
+    @apply border-blue-800 bg-blue-900/20;
+  }
+
+  .post-card.post-card--pinned {
+    @apply border-yellow-800 bg-yellow-900/20;
+  }
+
+  .post-card.post-card--error {
+    @apply border-red-800 bg-red-900/20;
+  }
+
+  .post-card.post-card--loading .skeleton-line {
+    @apply bg-gray-700;
+  }
+}
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+  .post-card {
+    @apply border-2 border-black;
+  }
+
+  .post-card .post-text {
+    @apply text-black font-medium;
+  }
+
+  .post-card .post-username {
+    @apply text-black font-bold;
+  }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .post-card {
+    @apply transition-none;
+  }
+
+  .post-card .post-username,
+  .post-card .post-menu {
+    @apply transition-none;
+  }
+
+  .post-card.post-card--loading .skeleton-line {
+    @apply animate-none;
+  }
+}
+
+/* Print styles */
+@media print {
+  .post-card {
+    @apply shadow-none border border-gray-400;
+  }
+
+  .post-card .post-menu {
+    @apply hidden;
+  }
+
+  .post-card .post-actions {
+    @apply hidden;
+  }
+}

@@ -1,0 +1,308 @@
+/**
+ * ViewToggle Molecule Styles (AngularJS)
+ * Toggle between grid and table views styling
+ */
+
+.view-toggle {
+  @apply flex gap-1 bg-gray-100 p-1 rounded-lg;
+}
+
+.view-toggle .toggle-button {
+  @apply flex items-center justify-center gap-2 px-3 py-2 rounded-md;
+  @apply text-sm font-medium text-gray-600 hover:text-gray-800;
+  @apply transition-all duration-200 cursor-pointer;
+}
+
+.view-toggle .toggle-button.active {
+  @apply bg-white text-gray-900 shadow-sm;
+}
+
+.view-toggle .toggle-button:focus {
+  @apply outline-none ring-2 ring-blue-500 ring-offset-2;
+}
+
+/* Icon styling */
+.view-toggle .toggle-icon {
+  @apply w-4 h-4 flex-shrink-0;
+}
+
+/* Label styling */
+.view-toggle .toggle-label {
+  @apply hidden sm:inline;
+}
+
+/* Size variants */
+.view-toggle.view-toggle--small {
+  @apply p-0.5;
+}
+
+.view-toggle.view-toggle--small .toggle-button {
+  @apply px-2 py-1.5 text-xs;
+}
+
+.view-toggle.view-toggle--small .toggle-icon {
+  @apply w-3 h-3;
+}
+
+.view-toggle.view-toggle--large {
+  @apply p-1.5;
+}
+
+.view-toggle.view-toggle--large .toggle-button {
+  @apply px-4 py-3 text-base;
+}
+
+.view-toggle.view-toggle--large .toggle-icon {
+  @apply w-5 h-5;
+}
+
+/* Style variants */
+.view-toggle.view-toggle--pills {
+  @apply bg-transparent gap-2;
+}
+
+.view-toggle.view-toggle--pills .toggle-button {
+  @apply bg-gray-200 hover:bg-gray-300;
+}
+
+.view-toggle.view-toggle--pills .toggle-button.active {
+  @apply bg-blue-600 text-white shadow-md;
+}
+
+.view-toggle.view-toggle--bordered {
+  @apply bg-transparent border border-gray-300 rounded-lg;
+}
+
+.view-toggle.view-toggle--bordered .toggle-button {
+  @apply border-r border-gray-300 last:border-r-0 rounded-none;
+  @apply first:rounded-l-md last:rounded-r-md;
+}
+
+.view-toggle.view-toggle--bordered .toggle-button.active {
+  @apply bg-blue-50 text-blue-600 border-blue-300;
+}
+
+.view-toggle.view-toggle--minimal {
+  @apply bg-transparent p-0 gap-4;
+}
+
+.view-toggle.view-toggle--minimal .toggle-button {
+  @apply bg-transparent hover:bg-gray-100 px-2;
+}
+
+.view-toggle.view-toggle--minimal .toggle-button.active {
+  @apply bg-transparent text-blue-600 shadow-none;
+  @apply border-b-2 border-blue-600 rounded-none;
+}
+
+/* Icon-only variant */
+.view-toggle.view-toggle--icon-only .toggle-label {
+  @apply hidden;
+}
+
+.view-toggle.view-toggle--icon-only .toggle-button {
+  @apply w-10 h-10 p-0;
+}
+
+/* Orientation variants */
+.view-toggle.view-toggle--vertical {
+  @apply flex-col;
+}
+
+/* Disabled state */
+.view-toggle .toggle-button:disabled {
+  @apply opacity-50 cursor-not-allowed pointer-events-none;
+}
+
+/* Loading state */
+.view-toggle.view-toggle--loading {
+  @apply opacity-60 pointer-events-none;
+}
+
+.view-toggle.view-toggle--loading .toggle-icon {
+  @apply animate-pulse;
+}
+
+/* Count indicators */
+.view-toggle .toggle-count {
+  @apply ml-1 text-xs px-1.5 py-0.5 bg-gray-200 text-gray-600 rounded-full;
+}
+
+.view-toggle .toggle-button.active .toggle-count {
+  @apply bg-blue-100 text-blue-700;
+}
+
+/* Tooltip support */
+.view-toggle .toggle-button[data-tooltip] {
+  @apply relative;
+}
+
+.view-toggle .toggle-button[data-tooltip]:hover::after {
+  content: attr(data-tooltip);
+  @apply absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2;
+  @apply bg-gray-900 text-white text-xs px-2 py-1 rounded whitespace-nowrap z-10;
+  @apply opacity-0 pointer-events-none transition-opacity delay-500;
+}
+
+.view-toggle .toggle-button[data-tooltip]:hover::after {
+  @apply opacity-100;
+}
+
+/* Keyboard navigation */
+.view-toggle .toggle-button:focus-visible {
+  @apply ring-2 ring-blue-500 ring-offset-2 z-10;
+}
+
+/* Animation for view transitions */
+.view-toggle.view-toggle--transitioning {
+  @apply pointer-events-none;
+}
+
+.view-toggle.view-toggle--transitioning .toggle-icon {
+  @apply animate-spin;
+}
+
+/* AngularJS specific classes */
+.view-toggle[ng-controller] .toggle-button {
+  @apply transition-all duration-300;
+}
+
+/* View-specific styling */
+.view-toggle .grid-view-button .toggle-icon {
+  @apply text-blue-600;
+}
+
+.view-toggle .table-view-button .toggle-icon {
+  @apply text-green-600;
+}
+
+.view-toggle .list-view-button .toggle-icon {
+  @apply text-purple-600;
+}
+
+.view-toggle .card-view-button .toggle-icon {
+  @apply text-orange-600;
+}
+
+/* Badge for new features */
+.view-toggle .toggle-button .feature-badge {
+  @apply absolute -top-1 -right-1 w-2 h-2 bg-red-500 rounded-full;
+}
+
+.view-toggle .toggle-button {
+  @apply relative;
+}
+
+/* Mobile responsive */
+@media (max-width: 640px) {
+  .view-toggle {
+    @apply w-full;
+  }
+
+  .view-toggle .toggle-button {
+    @apply flex-1 justify-center;
+  }
+
+  .view-toggle .toggle-label {
+    @apply hidden;
+  }
+
+  .view-toggle .toggle-count {
+    @apply hidden;
+  }
+
+  .view-toggle.view-toggle--vertical {
+    @apply flex-row;
+  }
+}
+
+/* Touch devices */
+@media (pointer: coarse) {
+  .view-toggle .toggle-button {
+    @apply py-3 min-h-[44px];
+  }
+
+  .view-toggle.view-toggle--icon-only .toggle-button {
+    @apply w-12 h-12;
+  }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .view-toggle {
+    @apply bg-gray-800;
+  }
+
+  .view-toggle .toggle-button {
+    @apply text-gray-300 hover:text-gray-100;
+  }
+
+  .view-toggle .toggle-button.active {
+    @apply bg-gray-700 text-gray-100;
+  }
+
+  .view-toggle.view-toggle--pills .toggle-button {
+    @apply bg-gray-700 hover:bg-gray-600;
+  }
+
+  .view-toggle.view-toggle--bordered {
+    @apply border-gray-600;
+  }
+
+  .view-toggle.view-toggle--bordered .toggle-button {
+    @apply border-gray-600;
+  }
+
+  .view-toggle.view-toggle--minimal .toggle-button {
+    @apply hover:bg-gray-800;
+  }
+
+  .view-toggle .toggle-count {
+    @apply bg-gray-700 text-gray-300;
+  }
+
+  .view-toggle .toggle-button.active .toggle-count {
+    @apply bg-blue-800 text-blue-200;
+  }
+}
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+  .view-toggle {
+    @apply border-2 border-black;
+  }
+
+  .view-toggle .toggle-button {
+    @apply border border-gray-500 text-black font-bold;
+  }
+
+  .view-toggle .toggle-button.active {
+    @apply border-2 border-blue-600 bg-blue-600 text-white;
+  }
+
+  .view-toggle .toggle-button:focus {
+    @apply ring-4 ring-blue-600;
+  }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .view-toggle .toggle-button {
+    @apply transition-none;
+  }
+
+  .view-toggle.view-toggle--loading .toggle-icon {
+    @apply animate-none;
+  }
+
+  .view-toggle.view-toggle--transitioning .toggle-icon {
+    @apply animate-none;
+  }
+}
+
+/* Print styles */
+@media print {
+  .view-toggle {
+    @apply hidden;
+  }
+}
