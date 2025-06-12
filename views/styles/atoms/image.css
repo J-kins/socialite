@@ -1,0 +1,303 @@
+/**
+ * Image Atom Styles
+ * Image component styling with responsive and loading states
+ */
+
+.image {
+  @apply block max-w-full h-auto rounded-lg;
+  @apply transition-opacity duration-200;
+}
+
+/* Size variants */
+.image--xs {
+  @apply w-16 h-16;
+}
+
+.image--sm {
+  @apply w-24 h-24;
+}
+
+.image--md {
+  @apply w-32 h-32;
+}
+
+.image--lg {
+  @apply w-48 h-48;
+}
+
+.image--xl {
+  @apply w-64 h-64;
+}
+
+.image--full {
+  @apply w-full;
+}
+
+/* Object fit variants */
+.image--cover {
+  @apply object-cover;
+}
+
+.image--contain {
+  @apply object-contain;
+}
+
+.image--fill {
+  @apply object-fill;
+}
+
+.image--scale-down {
+  @apply object-scale-down;
+}
+
+.image--none {
+  @apply object-none;
+}
+
+/* Aspect ratio variants */
+.image--square {
+  @apply aspect-square;
+}
+
+.image--video {
+  @apply aspect-video;
+}
+
+.image--3-2 {
+  aspect-ratio: 3/2;
+}
+
+.image--4-3 {
+  aspect-ratio: 4/3;
+}
+
+.image--portrait {
+  aspect-ratio: 3/4;
+}
+
+/* Border radius variants */
+.image--rounded-none {
+  @apply rounded-none;
+}
+
+.image--rounded-sm {
+  @apply rounded-sm;
+}
+
+.image--rounded {
+  @apply rounded;
+}
+
+.image--rounded-md {
+  @apply rounded-md;
+}
+
+.image--rounded-lg {
+  @apply rounded-lg;
+}
+
+.image--rounded-xl {
+  @apply rounded-xl;
+}
+
+.image--rounded-full {
+  @apply rounded-full;
+}
+
+/* Shadow variants */
+.image--shadow-none {
+  @apply shadow-none;
+}
+
+.image--shadow-sm {
+  @apply shadow-sm;
+}
+
+.image--shadow {
+  @apply shadow;
+}
+
+.image--shadow-md {
+  @apply shadow-md;
+}
+
+.image--shadow-lg {
+  @apply shadow-lg;
+}
+
+.image--shadow-xl {
+  @apply shadow-xl;
+}
+
+/* Interactive states */
+.image--clickable {
+  @apply cursor-pointer transition-transform duration-200;
+}
+
+.image--clickable:hover {
+  @apply transform scale-105 shadow-lg;
+}
+
+.image--clickable:active {
+  @apply transform scale-95;
+}
+
+/* Loading state */
+.image--loading {
+  @apply bg-gray-200 dark:bg-gray-700 animate-pulse;
+}
+
+.image--loading::before {
+  content: "";
+  @apply block w-full h-full bg-gray-300 dark:bg-gray-600;
+}
+
+/* Error state */
+.image--error {
+  @apply bg-gray-100 dark:bg-gray-800 border-2 border-dashed border-gray-300 dark:border-gray-600;
+  @apply flex items-center justify-center text-gray-400 dark:text-gray-500;
+}
+
+.image--error::after {
+  content: "📷";
+  @apply text-2xl;
+}
+
+/* Overlay variants */
+.image-container {
+  @apply relative overflow-hidden;
+}
+
+.image-container .image-overlay {
+  @apply absolute inset-0 bg-black bg-opacity-0 transition-all duration-200;
+  @apply flex items-center justify-center;
+}
+
+.image-container:hover .image-overlay {
+  @apply bg-opacity-30;
+}
+
+.image-container .image-overlay-content {
+  @apply text-white opacity-0 transition-opacity duration-200;
+  @apply transform translate-y-4;
+}
+
+.image-container:hover .image-overlay-content {
+  @apply opacity-100 translate-y-0;
+}
+
+/* Gallery image */
+.image--gallery {
+  @apply cursor-zoom-in;
+}
+
+.image--gallery:hover {
+  @apply opacity-90;
+}
+
+/* Profile image */
+.image--profile {
+  @apply rounded-full border-4 border-white dark:border-gray-800 shadow-lg;
+}
+
+/* Thumbnail variant */
+.image--thumbnail {
+  @apply border border-gray-200 dark:border-gray-700 rounded p-1;
+  @apply bg-white dark:bg-gray-800;
+}
+
+/* Responsive image */
+.image--responsive {
+  @apply w-full h-auto;
+}
+
+/* Lazy loading skeleton */
+.image-skeleton {
+  @apply bg-gray-200 dark:bg-gray-700 animate-pulse rounded-lg;
+}
+
+.image-skeleton--circle {
+  @apply rounded-full;
+}
+
+/* Figure with caption */
+.image-figure {
+  @apply inline-block;
+}
+
+.image-figure .image-caption {
+  @apply text-sm text-gray-600 dark:text-gray-400 text-center mt-2;
+}
+
+/* Zoom effect */
+.image--zoom {
+  @apply transition-transform duration-300;
+}
+
+.image--zoom:hover {
+  @apply transform scale-110;
+}
+
+/* Blur effect */
+.image--blur {
+  @apply filter blur-sm;
+}
+
+.image--blur:hover {
+  @apply filter-none;
+}
+
+/* Grayscale effect */
+.image--grayscale {
+  @apply filter grayscale;
+}
+
+.image--grayscale:hover {
+  @apply filter-none;
+}
+
+/* Sepia effect */
+.image--sepia {
+  @apply filter sepia;
+}
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+  .image {
+    @apply contrast-125;
+  }
+
+  .image--error {
+    @apply border-4;
+  }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .image {
+    @apply transition-none;
+  }
+
+  .image--clickable:hover {
+    @apply transform-none;
+  }
+
+  .image--zoom:hover {
+    @apply transform-none;
+  }
+
+  .image-overlay-content {
+    @apply transform-none;
+  }
+}
+
+/* Print styles */
+@media print {
+  .image {
+    @apply filter-none;
+  }
+
+  .image-overlay {
+    display: none;
+  }
+}

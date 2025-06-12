@@ -1,0 +1,267 @@
+/**
+ * Input Atom Styles
+ * Text input field styling with variants and states
+ */
+
+.input {
+  @apply block w-full px-4 py-2 text-sm rounded-lg border border-gray-300;
+  @apply bg-white dark:bg-gray-800 text-gray-900 dark:text-white;
+  @apply placeholder-gray-400 dark:placeholder-gray-500;
+  @apply focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500;
+  @apply transition-colors duration-200;
+  @apply disabled:opacity-60 disabled:cursor-not-allowed;
+}
+
+/* Size variants */
+.input--sm {
+  @apply px-3 py-1.5 text-sm h-8;
+}
+
+.input--md {
+  @apply px-4 py-2 text-sm h-10;
+}
+
+.input--lg {
+  @apply px-4 py-3 text-base h-12;
+}
+
+/* State variants */
+.input--error {
+  @apply border-red-300 focus:border-red-500 focus:ring-red-500;
+  @apply text-red-900 dark:text-red-100;
+  @apply bg-red-50 dark:bg-red-900/20;
+}
+
+.input--success {
+  @apply border-green-300 focus:border-green-500 focus:ring-green-500;
+  @apply text-green-900 dark:text-green-100;
+  @apply bg-green-50 dark:bg-green-900/20;
+}
+
+.input--warning {
+  @apply border-yellow-300 focus:border-yellow-500 focus:ring-yellow-500;
+  @apply text-yellow-900 dark:text-yellow-100;
+  @apply bg-yellow-50 dark:bg-yellow-900/20;
+}
+
+/* Input with icons */
+.input--with-left-icon {
+  @apply pl-10;
+}
+
+.input--with-right-icon {
+  @apply pr-10;
+}
+
+.input-container {
+  @apply relative;
+}
+
+.input-container .input-icon {
+  @apply absolute top-1/2 transform -translate-y-1/2;
+  @apply text-gray-400 pointer-events-none;
+}
+
+.input-container .input-icon--left {
+  @apply left-3;
+}
+
+.input-container .input-icon--right {
+  @apply right-3;
+}
+
+/* Rounded variants */
+.input--rounded-none {
+  @apply rounded-none;
+}
+
+.input--rounded-full {
+  @apply rounded-full px-6;
+}
+
+/* Borderless variant */
+.input--borderless {
+  @apply border-0 bg-transparent focus:ring-0 px-0;
+}
+
+/* Input group */
+.input-group {
+  @apply flex;
+}
+
+.input-group .input {
+  @apply rounded-none border-r-0 focus:z-10;
+}
+
+.input-group .input:first-child {
+  @apply rounded-l-lg;
+}
+
+.input-group .input:last-child {
+  @apply rounded-r-lg border-r;
+}
+
+.input-group .input:only-child {
+  @apply rounded-lg border-r;
+}
+
+.input-group .input-addon {
+  @apply inline-flex items-center px-3 border border-gray-300;
+  @apply bg-gray-50 dark:bg-gray-700 text-gray-500 dark:text-gray-400;
+  @apply text-sm;
+}
+
+.input-group .input-addon:first-child {
+  @apply rounded-l-lg border-r-0;
+}
+
+.input-group .input-addon:last-child {
+  @apply rounded-r-lg border-l-0;
+}
+
+/* Floating label */
+.input-floating-label {
+  @apply relative;
+}
+
+.input-floating-label .input {
+  @apply pt-6 pb-2 placeholder-transparent;
+}
+
+.input-floating-label .input-label {
+  @apply absolute left-4 top-2 text-xs text-gray-500 dark:text-gray-400;
+  @apply pointer-events-none transition-all duration-200;
+}
+
+.input-floating-label .input:placeholder-shown + .input-label {
+  @apply top-1/2 -translate-y-1/2 text-sm text-gray-400;
+}
+
+.input-floating-label .input:focus + .input-label,
+.input-floating-label .input:not(:placeholder-shown) + .input-label {
+  @apply top-2 text-xs text-blue-600 dark:text-blue-400;
+}
+
+/* Search input variant */
+.input--search {
+  @apply pl-10 rounded-full;
+}
+
+.input--search + .search-icon {
+  @apply absolute left-3 top-1/2 transform -translate-y-1/2;
+  @apply w-4 h-4 text-gray-400;
+}
+
+/* Number input styling */
+.input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+.input[type="number"]::-webkit-outer-spin-button,
+.input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* File input styling */
+.input[type="file"] {
+  @apply file:mr-4 file:py-2 file:px-4;
+  @apply file:rounded-lg file:border-0;
+  @apply file:text-sm file:font-medium;
+  @apply file:bg-blue-50 file:text-blue-700;
+  @apply hover:file:bg-blue-100;
+  @apply dark:file:bg-blue-900 dark:file:text-blue-300;
+  @apply dark:hover:file:bg-blue-800;
+}
+
+/* Password input with toggle */
+.input-password-container {
+  @apply relative;
+}
+
+.input-password-container .input {
+  @apply pr-10;
+}
+
+.input-password-container .password-toggle {
+  @apply absolute right-3 top-1/2 transform -translate-y-1/2;
+  @apply text-gray-400 hover:text-gray-600 dark:hover:text-gray-300;
+  @apply cursor-pointer transition-colors duration-200;
+}
+
+/* Loading state */
+.input--loading {
+  @apply bg-gray-100 dark:bg-gray-700 cursor-wait;
+}
+
+/* Read-only state */
+.input:read-only {
+  @apply bg-gray-50 dark:bg-gray-800 cursor-default;
+}
+
+/* Focus within for containers */
+.input-container:focus-within .input-icon {
+  @apply text-blue-500;
+}
+
+/* Validation styling */
+.input-container .validation-icon {
+  @apply absolute right-3 top-1/2 transform -translate-y-1/2;
+  @apply w-5 h-5;
+}
+
+.input-container .validation-icon--success {
+  @apply text-green-500;
+}
+
+.input-container .validation-icon--error {
+  @apply text-red-500;
+}
+
+.input-container .validation-icon--warning {
+  @apply text-yellow-500;
+}
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+  .input {
+    @apply border-2;
+  }
+
+  .input:focus {
+    @apply ring-4;
+  }
+}
+
+/* Mobile optimizations */
+@media (max-width: 640px) {
+  .input {
+    @apply text-base; /* Prevent zoom on iOS */
+  }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .input {
+    @apply transition-none;
+  }
+
+  .input-floating-label .input-label {
+    @apply transition-none;
+  }
+}
+
+/* Print styles */
+@media print {
+  .input {
+    @apply border border-gray-400 bg-transparent;
+  }
+
+  .input[type="password"] {
+    @apply text-transparent;
+  }
+
+  .input[type="password"]::placeholder {
+    @apply text-gray-400;
+  }
+}

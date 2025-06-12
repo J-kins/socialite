@@ -1,0 +1,291 @@
+/**
+ * Text Atom Styles
+ * Text content component styling with typography variants
+ */
+
+.text {
+  @apply text-gray-900 dark:text-gray-100;
+}
+
+/* Size variants */
+.text--xs {
+  @apply text-xs;
+}
+
+.text--sm {
+  @apply text-sm;
+}
+
+.text--base {
+  @apply text-base;
+}
+
+.text--lg {
+  @apply text-lg;
+}
+
+.text--xl {
+  @apply text-xl;
+}
+
+.text--2xl {
+  @apply text-2xl;
+}
+
+.text--3xl {
+  @apply text-3xl;
+}
+
+/* Weight variants */
+.text--thin {
+  @apply font-thin;
+}
+
+.text--light {
+  @apply font-light;
+}
+
+.text--normal {
+  @apply font-normal;
+}
+
+.text--medium {
+  @apply font-medium;
+}
+
+.text--semibold {
+  @apply font-semibold;
+}
+
+.text--bold {
+  @apply font-bold;
+}
+
+.text--extrabold {
+  @apply font-extrabold;
+}
+
+/* Color variants */
+.text--primary {
+  @apply text-blue-600 dark:text-blue-400;
+}
+
+.text--secondary {
+  @apply text-gray-600 dark:text-gray-400;
+}
+
+.text--muted {
+  @apply text-gray-500 dark:text-gray-500;
+}
+
+.text--success {
+  @apply text-green-600 dark:text-green-400;
+}
+
+.text--warning {
+  @apply text-yellow-600 dark:text-yellow-400;
+}
+
+.text--error {
+  @apply text-red-600 dark:text-red-400;
+}
+
+.text--white {
+  @apply text-white;
+}
+
+.text--black {
+  @apply text-black;
+}
+
+/* Alignment variants */
+.text--left {
+  @apply text-left;
+}
+
+.text--center {
+  @apply text-center;
+}
+
+.text--right {
+  @apply text-right;
+}
+
+.text--justify {
+  @apply text-justify;
+}
+
+/* Line height variants */
+.text--leading-tight {
+  @apply leading-tight;
+}
+
+.text--leading-normal {
+  @apply leading-normal;
+}
+
+.text--leading-relaxed {
+  @apply leading-relaxed;
+}
+
+.text--leading-loose {
+  @apply leading-loose;
+}
+
+/* Text decoration */
+.text--underline {
+  @apply underline;
+}
+
+.text--line-through {
+  @apply line-through;
+}
+
+.text--no-underline {
+  @apply no-underline;
+}
+
+/* Text transform */
+.text--uppercase {
+  @apply uppercase;
+}
+
+.text--lowercase {
+  @apply lowercase;
+}
+
+.text--capitalize {
+  @apply capitalize;
+}
+
+.text--normal-case {
+  @apply normal-case;
+}
+
+/* Text overflow */
+.text--truncate {
+  @apply truncate;
+}
+
+.text--ellipsis {
+  @apply text-ellipsis overflow-hidden;
+}
+
+.text--clip {
+  @apply text-clip overflow-hidden;
+}
+
+/* Line clamp */
+.text--line-clamp-1 {
+  @apply line-clamp-1;
+}
+
+.text--line-clamp-2 {
+  @apply line-clamp-2;
+}
+
+.text--line-clamp-3 {
+  @apply line-clamp-3;
+}
+
+.text--line-clamp-4 {
+  @apply line-clamp-4;
+}
+
+/* Whitespace handling */
+.text--whitespace-normal {
+  @apply whitespace-normal;
+}
+
+.text--whitespace-nowrap {
+  @apply whitespace-nowrap;
+}
+
+.text--whitespace-pre {
+  @apply whitespace-pre;
+}
+
+.text--whitespace-pre-line {
+  @apply whitespace-pre-line;
+}
+
+.text--whitespace-pre-wrap {
+  @apply whitespace-pre-wrap;
+}
+
+/* Interactive text */
+.text--clickable {
+  @apply cursor-pointer transition-colors duration-200;
+}
+
+.text--clickable:hover {
+  @apply text-blue-600 dark:text-blue-400;
+}
+
+/* Selection styling */
+.text--no-select {
+  @apply select-none;
+}
+
+.text--select-all {
+  @apply select-all;
+}
+
+/* Code text */
+.text--code {
+  @apply font-mono text-sm bg-gray-100 dark:bg-gray-800 px-1 py-0.5 rounded;
+}
+
+/* Quote text */
+.text--quote {
+  @apply italic border-l-4 border-gray-300 dark:border-gray-600 pl-4;
+}
+
+/* Caption text */
+.text--caption {
+  @apply text-xs text-gray-500 dark:text-gray-400;
+}
+
+/* Label text */
+.text--label {
+  @apply text-sm font-medium text-gray-700 dark:text-gray-300;
+}
+
+/* Body text */
+.text--body {
+  @apply text-base leading-relaxed text-gray-800 dark:text-gray-200;
+}
+
+/* Headline text */
+.text--headline {
+  @apply text-2xl font-bold text-gray-900 dark:text-gray-100;
+}
+
+/* Subheadline text */
+.text--subheadline {
+  @apply text-lg font-medium text-gray-700 dark:text-gray-300;
+}
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+  .text {
+    @apply font-medium;
+  }
+
+  .text--muted {
+    @apply text-gray-700 dark:text-gray-300;
+  }
+}
+
+/* Print styles */
+@media print {
+  .text {
+    @apply text-black;
+  }
+
+  .text--primary,
+  .text--secondary,
+  .text--muted {
+    @apply text-black;
+  }
+}
