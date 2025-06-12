@@ -26,6 +26,13 @@ import './comment-list-item.css';
 import './form-group.css';
 import './social-login-button.css';
 
+// Additional Utility & Interaction Component Styles
+import './menu-dropdown.css';
+import './media-player.css';
+import './progress-bar.css';
+import './notification-banner.css';
+import './user-mention.css';
+
 // Export CSS files for build tools that need explicit imports
 export const moleculeStyles = [
   // Core Components
@@ -55,6 +62,13 @@ export const moleculeStyles = [
   'comment-list-item.css',
   'form-group.css',
   'social-login-button.css',
+
+  // Additional Utility & Interaction Components
+  'menu-dropdown.css',
+  'media-player.css',
+  'progress-bar.css',
+  'notification-banner.css',
+  'user-mention.css',
 ] as const;
 
 export type MoleculeStylesType = (typeof moleculeStyles)[number];

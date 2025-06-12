@@ -26,6 +26,13 @@ export { CommentListItem } from './CommentListItem';
 export { FormGroup } from './FormGroup';
 export { SocialLoginButton } from './SocialLoginButton';
 
+// Additional Utility & Interaction Components
+export { MenuDropdown } from './MenuDropdown';
+export { MediaPlayer } from './MediaPlayer';
+export { ProgressBar } from './ProgressBar';
+export { NotificationBanner } from './NotificationBanner';
+export { UserMention } from './UserMention';
+
 // Core Component Types
 export type { SearchBoxProps } from './SearchBox';
 export type { AvatarWithNameProps } from './AvatarWithName';
