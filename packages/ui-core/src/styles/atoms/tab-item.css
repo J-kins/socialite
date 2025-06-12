@@ -1,0 +1,350 @@
+/* Tab Item Component Styles */
+.tab-item {
+  @apply relative inline-flex items-center justify-center;
+  @apply px-4 py-2 text-sm font-medium;
+  @apply text-gray-500 dark:text-gray-400;
+  @apply hover:text-gray-700 dark:hover:text-gray-200;
+  @apply focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2;
+  @apply transition-all duration-200 cursor-pointer;
+  @apply border-b-2 border-transparent;
+}
+
+/* Tab Item Active State */
+.tab-item-active {
+  @apply text-blue-600 dark:text-blue-400;
+  @apply border-blue-600 dark:border-blue-400;
+}
+
+/* Tab Item Disabled State */
+.tab-item-disabled {
+  @apply text-gray-300 dark:text-gray-600;
+  @apply cursor-not-allowed pointer-events-none;
+}
+
+/* Tab Item Sizes */
+.tab-item-xs {
+  @apply px-2 py-1 text-xs;
+}
+
+.tab-item-sm {
+  @apply px-3 py-1.5 text-sm;
+}
+
+.tab-item-md {
+  @apply px-4 py-2 text-sm;
+}
+
+.tab-item-lg {
+  @apply px-6 py-3 text-base;
+}
+
+.tab-item-xl {
+  @apply px-8 py-4 text-lg;
+}
+
+/* Tab Item Variants */
+.tab-item-underline {
+  @apply border-b-2 border-transparent;
+}
+
+.tab-item-underline.tab-item-active {
+  @apply border-blue-600 dark:border-blue-400;
+}
+
+.tab-item-pills {
+  @apply rounded-lg border-0;
+  @apply hover:bg-gray-100 dark:hover:bg-gray-800;
+}
+
+.tab-item-pills.tab-item-active {
+  @apply bg-blue-600 text-white dark:bg-blue-500;
+  @apply hover:bg-blue-700 dark:hover:bg-blue-600;
+}
+
+.tab-item-background {
+  @apply rounded-lg border-0;
+  @apply hover:bg-gray-100 dark:hover:bg-gray-800;
+}
+
+.tab-item-background.tab-item-active {
+  @apply bg-blue-100 text-blue-700;
+  @apply dark:bg-blue-900/30 dark:text-blue-300;
+}
+
+.tab-item-minimal {
+  @apply border-0 px-2 py-1;
+}
+
+.tab-item-minimal.tab-item-active {
+  @apply text-blue-600 dark:text-blue-400;
+}
+
+/* Tab Item with Icon */
+.tab-item-with-icon {
+  @apply flex items-center gap-2;
+}
+
+.tab-item-icon {
+  @apply w-4 h-4;
+}
+
+.tab-item-icon-only {
+  @apply px-2 py-2;
+}
+
+.tab-item-icon-only .tab-item-icon {
+  @apply w-5 h-5;
+}
+
+/* Tab Item with Badge */
+.tab-item-with-badge {
+  @apply relative;
+}
+
+.tab-item-badge {
+  @apply absolute -top-1 -right-1;
+  @apply inline-flex items-center justify-center;
+  @apply min-w-[1rem] h-4 px-1 text-xs font-medium;
+  @apply bg-red-500 text-white rounded-full;
+  @apply border-2 border-white dark:border-gray-900;
+}
+
+.tab-item-badge-dot {
+  @apply w-2 h-2 bg-red-500 rounded-full;
+  @apply border border-white dark:border-gray-900;
+  @apply min-w-0 px-0;
+}
+
+/* Tab Item with Close Button */
+.tab-item-closable {
+  @apply pr-8;
+}
+
+.tab-item-close {
+  @apply absolute top-1/2 right-2 transform -translate-y-1/2;
+  @apply w-4 h-4 p-0.5 rounded-sm;
+  @apply text-gray-400 hover:text-gray-600 dark:hover:text-gray-200;
+  @apply hover:bg-gray-200 dark:hover:bg-gray-700;
+  @apply focus:outline-none focus:ring-1 focus:ring-blue-500;
+}
+
+/* Tab Item States */
+.tab-item-loading {
+  @apply opacity-75 cursor-wait;
+}
+
+.tab-item-loading::before {
+  @apply absolute inset-0 bg-gray-100 dark:bg-gray-800;
+  @apply animate-pulse rounded-lg;
+  content: "";
+}
+
+.tab-item-error {
+  @apply text-red-600 dark:text-red-400;
+  @apply hover:text-red-700 dark:hover:text-red-300;
+}
+
+.tab-item-error.tab-item-active {
+  @apply border-red-600 dark:border-red-400;
+}
+
+.tab-item-success {
+  @apply text-green-600 dark:text-green-400;
+  @apply hover:text-green-700 dark:hover:text-green-300;
+}
+
+.tab-item-success.tab-item-active {
+  @apply border-green-600 dark:border-green-400;
+}
+
+/* Tab Item Animations */
+.tab-item-fade {
+  @apply opacity-0 transition-opacity duration-200;
+}
+
+.tab-item-fade-in {
+  @apply opacity-100;
+}
+
+.tab-item-slide {
+  @apply transform -translate-x-4 transition-transform duration-200;
+}
+
+.tab-item-slide-in {
+  @apply translate-x-0;
+}
+
+.tab-item-scale {
+  @apply transform scale-95 transition-transform duration-200;
+}
+
+.tab-item-scale-in {
+  @apply scale-100;
+}
+
+/* Tab Item Hover Effects */
+.tab-item-hover-underline:hover {
+  @apply border-gray-300 dark:border-gray-600;
+}
+
+.tab-item-hover-background:hover {
+  @apply bg-gray-50 dark:bg-gray-800;
+}
+
+.tab-item-hover-scale:hover {
+  @apply transform scale-105;
+}
+
+/* Tab Item Focus States */
+.tab-item-focus-ring:focus {
+  @apply ring-2 ring-blue-500 ring-offset-2;
+  @apply dark:ring-offset-gray-900;
+}
+
+.tab-item-focus-visible:focus-visible {
+  @apply outline-2 outline-offset-2 outline-blue-500;
+}
+
+/* Vertical Tab Items */
+.tab-item-vertical {
+  @apply w-full justify-start text-left;
+  @apply border-b-0 border-l-2 border-transparent;
+  @apply px-4 py-3;
+}
+
+.tab-item-vertical.tab-item-active {
+  @apply border-blue-600 dark:border-blue-400;
+  @apply bg-blue-50 dark:bg-blue-900/20;
+}
+
+/* Tab Item Color Variants */
+.tab-item-primary.tab-item-active {
+  @apply text-blue-600 dark:text-blue-400;
+  @apply border-blue-600 dark:border-blue-400;
+}
+
+.tab-item-secondary.tab-item-active {
+  @apply text-gray-600 dark:text-gray-400;
+  @apply border-gray-600 dark:border-gray-400;
+}
+
+.tab-item-success.tab-item-active {
+  @apply text-green-600 dark:text-green-400;
+  @apply border-green-600 dark:border-green-400;
+}
+
+.tab-item-warning.tab-item-active {
+  @apply text-yellow-600 dark:text-yellow-400;
+  @apply border-yellow-600 dark:border-yellow-400;
+}
+
+.tab-item-danger.tab-item-active {
+  @apply text-red-600 dark:text-red-400;
+  @apply border-red-600 dark:border-red-400;
+}
+
+/* Tab Item Mobile Optimizations */
+@media (max-width: 640px) {
+  .tab-item-mobile {
+    @apply px-2 py-1.5 text-sm;
+  }
+
+  .tab-item-mobile-full {
+    @apply flex-1 text-center;
+  }
+
+  .tab-item-mobile-scroll {
+    @apply flex-shrink-0 min-w-max;
+  }
+}
+
+/* Tab Item Responsive */
+@media (min-width: 641px) {
+  .tab-item-responsive {
+    @apply px-6 py-3 text-base;
+  }
+}
+
+/* Tab Item Accessibility */
+.tab-item[role="tab"] {
+  @apply focus:outline-none;
+}
+
+.tab-item[aria-selected="true"] {
+  @apply tab-item-active;
+}
+
+.tab-item[aria-disabled="true"] {
+  @apply tab-item-disabled;
+}
+
+/* Tab Item Keyboard Navigation */
+.tab-item:focus {
+  @apply ring-2 ring-blue-500 ring-offset-2;
+  @apply dark:ring-offset-gray-900;
+}
+
+/* Tab Item High Contrast */
+@media (prefers-contrast: high) {
+  .tab-item {
+    @apply border border-gray-400;
+  }
+
+  .tab-item-active {
+    @apply border-blue-600 bg-blue-50;
+  }
+}
+
+/* Tab Item Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  .tab-item {
+    @apply transition-none;
+  }
+}
+
+/* Tab Item Print Styles */
+@media print {
+  .tab-item {
+    @apply border-0 text-black;
+  }
+
+  .tab-item-active {
+    @apply font-bold;
+  }
+}
+
+/* Tab Item Group Styles */
+.tab-item-group {
+  @apply flex border-b border-gray-200 dark:border-gray-700;
+}
+
+.tab-item-group-pills {
+  @apply flex gap-1 p-1 bg-gray-100 dark:bg-gray-800 rounded-lg;
+}
+
+.tab-item-group-vertical {
+  @apply flex-col border-b-0 border-r border-gray-200 dark:border-gray-700;
+}
+
+/* Tab Item Overflow */
+.tab-item-overflow {
+  @apply overflow-hidden text-ellipsis whitespace-nowrap;
+}
+
+/* Tab Item Custom Spacing */
+.tab-item-tight {
+  @apply px-2 py-1;
+}
+
+.tab-item-loose {
+  @apply px-8 py-4;
+}
+
+/* Tab Item Shadow */
+.tab-item-shadow:hover {
+  @apply shadow-md;
+}
+
+.tab-item-shadow.tab-item-active {
+  @apply shadow-lg;
+}
