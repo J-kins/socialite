@@ -1,83 +1,141 @@
-# Multi-stage build for Socialite UI Core Components
+# Multi-stage build for Nexify UI Core Components
+# Supports both React components and Angular grid/table view components
+
+# Stage 1: Base Node.js image with dependencies
 FROM node:18-alpine AS base
 
-# Install dependencies only when needed
-FROM base AS deps
-# Check https://github.com/nodejs/docker-node/tree/b4117f9333da4138b03a546ec926ef50a31506c3#nodealpine to understand why libc6-compat might be needed.
-RUN apk add --no-cache libc6-compat
+# Set working directory
 WORKDIR /app
 
-# Install dependencies based on the preferred package manager
-COPY package.json yarn.lock* package-lock.json* pnpm-lock.yaml* ./
-RUN \
-  if [ -f yarn.lock ]; then yarn --frozen-lockfile; \
-  elif [ -f package-lock.json ]; then npm ci; \
-  elif [ -f pnpm-lock.yaml ]; then corepack enable pnpm && pnpm i --frozen-lockfile; \
-  else echo "Lockfile not found." && exit 1; \
-  fi
+# Install pnpm for faster package management
+RUN npm install -g pnpm
 
-# Rebuild the source code only when needed
-FROM base AS builder
-WORKDIR /app
-COPY --from=deps /app/node_modules ./node_modules
+# Copy package files
+COPY package.json pnpm-lock.yaml ./
+
+# Install dependencies
+RUN pnpm install --frozen-lockfile
+
+# Stage 2: Development build
+FROM base AS development
+
+# Copy source code
 COPY . .
 
-# Build the component library
-RUN \
-  if [ -f yarn.lock ]; then yarn build; \
-  elif [ -f package-lock.json ]; then npm run build; \
-  elif [ -f pnpm-lock.yaml ]; then corepack enable pnpm && pnpm build; \
-  else echo "Lockfile not found." && exit 1; \
-  fi
+# Install development dependencies
+RUN pnpm install --frozen-lockfile --include=dev
 
-# Test the components
-RUN \
-  if [ -f yarn.lock ]; then yarn test --passWithNoTests; \
-  elif [ -f package-lock.json ]; then npm run test -- --passWithNoTests; \
-  elif [ -f pnpm-lock.yaml ]; then corepack enable pnpm && pnpm test --passWithNoTests; \
-  else echo "Lockfile not found." && exit 1; \
-  fi
+# Expose development port
+EXPOSE 3000
 
-# Production image, copy all the files and run the component library
-FROM base AS runner
+# Development command
+CMD ["pnpm", "dev"]
+
+# Stage 3: Build stage
+FROM base AS build
+
+# Copy source code
+COPY . .
+
+# Install all dependencies including devDependencies for build
+RUN pnpm install --frozen-lockfile --include=dev
+
+# Build the TypeScript components
+RUN pnpm build
+
+# Build Storybook for component documentation
+RUN pnpm build-storybook
+
+# Run tests
+RUN pnpm test
+
+# Stage 4: Production build with only runtime dependencies
+FROM node:18-alpine AS production
+
+# Set working directory
 WORKDIR /app
 
-ENV NODE_ENV production
-# Disable telemetry during runtime.
-ENV NEXT_TELEMETRY_DISABLED 1
+# Install pnpm
+RUN npm install -g pnpm
 
-RUN addgroup --system --gid 1001 nodejs
-RUN adduser --system --uid 1001 socialite
+# Copy package files
+COPY package.json pnpm-lock.yaml ./
 
-# Copy the built application
-COPY --from=builder /app/dist ./dist
-COPY --from=builder /app/package.json ./package.json
-COPY --from=builder /app/node_modules ./node_modules
+# Install only production dependencies
+RUN pnpm install --frozen-lockfile --prod
 
-# Copy static files
-COPY --from=builder /app/src/styles ./src/styles
+# Copy built artifacts from build stage
+COPY --from=build /app/dist ./dist
+COPY --from=build /app/storybook-static ./storybook-static
 
-USER socialite
+# Copy necessary runtime files
+COPY --from=build /app/tailwind.config.js ./
+COPY --from=build /app/postcss.config.js ./
 
+# Create non-root user for security
+RUN addgroup -g 1001 -S nodejs
+RUN adduser -S nextjs -u 1001
+
+# Change ownership of the app directory
+RUN chown -R nextjs:nodejs /app
+USER nextjs
+
+# Expose port
 EXPOSE 3000
-ENV PORT 3000
 
 # Health check
 HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
-  CMD node healthcheck.js || exit 1
+  CMD node healthcheck.js
 
-# Create a simple health check file
-RUN echo 'const http = require("http"); \
-const options = { host: "localhost", port: process.env.PORT || 3000, timeout: 2000 }; \
-const request = http.request(options, (res) => { \
-  console.log(`STATUS: ${res.statusCode}`); \
-  process.exitCode = (res.statusCode === 200) ? 0 : 1; \
-  process.exit(); \
-}); \
-request.on("error", function(err) { \
-  console.log("ERROR"); \
-  process.exit(1); \
-}); \
-request.end();' > healthcheck.js
+# Production command
+CMD ["node", "dist/index.js"]
 
-CMD ["node", "-e", "console.log('Socialite UI Core Components - Ready for development')"]
+# Stage 5: Testing stage for CI/CD
+FROM base AS test
+
+# Copy source code
+COPY . .
+
+# Install development dependencies
+RUN pnpm install --frozen-lockfile --include=dev
+
+# Run linting
+RUN pnpm lint
+
+# Run type checking
+RUN pnpm type-check
+
+# Run unit tests with coverage
+RUN pnpm test:coverage
+
+# Run e2e tests
+RUN pnpm test:e2e
+
+# Stage 6: Storybook documentation server
+FROM nginx:alpine AS storybook
+
+# Copy built Storybook from build stage
+COPY --from=build /app/storybook-static /usr/share/nginx/html
+
+# Copy custom nginx configuration
+COPY nginx.conf /etc/nginx/nginx.conf
+
+# Expose port 80
+EXPOSE 80
+
+# Start nginx
+CMD ["nginx", "-g", "daemon off;"]
+
+# Labels for better container management
+LABEL maintainer="Socialite Team"
+LABEL version="1.0.0"
+LABEL description="Nexify UI Core Components - React & Angular Component Library"
+LABEL org.opencontainers.image.source="https://github.com/socialite/nexify"
+LABEL org.opencontainers.image.documentation="https://docs.nexify.socialite.com"
+LABEL org.opencontainers.image.licenses="MIT"
+
+# Environment variables
+ENV NODE_ENV=production
+ENV PORT=3000
+ENV REACT_APP_VERSION=1.0.0
+ENV ANGULAR_VERSION=16.0.0
