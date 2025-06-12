@@ -1,203 +1,409 @@
-import React from "react";
-import { Avatar, Badge, Icon } from "../atoms";
-import { SidebarLink, AvatarWithName } from "../molecules";
+import React, { useState, useEffect } from 'react';
+import { Button } from '../atoms/Button';
+import { Icon } from '../atoms/Icon';
+import { Avatar } from '../atoms/Avatar';
+import { Badge } from '../atoms/Badge';
+import { Divider } from '../atoms/Divider';
+
+export interface SidebarItem {
+  id: string;
+  label: string;
+  icon: string;
+  href?: string;
+  isActive?: boolean;
+  badge?: number;
+  children?: SidebarItem[];
+  isExpanded?: boolean;
+  isDisabled?: boolean;
+  tooltip?: string;
+}
 
 export interface SidebarProps {
+  /**
+   * Current user information
+   */
   user?: {
     id: string;
     name: string;
     avatar?: string;
-    email?: string;
-  };
-  friends?: Array<{
-    id: string;
-    name: string;
-    avatar?: string;
+    username?: string;
     isOnline?: boolean;
-  }>;
-  groups?: Array<{
+    role?: string;
+  };
+  /**
+   * Navigation items
+   */
+  items?: SidebarItem[];
+  /**
+   * Quick actions
+   */
+  quickActions?: Array<{
     id: string;
-    name: string;
-    memberCount: number;
-    unreadCount?: number;
+    label: string;
+    icon: string;
+    onClick: () => void;
+    variant?: 'primary' | 'secondary' | 'success' | 'warning' | 'danger';
   }>;
-  onNavigate?: (path: string) => void;
-  onFriendClick?: (friendId: string) => void;
-  onGroupClick?: (groupId: string) => void;
+  /**
+   * Sidebar behavior
+   */
+  isCollapsed?: boolean;
+  isCollapsible?: boolean;
+  onToggleCollapse?: () => void;
+  /**
+   * Navigation handlers
+   */
+  onItemClick?: (item: SidebarItem) => void;
+  onItemExpand?: (item: SidebarItem) => void;
+  /**
+   * User actions
+   */
+  onUserClick?: () => void;
+  onSettingsClick?: () => void;
+  onLogoutClick?: () => void;
+  /**
+   * Appearance
+   */
+  variant?: 'default' | 'minimal' | 'floating' | 'glass';
+  theme?: 'light' | 'dark' | 'auto';
+  position?: 'left' | 'right';
+  width?: 'sm' | 'md' | 'lg' | 'xl';
+  /**
+   * Mobile behavior
+   */
+  isMobile?: boolean;
+  isOverlay?: boolean;
+  onOverlayClick?: () => void;
+  /**
+   * Footer content
+   */
+  footerContent?: React.ReactNode;
+  /**
+   * Custom content slots
+   */
+  headerContent?: React.ReactNode;
+  topContent?: React.ReactNode;
+  bottomContent?: React.ReactNode;
+  /**
+   * Customization
+   */
+  showUserSection?: boolean;
+  showQuickActions?: boolean;
+  showCollapseButton?: boolean;
+  allowItemReordering?: boolean;
+  /**
+   * Event handlers
+   */
+  onReorderItems?: (items: SidebarItem[]) => void;
   className?: string;
 }
 
 export const Sidebar: React.FC<SidebarProps> = ({
   user,
-  friends = [],
-  groups = [],
-  onNavigate,
-  onFriendClick,
-  onGroupClick,
-  className = "",
+  items = [],
+  quickActions = [],
+  isCollapsed = false,
+  isCollapsible = true,
+  onToggleCollapse,
+  onItemClick,
+  onItemExpand,
+  onUserClick,
+  onSettingsClick,
+  onLogoutClick,
+  variant = 'default',
+  theme = 'light',
+  position = 'left',
+  width = 'md',
+  isMobile = false,
+  isOverlay = false,
+  onOverlayClick,
+  footerContent,
+  headerContent,
+  topContent,
+  bottomContent,
+  showUserSection = true,
+  showQuickActions = true,
+  showCollapseButton = true,
+  allowItemReordering = false,
+  onReorderItems,
+  className = '',
 }) => {
-  const navigationItems = [
-    { id: "feed", icon: "home", label: "News Feed", path: "/feed" },
-    {
-      id: "messages",
-      icon: "chatbubble",
-      label: "Messages",
-      path: "/messages",
-    },
-    { id: "groups", icon: "people", label: "Groups", path: "/groups" },
-    { id: "events", icon: "calendar", label: "Events", path: "/events" },
-    {
-      id: "marketplace",
-      icon: "storefront",
-      label: "Marketplace",
-      path: "/marketplace",
-    },
-    { id: "games", icon: "game-controller", label: "Games", path: "/games" },
-    { id: "videos", icon: "play", label: "Videos", path: "/videos" },
-    { id: "photos", icon: "images", label: "Photos", path: "/photos" },
-  ];
+  const [expandedItems, setExpandedItems] = useState<Set<string>>(new Set());
+  const [draggedItem, setDraggedItem] = useState<string | null>(null);
 
-  const shortcuts = [
-    { id: "saved", icon: "bookmark", label: "Saved", path: "/saved" },
-    { id: "memories", icon: "time", label: "Memories", path: "/memories" },
-    { id: "pages", icon: "flag", label: "Pages", path: "/pages" },
-  ];
+  // Handle item expansion
+  const handleItemExpand = (item: SidebarItem) => {
+    if (!item.children || item.children.length === 0) return;
+
+    const newExpandedItems = new Set(expandedItems);
+    if (expandedItems.has(item.id)) {
+      newExpandedItems.delete(item.id);
+    } else {
+      newExpandedItems.add(item.id);
+    }
+    setExpandedItems(newExpandedItems);
+    onItemExpand?.(item);
+  };
+
+  // Handle item click
+  const handleItemClick = (item: SidebarItem, event: React.MouseEvent) => {
+    event.preventDefault();
+
+    if (item.isDisabled) return;
+
+    // If item has children, toggle expansion
+    if (item.children && item.children.length > 0) {
+      handleItemExpand(item);
+      return;
+    }
+
+    onItemClick?.(item);
+  };
+
+  // Handle collapse toggle
+  const handleCollapseToggle = () => {
+    onToggleCollapse?.();
+  };
+
+  // Handle drag and drop for item reordering
+  const handleDragStart = (e: React.DragEvent, item: SidebarItem) => {
+    if (!allowItemReordering) return;
+    setDraggedItem(item.id);
+    e.dataTransfer.effectAllowed = 'move';
+  };
+
+  const handleDragOver = (e: React.DragEvent) => {
+    if (!allowItemReordering || !draggedItem) return;
+    e.preventDefault();
+    e.dataTransfer.dropEffect = 'move';
+  };
+
+  const handleDrop = (e: React.DragEvent, targetItem: SidebarItem) => {
+    if (!allowItemReordering || !draggedItem) return;
+    e.preventDefault();
+
+    if (draggedItem === targetItem.id) return;
+
+    const newItems = [...items];
+    const draggedIndex = newItems.findIndex((item) => item.id === draggedItem);
+    const targetIndex = newItems.findIndex((item) => item.id === targetItem.id);
+
+    if (draggedIndex !== -1 && targetIndex !== -1) {
+      const [draggedElement] = newItems.splice(draggedIndex, 1);
+      newItems.splice(targetIndex, 0, draggedElement);
+      onReorderItems?.(newItems);
+    }
+
+    setDraggedItem(null);
+  };
+
+  // Render navigation item
+  const renderItem = (item: SidebarItem, level: number = 0) => {
+    const isExpanded = expandedItems.has(item.id);
+    const hasChildren = item.children && item.children.length > 0;
+    const itemClasses = [
+      'sidebar__item',
+      item.isActive && 'sidebar__item--active',
+      item.isDisabled && 'sidebar__item--disabled',
+      hasChildren && 'sidebar__item--has-children',
+      isExpanded && 'sidebar__item--expanded',
+      `sidebar__item--level-${level}`,
+    ]
+      .filter(Boolean)
+      .join(' ');
+
+    return (
+      <li key={item.id} className={itemClasses}>
+        <Button
+          variant={item.isActive ? 'primary' : 'ghost'}
+          size={isCollapsed ? 'sm' : 'md'}
+          className="sidebar__item-button"
+          onClick={(e) => handleItemClick(item, e)}
+          disabled={item.isDisabled}
+          title={isCollapsed ? item.label : item.tooltip}
+          aria-expanded={hasChildren ? isExpanded : undefined}
+          draggable={allowItemReordering}
+          onDragStart={(e) => handleDragStart(e, item)}
+          onDragOver={handleDragOver}
+          onDrop={(e) => handleDrop(e, item)}
+        >
+          <Icon name={item.icon} size={isCollapsed ? 'md' : 'sm'} className="sidebar__item-icon" />
+
+          {!isCollapsed && (
+            <>
+              <span className="sidebar__item-label">{item.label}</span>
+
+              {item.badge && item.badge > 0 && (
+                <Badge
+                  variant="notification"
+                  size="sm"
+                  count={item.badge}
+                  className="sidebar__item-badge"
+                />
+              )}
+
+              {hasChildren && (
+                <Icon
+                  name={isExpanded ? 'chevron-down' : 'chevron-right'}
+                  size="sm"
+                  className="sidebar__item-arrow"
+                />
+              )}
+            </>
+          )}
+        </Button>
+
+        {hasChildren && isExpanded && !isCollapsed && (
+          <ul className="sidebar__submenu">
+            {item.children!.map((childItem) => renderItem(childItem, level + 1))}
+          </ul>
+        )}
+      </li>
+    );
+  };
+
+  const sidebarClasses = [
+    'sidebar',
+    `sidebar--${variant}`,
+    `sidebar--${theme}`,
+    `sidebar--${position}`,
+    `sidebar--${width}`,
+    isCollapsed && 'sidebar--collapsed',
+    isMobile && 'sidebar--mobile',
+    isOverlay && 'sidebar--overlay',
+    className,
+  ]
+    .filter(Boolean)
+    .join(' ');
 
   return (
-    <aside
-      className={`
-      w-80 bg-white dark:bg-gray-900 
-      border-r border-gray-200 dark:border-gray-700
-      h-full overflow-y-auto
-      flex flex-col
-      ${className}
-    `}
-    >
-      {/* User Profile Section */}
-      {user && (
-        <div className="p-4 border-b border-gray-200 dark:border-gray-700">
-          <AvatarWithName
-            src={user.avatar}
-            name={user.name}
-            subtitle={user.email}
-            size="md"
-            onClick={() => onNavigate?.("/profile")}
-            className="cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800 rounded-lg p-2 -m-2 transition-colors"
-          />
-        </div>
+    <>
+      {/* Overlay for mobile */}
+      {isOverlay && (
+        <div className="sidebar__overlay" onClick={onOverlayClick} aria-hidden="true" />
       )}
 
-      {/* Main Navigation */}
-      <nav className="flex-1 p-4 space-y-1">
-        <div className="mb-6">
-          {navigationItems.map((item) => (
-            <SidebarLink
-              key={item.id}
-              icon={item.icon}
-              label={item.label}
-              onClick={() => onNavigate?.(item.path)}
-              className="mb-1"
-            />
-          ))}
-        </div>
+      <aside className={sidebarClasses} role="navigation" aria-label="Main navigation">
+        {/* Header Section */}
+        {headerContent && <div className="sidebar__header">{headerContent}</div>}
 
-        {/* Shortcuts */}
-        <div className="mb-6">
-          <h3 className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-3">
-            Your shortcuts
-          </h3>
-          {shortcuts.map((item) => (
-            <SidebarLink
-              key={item.id}
-              icon={item.icon}
-              label={item.label}
-              onClick={() => onNavigate?.(item.path)}
-              className="mb-1"
-            />
-          ))}
-        </div>
+        {/* User Section */}
+        {showUserSection && user && (
+          <div className="sidebar__user">
+            <Button
+              variant="ghost"
+              size="lg"
+              className="sidebar__user-button"
+              onClick={onUserClick}
+              title={isCollapsed ? user.name : undefined}
+            >
+              <Avatar
+                src={user.avatar}
+                alt={user.name}
+                name={user.name}
+                size={isCollapsed ? 'md' : 'lg'}
+                showOnlineStatus={user.isOnline}
+                className="sidebar__user-avatar"
+              />
 
-        {/* Groups */}
-        {groups.length > 0 && (
-          <div className="mb-6">
-            <div className="flex items-center justify-between mb-3">
-              <h3 className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                Your groups
-              </h3>
-              <button
-                onClick={() => onNavigate?.("/groups")}
-                className="text-xs text-blue-600 dark:text-blue-400 hover:underline"
-              >
-                See all
-              </button>
-            </div>
-            <div className="space-y-1">
-              {groups.slice(0, 5).map((group) => (
-                <button
-                  key={group.id}
-                  onClick={() => onGroupClick?.(group.id)}
-                  className="w-full flex items-center justify-between p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors text-left"
+              {!isCollapsed && (
+                <div className="sidebar__user-info">
+                  <div className="sidebar__user-name">{user.name}</div>
+                  {user.username && <div className="sidebar__user-username">@{user.username}</div>}
+                  {user.role && <div className="sidebar__user-role">{user.role}</div>}
+                </div>
+              )}
+            </Button>
+          </div>
+        )}
+
+        {/* Top Content */}
+        {topContent && <div className="sidebar__top-content">{topContent}</div>}
+
+        {/* Quick Actions */}
+        {showQuickActions && quickActions.length > 0 && (
+          <div className="sidebar__quick-actions">
+            {!isCollapsed && <h3 className="sidebar__section-title">Quick Actions</h3>}
+            <div className="sidebar__quick-actions-list">
+              {quickActions.map((action) => (
+                <Button
+                  key={action.id}
+                  variant={action.variant || 'primary'}
+                  size={isCollapsed ? 'sm' : 'md'}
+                  className="sidebar__quick-action"
+                  onClick={action.onClick}
+                  title={isCollapsed ? action.label : undefined}
                 >
-                  <div className="flex items-center space-x-3">
-                    <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
-                      <Icon name="people" className="w-4 h-4 text-white" />
-                    </div>
-                    <div>
-                      <div className="text-sm font-medium text-gray-900 dark:text-white">
-                        {group.name}
-                      </div>
-                      <div className="text-xs text-gray-500 dark:text-gray-400">
-                        {group.memberCount} members
-                      </div>
-                    </div>
-                  </div>
-                  {group.unreadCount && group.unreadCount > 0 && (
-                    <Badge variant="primary" size="sm">
-                      {group.unreadCount}
-                    </Badge>
-                  )}
-                </button>
+                  <Icon name={action.icon} size="sm" />
+                  {!isCollapsed && <span>{action.label}</span>}
+                </Button>
               ))}
             </div>
           </div>
         )}
 
-        {/* Online Friends */}
-        {friends.length > 0 && (
-          <div>
-            <div className="flex items-center justify-between mb-3">
-              <h3 className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                Online friends
-              </h3>
-              <button
-                onClick={() => onNavigate?.("/friends")}
-                className="text-xs text-blue-600 dark:text-blue-400 hover:underline"
+        {(showQuickActions && quickActions.length > 0) || topContent ? (
+          <Divider className="sidebar__divider" />
+        ) : null}
+
+        {/* Navigation Items */}
+        <nav className="sidebar__nav" role="navigation">
+          <ul className="sidebar__nav-list">{items.map((item) => renderItem(item))}</ul>
+        </nav>
+
+        {/* Bottom Content */}
+        {bottomContent && <div className="sidebar__bottom-content">{bottomContent}</div>}
+
+        {/* Footer Section */}
+        <div className="sidebar__footer">
+          {footerContent && <div className="sidebar__footer-content">{footerContent}</div>}
+
+          {/* Settings and Logout */}
+          <div className="sidebar__footer-actions">
+            {onSettingsClick && (
+              <Button
+                variant="ghost"
+                size="sm"
+                className="sidebar__footer-action"
+                onClick={onSettingsClick}
+                title={isCollapsed ? 'Settings' : undefined}
               >
-                See all
-              </button>
-            </div>
-            <div className="space-y-1">
-              {friends
-                .filter((f) => f.isOnline)
-                .slice(0, 8)
-                .map((friend) => (
-                  <button
-                    key={friend.id}
-                    onClick={() => onFriendClick?.(friend.id)}
-                    className="w-full p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
-                  >
-                    <AvatarWithName
-                      src={friend.avatar}
-                      name={friend.name}
-                      size="sm"
-                      isOnline={friend.isOnline}
-                    />
-                  </button>
-                ))}
-            </div>
+                <Icon name="settings" size="sm" />
+                {!isCollapsed && <span>Settings</span>}
+              </Button>
+            )}
+
+            {onLogoutClick && (
+              <Button
+                variant="ghost"
+                size="sm"
+                className="sidebar__footer-action"
+                onClick={onLogoutClick}
+                title={isCollapsed ? 'Logout' : undefined}
+              >
+                <Icon name="logout" size="sm" />
+                {!isCollapsed && <span>Logout</span>}
+              </Button>
+            )}
           </div>
-        )}
-      </nav>
-    </aside>
+
+          {/* Collapse Toggle */}
+          {isCollapsible && showCollapseButton && !isMobile && (
+            <Button
+              variant="ghost"
+              size="sm"
+              className="sidebar__collapse-toggle"
+              onClick={handleCollapseToggle}
+              aria-label={isCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
+              title={isCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
+            >
+              <Icon name={isCollapsed ? 'chevron-right' : 'chevron-left'} size="sm" />
+            </Button>
+          )}
+        </div>
+      </aside>
+    </>
   );
 };
+
+export default Sidebar;
