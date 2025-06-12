@@ -1,0 +1,320 @@
+/**
+ * AccordionItem Molecule Styles
+ * Collapsible accordion item styling
+ */
+
+.accordion-item {
+  @apply border-b border-gray-200 last:border-b-0;
+}
+
+.accordion-header {
+  @apply relative;
+}
+
+.accordion-item .accordion-toggle {
+  @apply w-full flex items-center justify-between p-4 text-left;
+  @apply hover:bg-gray-50 transition-colors duration-200 cursor-pointer;
+  @apply focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-inset;
+}
+
+.accordion-item .accordion-title {
+  @apply font-semibold text-gray-900 flex-1 pr-4;
+}
+
+.accordion-item .accordion-chevron {
+  @apply w-5 h-5 text-gray-500 transition-transform duration-200 flex-shrink-0;
+}
+
+.accordion-item.open .accordion-chevron {
+  @apply rotate-180;
+}
+
+.accordion-content {
+  @apply overflow-hidden transition-all duration-300 ease-in-out;
+}
+
+.accordion-content.hidden {
+  @apply max-h-0;
+}
+
+.accordion-content:not(.hidden) {
+  @apply max-h-screen;
+}
+
+.accordion-body {
+  @apply p-4 border-t border-gray-200 text-gray-700;
+}
+
+/* Size variants */
+.accordion-item.accordion-item--small .accordion-toggle {
+  @apply p-3;
+}
+
+.accordion-item.accordion-item--small .accordion-title {
+  @apply text-sm;
+}
+
+.accordion-item.accordion-item--small .accordion-chevron {
+  @apply w-4 h-4;
+}
+
+.accordion-item.accordion-item--small .accordion-body {
+  @apply p-3 text-sm;
+}
+
+.accordion-item.accordion-item--large .accordion-toggle {
+  @apply p-6;
+}
+
+.accordion-item.accordion-item--large .accordion-title {
+  @apply text-lg;
+}
+
+.accordion-item.accordion-item--large .accordion-chevron {
+  @apply w-6 h-6;
+}
+
+.accordion-item.accordion-item--large .accordion-body {
+  @apply p-6;
+}
+
+/* Style variants */
+.accordion-item.accordion-item--card {
+  @apply bg-white border border-gray-200 rounded-lg mb-2;
+}
+
+.accordion-item.accordion-item--card .accordion-toggle {
+  @apply rounded-lg;
+}
+
+.accordion-item.accordion-item--card .accordion-body {
+  @apply border-t-0 border-gray-200 bg-gray-50 rounded-b-lg;
+}
+
+.accordion-item.accordion-item--bordered {
+  @apply border border-gray-200 rounded-lg mb-2;
+}
+
+.accordion-item.accordion-item--flush {
+  @apply border-0 border-b border-gray-200;
+}
+
+.accordion-item.accordion-item--flush .accordion-toggle {
+  @apply px-0;
+}
+
+.accordion-item.accordion-item--flush .accordion-body {
+  @apply px-0;
+}
+
+/* Icon support */
+.accordion-item .accordion-icon {
+  @apply w-5 h-5 text-gray-500 mr-3 flex-shrink-0;
+}
+
+.accordion-item .accordion-badge {
+  @apply ml-2 inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium;
+  @apply bg-gray-100 text-gray-800;
+}
+
+/* States */
+.accordion-item.accordion-item--disabled {
+  @apply opacity-50 pointer-events-none;
+}
+
+.accordion-item.accordion-item--disabled .accordion-toggle {
+  @apply cursor-not-allowed;
+}
+
+.accordion-item.accordion-item--loading .accordion-chevron {
+  @apply animate-spin;
+}
+
+/* Nested accordions */
+.accordion-item .accordion-item {
+  @apply ml-6 border-l-2 border-gray-200 border-b-0;
+}
+
+.accordion-item .accordion-item .accordion-toggle {
+  @apply pl-4;
+}
+
+/* Animation timing variants */
+.accordion-item.accordion-item--fast .accordion-content {
+  @apply duration-150;
+}
+
+.accordion-item.accordion-item--slow .accordion-content {
+  @apply duration-500;
+}
+
+/* Focus states */
+.accordion-item .accordion-toggle:focus-visible {
+  @apply bg-blue-50 ring-2 ring-blue-500;
+}
+
+/* Content animation */
+.accordion-content-enter {
+  @apply max-h-0;
+}
+
+.accordion-content-enter-active {
+  @apply max-h-screen transition-all duration-300 ease-out;
+}
+
+.accordion-content-exit {
+  @apply max-h-screen;
+}
+
+.accordion-content-exit-active {
+  @apply max-h-0 transition-all duration-300 ease-in;
+}
+
+/* Rich content support */
+.accordion-body .accordion-section {
+  @apply mb-4 last:mb-0;
+}
+
+.accordion-body .accordion-section-title {
+  @apply font-medium text-gray-900 mb-2;
+}
+
+.accordion-body .accordion-list {
+  @apply space-y-2;
+}
+
+.accordion-body .accordion-list-item {
+  @apply flex items-start gap-2;
+}
+
+.accordion-body .accordion-list-item::before {
+  content: "•";
+  @apply text-gray-400 font-bold;
+}
+
+/* Mobile responsive */
+@media (max-width: 640px) {
+  .accordion-item .accordion-toggle {
+    @apply p-3;
+  }
+
+  .accordion-item .accordion-title {
+    @apply text-sm pr-2;
+  }
+
+  .accordion-item .accordion-body {
+    @apply p-3 text-sm;
+  }
+
+  .accordion-item .accordion-icon {
+    @apply w-4 h-4 mr-2;
+  }
+
+  .accordion-item .accordion-item {
+    @apply ml-4;
+  }
+}
+
+/* Touch devices */
+@media (pointer: coarse) {
+  .accordion-item .accordion-toggle {
+    @apply py-4 min-h-[48px];
+  }
+
+  .accordion-item .accordion-chevron {
+    @apply w-6 h-6;
+  }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .accordion-item {
+    @apply border-gray-700;
+  }
+
+  .accordion-item .accordion-toggle {
+    @apply hover:bg-gray-800;
+  }
+
+  .accordion-item .accordion-title {
+    @apply text-gray-100;
+  }
+
+  .accordion-item .accordion-chevron {
+    @apply text-gray-400;
+  }
+
+  .accordion-body {
+    @apply border-gray-700 text-gray-300;
+  }
+
+  .accordion-item .accordion-icon {
+    @apply text-gray-400;
+  }
+
+  .accordion-item .accordion-badge {
+    @apply bg-gray-700 text-gray-300;
+  }
+
+  .accordion-item.accordion-item--card {
+    @apply bg-gray-800 border-gray-700;
+  }
+
+  .accordion-item.accordion-item--card .accordion-body {
+    @apply bg-gray-900;
+  }
+
+  .accordion-item .accordion-toggle:focus-visible {
+    @apply bg-gray-800;
+  }
+}
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+  .accordion-item {
+    @apply border-2 border-black;
+  }
+
+  .accordion-item .accordion-toggle:focus {
+    @apply ring-4 ring-blue-600;
+  }
+
+  .accordion-item .accordion-title {
+    @apply text-black font-bold;
+  }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .accordion-item .accordion-chevron {
+    @apply transition-none;
+  }
+
+  .accordion-content {
+    @apply transition-none;
+  }
+
+  .accordion-item.accordion-item--loading .accordion-chevron {
+    @apply animate-none;
+  }
+
+  .accordion-content-enter-active,
+  .accordion-content-exit-active {
+    @apply transition-none;
+  }
+}
+
+/* Print styles */
+@media print {
+  .accordion-item .accordion-chevron {
+    @apply hidden;
+  }
+
+  .accordion-content.hidden {
+    @apply max-h-none block;
+  }
+
+  .accordion-item .accordion-badge {
+    @apply hidden;
+  }
+}

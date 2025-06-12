@@ -1,0 +1,273 @@
+/**
+ * TabSwitcher Molecule Styles
+ * Tab switcher navigation styling
+ */
+
+.tab-switcher {
+  @apply flex gap-1 border-b border-gray-200 overflow-x-auto;
+  scroll-behavior: smooth;
+}
+
+.tab-switcher .tab-item {
+  @apply px-4 py-2 text-sm font-medium text-gray-600 hover:text-gray-800;
+  @apply border-b-2 border-transparent hover:border-gray-300;
+  @apply transition-all duration-200 cursor-pointer whitespace-nowrap;
+  @apply focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2;
+}
+
+.tab-switcher .tab-item.active {
+  @apply text-blue-600 border-blue-600;
+}
+
+.tab-switcher .tab-item:hover {
+  @apply bg-gray-50;
+}
+
+.tab-switcher .tab-item.active:hover {
+  @apply bg-blue-50;
+}
+
+.tab-switcher .tab-item:disabled {
+  @apply opacity-50 cursor-not-allowed pointer-events-none;
+}
+
+/* Tab with icon */
+.tab-switcher .tab-item .tab-icon {
+  @apply inline-block w-4 h-4 mr-2 align-text-bottom;
+}
+
+/* Tab with badge */
+.tab-switcher .tab-item .tab-badge {
+  @apply ml-2 inline-flex items-center px-2 py-0.5 rounded-full text-xs;
+  @apply bg-gray-200 text-gray-600;
+}
+
+.tab-switcher .tab-item.active .tab-badge {
+  @apply bg-blue-100 text-blue-800;
+}
+
+/* Size variants */
+.tab-switcher.tab-switcher--small .tab-item {
+  @apply px-3 py-1.5 text-xs;
+}
+
+.tab-switcher.tab-switcher--large .tab-item {
+  @apply px-6 py-3 text-base;
+}
+
+/* Style variants */
+.tab-switcher.tab-switcher--pills {
+  @apply border-b-0 gap-2;
+}
+
+.tab-switcher.tab-switcher--pills .tab-item {
+  @apply rounded-lg border-2 border-transparent bg-gray-100;
+}
+
+.tab-switcher.tab-switcher--pills .tab-item.active {
+  @apply bg-blue-600 text-white border-blue-600;
+}
+
+.tab-switcher.tab-switcher--pills .tab-item:hover {
+  @apply bg-gray-200;
+}
+
+.tab-switcher.tab-switcher--pills .tab-item.active:hover {
+  @apply bg-blue-700;
+}
+
+.tab-switcher.tab-switcher--underline .tab-item {
+  @apply border-b-0 relative;
+}
+
+.tab-switcher.tab-switcher--underline .tab-item::after {
+  content: "";
+  @apply absolute bottom-0 left-0 right-0 h-0.5 bg-transparent transition-all duration-200;
+}
+
+.tab-switcher.tab-switcher--underline .tab-item.active::after {
+  @apply bg-blue-600;
+}
+
+/* Vertical orientation */
+.tab-switcher.tab-switcher--vertical {
+  @apply flex-col border-b-0 border-r border-gray-200;
+}
+
+.tab-switcher.tab-switcher--vertical .tab-item {
+  @apply border-b-0 border-r-2 text-left justify-start;
+}
+
+/* Centered alignment */
+.tab-switcher.tab-switcher--centered {
+  @apply justify-center;
+}
+
+/* Scrollable tabs */
+.tab-switcher.tab-switcher--scrollable {
+  @apply overflow-x-auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.tab-switcher.tab-switcher--scrollable::-webkit-scrollbar {
+  @apply hidden;
+}
+
+/* Scroll buttons for overflowing tabs */
+.tab-switcher-container {
+  @apply relative;
+}
+
+.tab-switcher-scroll-button {
+  @apply absolute top-0 bottom-0 w-8 bg-white border border-gray-200;
+  @apply flex items-center justify-center cursor-pointer z-10;
+  @apply hover:bg-gray-50 transition-colors;
+}
+
+.tab-switcher-scroll-button.left {
+  @apply left-0 border-r-0;
+}
+
+.tab-switcher-scroll-button.right {
+  @apply right-0 border-l-0;
+}
+
+.tab-switcher-scroll-button:disabled {
+  @apply opacity-50 cursor-not-allowed;
+}
+
+/* Active indicator animation */
+.tab-switcher .tab-indicator {
+  @apply absolute bottom-0 h-0.5 bg-blue-600 transition-all duration-300;
+  @apply pointer-events-none;
+}
+
+/* Loading state */
+.tab-switcher.loading .tab-item {
+  @apply opacity-60 pointer-events-none;
+}
+
+.tab-switcher.loading .tab-item::before {
+  content: "";
+  @apply absolute inset-0 bg-gray-200 animate-pulse rounded;
+}
+
+/* Keyboard navigation */
+.tab-switcher .tab-item:focus-visible {
+  @apply ring-2 ring-blue-500 ring-offset-2 z-10;
+}
+
+/* Mobile responsive */
+@media (max-width: 640px) {
+  .tab-switcher {
+    @apply gap-0;
+  }
+
+  .tab-switcher .tab-item {
+    @apply px-3 py-2 text-xs flex-1 text-center;
+  }
+
+  .tab-switcher .tab-item .tab-icon {
+    @apply w-3 h-3 mr-1;
+  }
+
+  .tab-switcher .tab-item .tab-badge {
+    @apply ml-1 px-1.5 py-0.5;
+  }
+
+  .tab-switcher.tab-switcher--vertical {
+    @apply flex-row border-b border-r-0;
+  }
+
+  .tab-switcher.tab-switcher--vertical .tab-item {
+    @apply border-r-0 border-b-2;
+  }
+}
+
+/* Touch devices */
+@media (pointer: coarse) {
+  .tab-switcher .tab-item {
+    @apply py-3 min-h-[44px];
+  }
+
+  .tab-switcher-scroll-button {
+    @apply w-12;
+  }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .tab-switcher {
+    @apply border-gray-700;
+  }
+
+  .tab-switcher .tab-item {
+    @apply text-gray-300 hover:text-gray-100 hover:border-gray-600;
+  }
+
+  .tab-switcher .tab-item:hover {
+    @apply bg-gray-800;
+  }
+
+  .tab-switcher .tab-item.active:hover {
+    @apply bg-blue-900/50;
+  }
+
+  .tab-switcher .tab-item .tab-badge {
+    @apply bg-gray-700 text-gray-300;
+  }
+
+  .tab-switcher.tab-switcher--pills .tab-item {
+    @apply bg-gray-800;
+  }
+
+  .tab-switcher.tab-switcher--pills .tab-item:hover {
+    @apply bg-gray-700;
+  }
+
+  .tab-switcher-scroll-button {
+    @apply bg-gray-800 border-gray-700 hover:bg-gray-700;
+  }
+}
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+  .tab-switcher .tab-item {
+    @apply border-2 border-transparent;
+  }
+
+  .tab-switcher .tab-item:focus {
+    @apply ring-4 ring-blue-600;
+  }
+
+  .tab-switcher .tab-item.active {
+    @apply border-blue-600;
+  }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .tab-switcher .tab-item {
+    @apply transition-none;
+  }
+
+  .tab-switcher .tab-indicator {
+    @apply transition-none;
+  }
+
+  .tab-switcher.loading .tab-item::before {
+    @apply animate-none;
+  }
+}
+
+/* Print styles */
+@media print {
+  .tab-switcher .tab-item .tab-badge {
+    @apply hidden;
+  }
+
+  .tab-switcher-scroll-button {
+    @apply hidden;
+  }
+}

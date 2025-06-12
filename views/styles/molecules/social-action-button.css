@@ -1,0 +1,294 @@
+/**
+ * SocialActionButton Molecule Styles
+ * Groups social interaction buttons styling
+ */
+
+.social-action-button {
+  @apply flex gap-1 items-center justify-between;
+  @apply bg-gray-50 rounded-lg p-1;
+}
+
+.social-action-button .action-button {
+  @apply flex-1 flex items-center justify-center gap-2 px-3 py-2;
+  @apply text-gray-600 hover:text-blue-600 hover:bg-blue-50;
+  @apply rounded-md transition-all duration-200 cursor-pointer;
+  @apply text-sm font-medium;
+}
+
+.social-action-button .action-button:focus {
+  @apply outline-none ring-2 ring-blue-500 ring-offset-2;
+}
+
+.social-action-button .action-button.active {
+  @apply text-blue-600 bg-blue-50;
+}
+
+/* Individual button styling */
+.social-action-button .like-button.liked {
+  @apply text-red-500 hover:text-red-600;
+}
+
+.social-action-button .like-button.liked .action-icon {
+  @apply text-red-500;
+}
+
+.social-action-button .comment-button:hover {
+  @apply text-green-600 bg-green-50;
+}
+
+.social-action-button .share-button:hover {
+  @apply text-purple-600 bg-purple-50;
+}
+
+/* Icon styling */
+.social-action-button .action-icon {
+  @apply w-4 h-4 flex-shrink-0;
+}
+
+/* Count styling */
+.social-action-button .action-count {
+  @apply text-xs font-medium ml-1;
+}
+
+/* Size variants */
+.social-action-button.social-action-button--small {
+  @apply p-0.5 gap-0.5;
+}
+
+.social-action-button.social-action-button--small .action-button {
+  @apply px-2 py-1.5 text-xs;
+}
+
+.social-action-button.social-action-button--small .action-icon {
+  @apply w-3 h-3;
+}
+
+.social-action-button.social-action-button--large {
+  @apply p-2 gap-2;
+}
+
+.social-action-button.social-action-button--large .action-button {
+  @apply px-4 py-3 text-base;
+}
+
+.social-action-button.social-action-button--large .action-icon {
+  @apply w-5 h-5;
+}
+
+/* Layout variants */
+.social-action-button.social-action-button--vertical {
+  @apply flex-col gap-1;
+}
+
+.social-action-button.social-action-button--separated {
+  @apply bg-transparent p-0 gap-4;
+}
+
+.social-action-button.social-action-button--separated .action-button {
+  @apply bg-gray-100 hover:bg-gray-200 flex-none px-4;
+}
+
+/* Minimal variant */
+.social-action-button.social-action-button--minimal {
+  @apply bg-transparent p-0 gap-6;
+}
+
+.social-action-button.social-action-button--minimal .action-button {
+  @apply bg-transparent hover:bg-gray-100 px-2 py-1;
+}
+
+/* Border variant */
+.social-action-button.social-action-button--bordered {
+  @apply border border-gray-200 bg-white;
+}
+
+.social-action-button.social-action-button--bordered .action-button {
+  @apply border-r border-gray-200 last:border-r-0;
+}
+
+/* Rounded variant */
+.social-action-button.social-action-button--rounded {
+  @apply rounded-full;
+}
+
+.social-action-button.social-action-button--rounded .action-button {
+  @apply rounded-full;
+}
+
+/* Animation effects */
+.social-action-button .action-button.animate-like {
+  animation: likeAnimation 0.3s ease-in-out;
+}
+
+@keyframes likeAnimation {
+  0% {
+    @apply transform scale-100;
+  }
+  50% {
+    @apply transform scale-125;
+  }
+  100% {
+    @apply transform scale-100;
+  }
+}
+
+.social-action-button .action-button.animate-share {
+  animation: shareAnimation 0.4s ease-in-out;
+}
+
+@keyframes shareAnimation {
+  0% {
+    @apply transform rotate-0;
+  }
+  25% {
+    @apply transform rotate-12;
+  }
+  75% {
+    @apply transform rotate-12;
+  }
+  100% {
+    @apply transform rotate-0;
+  }
+}
+
+/* Loading states */
+.social-action-button .action-button.loading {
+  @apply opacity-60 pointer-events-none;
+}
+
+.social-action-button .action-button.loading .action-icon {
+  @apply animate-spin;
+}
+
+/* Disabled state */
+.social-action-button .action-button:disabled {
+  @apply opacity-50 cursor-not-allowed pointer-events-none;
+}
+
+/* Notification badges */
+.social-action-button .action-button .notification-badge {
+  @apply absolute -top-1 -right-1 w-2 h-2 bg-red-500 rounded-full;
+}
+
+.social-action-button .action-button {
+  @apply relative;
+}
+
+/* Tooltip support */
+.social-action-button .action-button[data-tooltip] {
+  @apply relative;
+}
+
+.social-action-button .action-button[data-tooltip]:hover::after {
+  content: attr(data-tooltip);
+  @apply absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2;
+  @apply bg-gray-900 text-white text-xs px-2 py-1 rounded whitespace-nowrap;
+  @apply opacity-0 pointer-events-none transition-opacity delay-500;
+}
+
+.social-action-button .action-button[data-tooltip]:hover::after {
+  @apply opacity-100;
+}
+
+/* Mobile responsive */
+@media (max-width: 640px) {
+  .social-action-button {
+    @apply gap-0.5 p-0.5;
+  }
+
+  .social-action-button .action-button {
+    @apply px-2 py-1.5 text-xs;
+  }
+
+  .social-action-button .action-count {
+    @apply hidden;
+  }
+
+  .social-action-button.social-action-button--separated {
+    @apply gap-2;
+  }
+
+  .social-action-button.social-action-button--minimal {
+    @apply gap-3;
+  }
+}
+
+/* Touch devices */
+@media (pointer: coarse) {
+  .social-action-button .action-button {
+    @apply py-3 min-h-[44px];
+  }
+
+  .social-action-button.social-action-button--small .action-button {
+    @apply py-2 min-h-[36px];
+  }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .social-action-button {
+    @apply bg-gray-800;
+  }
+
+  .social-action-button .action-button {
+    @apply text-gray-300 hover:text-blue-400 hover:bg-blue-900/20;
+  }
+
+  .social-action-button .comment-button:hover {
+    @apply text-green-400 bg-green-900/20;
+  }
+
+  .social-action-button .share-button:hover {
+    @apply text-purple-400 bg-purple-900/20;
+  }
+
+  .social-action-button.social-action-button--separated .action-button {
+    @apply bg-gray-800 hover:bg-gray-700;
+  }
+
+  .social-action-button.social-action-button--bordered {
+    @apply border-gray-700 bg-gray-800;
+  }
+
+  .social-action-button.social-action-button--bordered .action-button {
+    @apply border-gray-700;
+  }
+}
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+  .social-action-button {
+    @apply border-2 border-black;
+  }
+
+  .social-action-button .action-button {
+    @apply border border-gray-500;
+  }
+
+  .social-action-button .action-button:focus {
+    @apply ring-4 ring-blue-600;
+  }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .social-action-button .action-button {
+    @apply transition-none;
+  }
+
+  .social-action-button .action-button.animate-like,
+  .social-action-button .action-button.animate-share {
+    animation: none;
+  }
+
+  .social-action-button .action-button.loading .action-icon {
+    @apply animate-none;
+  }
+}
+
+/* Print styles */
+@media print {
+  .social-action-button {
+    @apply hidden;
+  }
+}
