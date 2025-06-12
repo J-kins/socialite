@@ -1,32 +1,60 @@
 {
   "semi": true,
-  "trailingComma": "es5",
+  "trailingComma": "all",
   "singleQuote": true,
-  "printWidth": 100,
+  "printWidth": 80,
   "tabWidth": 2,
   "useTabs": false,
   "quoteProps": "as-needed",
+  "jsxSingleQuote": true,
   "bracketSpacing": true,
   "bracketSameLine": false,
-  "arrowParens": "always",
+  "arrowParens": "avoid",
   "endOfLine": "lf",
-  "embeddedLanguageFormatting": "auto",
   "htmlWhitespaceSensitivity": "css",
   "insertPragma": false,
-  "jsxSingleQuote": false,
+  "jsxBracketSameLine": false,
   "proseWrap": "preserve",
   "requirePragma": false,
+  "vueIndentScriptAndStyle": false,
+  "embeddedLanguageFormatting": "auto",
+  "singleAttributePerLine": false,
   "overrides": [
     {
-      "files": "*.{css,scss}",
+      "files": "*.json",
       "options": {
-        "singleQuote": false
+        "printWidth": 120
       }
     },
     {
       "files": "*.md",
       "options": {
-        "proseWrap": "always"
+        "proseWrap": "always",
+        "printWidth": 80
+      }
+    },
+    {
+      "files": "*.css",
+      "options": {
+        "singleQuote": false
+      }
+    },
+    {
+      "files": "*.scss",
+      "options": {
+        "singleQuote": false
+      }
+    },
+    {
+      "files": "*.html",
+      "options": {
+        "htmlWhitespaceSensitivity": "strict"
+      }
+    },
+    {
+      "files": "*.component.ts",
+      "options": {
+        "printWidth": 120
       }
     }
   ]

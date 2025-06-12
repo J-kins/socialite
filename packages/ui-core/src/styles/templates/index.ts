@@ -1,0 +1,47 @@
+// Import all template styles
+import './components-page.css';
+import './main-layout.css';
+import './auth-page.css';
+import './auth-layout.css';
+import './landing-page.css';
+import './feed-page.css';
+import './messages-page.css';
+import './groups-page.css';
+import './pages-page.css';
+import './events-page.css';
+import './market-page.css';
+import './games-page.css';
+import './blog-page.css';
+import './fundraiser-page.css';
+import './profile-page.css';
+import './friends-page.css';
+import './search-page.css';
+import './notifications-page.css';
+import './admin-dashboard.css';
+import './user-management.css';
+import './content-moderation.css';
+import './site-settings.css';
+import './analytics-page.css';
+import './logs-page.css';
+import './login-page.css';
+import './register-page.css';
+import './password-reset-page.css';
+import './email-verification-page.css';
+import './account-settings.css';
+import './privacy-settings.css';
+import './notification-settings.css';
+import './security-settings.css';
+import './connected-accounts.css';
+import './billing-page.css';
+import './general-settings-page.css';
+import './upgrade-page.css';
+import './timeline-page.css';
+import './video-watch-page.css';
+import './product-view-page.css';
+import './media-upload-page.css';
+import './document-management-page.css';
+import './post-creation-page.css';
+import './post-feed-page.css';
+
+// Export nothing - these are just style imports
+export {};

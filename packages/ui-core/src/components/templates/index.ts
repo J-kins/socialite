@@ -1,4 +1,4 @@
-// Templates - Complete 32 Template Components
+// Templates - Complete 32 Template Components + Additional Templates
 
 // Core Application Templates (1-17)
 export { ComponentsPage } from './ComponentsPage';
@@ -40,6 +40,19 @@ export { SecuritySettings } from './SecuritySettings';
 export { ConnectedAccounts } from './ConnectedAccounts';
 export { BillingPage } from './BillingPage';
 
+// Additional Templates from Root CSS/HTML Analysis
+export { VideoWatchPage } from './VideoWatchPage';
+export { ProductViewPage } from './ProductViewPage';
+export { TimelinePage } from './TimelinePage';
+export { GeneralSettingsPage } from './GeneralSettingsPage';
+export { UpgradePage } from './UpgradePage';
+
+// New Template Components for File Uploads and Posts
+export { MediaUploadPage } from './MediaUploadPage';
+export { DocumentManagementPage } from './DocumentManagementPage';
+export { PostCreationPage } from './PostCreationPage';
+export { PostFeedPage } from './PostFeedPage';
+
 // Legacy exports for backward compatibility
 export { AuthLayout } from './AuthLayout';
 export { ErrorPage } from './ErrorPage';
@@ -71,3 +84,12 @@ export type { AuthLayoutProps } from './AuthLayout';
 export type { FeedPageProps } from './FeedPage';
 export type { LoginPageProps } from './LoginPage';
 export type { RegisterPageProps } from './RegisterPage';
+export type { VideoWatchPageProps } from './VideoWatchPage';
+export type { ProductViewPageProps } from './ProductViewPage';
+export type { TimelinePageProps } from './TimelinePage';
+export type { GeneralSettingsPageProps } from './GeneralSettingsPage';
+export type { UpgradePageProps, PricingPlan } from './UpgradePage';
+export type { MediaUploadPageProps, MediaFile } from './MediaUploadPage';
+export type { DocumentManagementPageProps, Document } from './DocumentManagementPage';
+export type { PostCreationPageProps, PostData } from './PostCreationPage';
+export type { PostFeedPageProps, Post } from './PostFeedPage';
