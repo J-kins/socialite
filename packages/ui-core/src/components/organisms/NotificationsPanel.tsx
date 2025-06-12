@@ -1,288 +1,643 @@
-import React, { useState } from "react";
-import { Avatar, Badge, Icon, Button } from "../atoms";
-import { NotificationItem } from "../molecules";
+import React, { useState, useEffect, useRef } from 'react';
+import { Button } from '../atoms/Button';
+import { Icon } from '../atoms/Icon';
+import { Avatar } from '../atoms/Avatar';
+import { Badge } from '../atoms/Badge';
+import { LoadingSpinner } from '../atoms/LoadingSpinner';
+import { Divider } from '../atoms/Divider';
 
 export interface Notification {
   id: string;
   type:
-    | "like"
-    | "comment"
-    | "friend_request"
-    | "mention"
-    | "share"
-    | "group_invite"
-    | "event_invite";
-  user: {
+    | 'like'
+    | 'comment'
+    | 'share'
+    | 'mention'
+    | 'follow'
+    | 'message'
+    | 'post'
+    | 'event'
+    | 'system';
+  title: string;
+  description?: string;
+  avatar?: string;
+  targetUser?: {
     id: string;
     name: string;
     avatar?: string;
   };
-  content: string;
   timestamp: string;
   isRead: boolean;
+  isStarred?: boolean;
   actionUrl?: string;
   metadata?: {
     postId?: string;
-    groupId?: string;
+    commentId?: string;
+    userId?: string;
     eventId?: string;
+    [key: string]: any;
   };
 }
 
 export interface NotificationsPanelProps {
+  /**
+   * List of notifications
+   */
   notifications?: Notification[];
+  /**
+   * Loading state
+   */
+  isLoading?: boolean;
+  /**
+   * Empty state content
+   */
+  emptyStateTitle?: string;
+  emptyStateDescription?: string;
+  emptyStateIcon?: string;
+  /**
+   * Panel behavior
+   */
   isOpen?: boolean;
   onClose?: () => void;
+  maxHeight?: string;
+  showMarkAllRead?: boolean;
+  showClearAll?: boolean;
+  showFilter?: boolean;
+  /**
+   * Event handlers
+   */
   onNotificationClick?: (notification: Notification) => void;
   onMarkAsRead?: (notificationId: string) => void;
-  onMarkAllAsRead?: () => void;
-  onAcceptFriendRequest?: (userId: string) => void;
-  onDeclineFriendRequest?: (userId: string) => void;
+  onMarkAllRead?: () => void;
+  onClearAll?: () => void;
+  onDeleteNotification?: (notificationId: string) => void;
+  onStarNotification?: (notificationId: string) => void;
+  onLoadMore?: () => void;
+  /**
+   * Filtering and sorting
+   */
+  filterType?: 'all' | 'unread' | 'starred' | Notification['type'];
+  onFilterChange?: (filter: string) => void;
+  sortBy?: 'newest' | 'oldest' | 'unread';
+  onSortChange?: (sort: string) => void;
+  /**
+   * Pagination
+   */
+  hasMore?: boolean;
+  isLoadingMore?: boolean;
+  /**
+   * Appearance
+   */
+  variant?: 'dropdown' | 'sidebar' | 'modal' | 'page';
+  theme?: 'light' | 'dark' | 'auto';
+  position?: 'left' | 'right' | 'center';
+  /**
+   * Customization
+   */
+  showTimestamp?: boolean;
+  showAvatars?: boolean;
+  showActions?: boolean;
+  groupByDate?: boolean;
+  enableBulkActions?: boolean;
+  /**
+   * Real-time updates
+   */
+  onRefresh?: () => void;
+  lastUpdated?: string;
+  /**
+   * Accessibility
+   */
+  ariaLabel?: string;
   className?: string;
 }
 
 export const NotificationsPanel: React.FC<NotificationsPanelProps> = ({
   notifications = [],
-  isOpen = false,
+  isLoading = false,
+  emptyStateTitle = 'No notifications',
+  emptyStateDescription = "You're all caught up! Check back later for new notifications.",
+  emptyStateIcon = 'bell',
+  isOpen = true,
   onClose,
+  maxHeight = '400px',
+  showMarkAllRead = true,
+  showClearAll = true,
+  showFilter = true,
   onNotificationClick,
   onMarkAsRead,
-  onMarkAllAsRead,
-  onAcceptFriendRequest,
-  onDeclineFriendRequest,
-  className = "",
+  onMarkAllRead,
+  onClearAll,
+  onDeleteNotification,
+  onStarNotification,
+  onLoadMore,
+  filterType = 'all',
+  onFilterChange,
+  sortBy = 'newest',
+  onSortChange,
+  hasMore = false,
+  isLoadingMore = false,
+  variant = 'dropdown',
+  theme = 'light',
+  position = 'right',
+  showTimestamp = true,
+  showAvatars = true,
+  showActions = true,
+  groupByDate = false,
+  enableBulkActions = false,
+  onRefresh,
+  lastUpdated,
+  ariaLabel = 'Notifications panel',
+  className = '',
 }) => {
-  const [filter, setFilter] = useState<"all" | "unread">("all");
+  const [selectedNotifications, setSelectedNotifications] = useState<Set<string>>(new Set());
+  const [isExpanded, setIsExpanded] = useState(false);
+  const panelRef = useRef<HTMLDivElement>(null);
 
-  const filteredNotifications = notifications.filter(
-    (notification) => filter === "all" || !notification.isRead,
-  );
+  // Filter notifications based on current filter
+  const filteredNotifications = notifications.filter((notification) => {
+    if (filterType === 'all') return true;
+    if (filterType === 'unread') return !notification.isRead;
+    if (filterType === 'starred') return notification.isStarred;
+    return notification.type === filterType;
+  });
 
-  const unreadCount = notifications.filter((n) => !n.isRead).length;
+  // Sort notifications
+  const sortedNotifications = [...filteredNotifications].sort((a, b) => {
+    if (sortBy === 'newest') {
+      return new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime();
+    }
+    if (sortBy === 'oldest') {
+      return new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime();
+    }
+    if (sortBy === 'unread') {
+      if (a.isRead === b.isRead) {
+        return new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime();
+      }
+      return a.isRead ? 1 : -1;
+    }
+    return 0;
+  });
 
-  const getNotificationIcon = (type: Notification["type"]) => {
-    const iconMap = {
-      like: "heart",
-      comment: "chatbubble",
-      friend_request: "person-add",
-      mention: "at",
-      share: "share",
-      group_invite: "people",
-      event_invite: "calendar",
-    };
-    return iconMap[type] || "notifications";
+  // Group notifications by date if enabled
+  const groupedNotifications = groupByDate
+    ? groupNotificationsByDate(sortedNotifications)
+    : { All: sortedNotifications };
+
+  // Handle notification click
+  const handleNotificationClick = (notification: Notification) => {
+    if (!notification.isRead) {
+      onMarkAsRead?.(notification.id);
+    }
+    onNotificationClick?.(notification);
   };
 
-  const getNotificationColor = (type: Notification["type"]) => {
-    const colorMap = {
-      like: "text-red-500",
-      comment: "text-blue-500",
-      friend_request: "text-green-500",
-      mention: "text-purple-500",
-      share: "text-orange-500",
-      group_invite: "text-indigo-500",
-      event_invite: "text-pink-500",
-    };
-    return colorMap[type] || "text-gray-500";
+  // Handle bulk selection
+  const handleBulkToggle = (notificationId: string) => {
+    const newSelected = new Set(selectedNotifications);
+    if (newSelected.has(notificationId)) {
+      newSelected.delete(notificationId);
+    } else {
+      newSelected.add(notificationId);
+    }
+    setSelectedNotifications(newSelected);
   };
 
-  const formatTime = (timestamp: string) => {
+  // Handle select all
+  const handleSelectAll = () => {
+    if (selectedNotifications.size === sortedNotifications.length) {
+      setSelectedNotifications(new Set());
+    } else {
+      setSelectedNotifications(new Set(sortedNotifications.map((n) => n.id)));
+    }
+  };
+
+  // Handle bulk actions
+  const handleBulkMarkRead = () => {
+    selectedNotifications.forEach((id) => onMarkAsRead?.(id));
+    setSelectedNotifications(new Set());
+  };
+
+  const handleBulkDelete = () => {
+    selectedNotifications.forEach((id) => onDeleteNotification?.(id));
+    setSelectedNotifications(new Set());
+  };
+
+  // Format timestamp
+  const formatTimestamp = (timestamp: string) => {
     const date = new Date(timestamp);
     const now = new Date();
-    const diffInMinutes = Math.floor(
-      (now.getTime() - date.getTime()) / (1000 * 60),
-    );
+    const diffInHours = (now.getTime() - date.getTime()) / (1000 * 60 * 60);
 
-    if (diffInMinutes < 1) return "Just now";
-    if (diffInMinutes < 60) return `${diffInMinutes}m ago`;
-    if (diffInMinutes < 1440) return `${Math.floor(diffInMinutes / 60)}h ago`;
-    if (diffInMinutes < 10080)
-      return `${Math.floor(diffInMinutes / 1440)}d ago`;
-    return date.toLocaleDateString();
+    if (diffInHours < 1) {
+      return 'Just now';
+    } else if (diffInHours < 24) {
+      return `${Math.floor(diffInHours)}h ago`;
+    } else if (diffInHours < 168) {
+      return `${Math.floor(diffInHours / 24)}d ago`;
+    } else {
+      return date.toLocaleDateString();
+    }
   };
 
-  if (!isOpen) return null;
+  // Get notification icon
+  const getNotificationIcon = (type: Notification['type']) => {
+    const iconMap = {
+      like: 'heart',
+      comment: 'message-circle',
+      share: 'share',
+      mention: 'at-sign',
+      follow: 'user-plus',
+      message: 'message-square',
+      post: 'file-text',
+      event: 'calendar',
+      system: 'info',
+    };
+    return iconMap[type] || 'bell';
+  };
+
+  // Group notifications by date
+  function groupNotificationsByDate(notifications: Notification[]) {
+    const groups: { [key: string]: Notification[] } = {};
+
+    notifications.forEach((notification) => {
+      const date = new Date(notification.timestamp);
+      const today = new Date();
+      const yesterday = new Date(today);
+      yesterday.setDate(yesterday.getDate() - 1);
+
+      let groupKey: string;
+      if (date.toDateString() === today.toDateString()) {
+        groupKey = 'Today';
+      } else if (date.toDateString() === yesterday.toDateString()) {
+        groupKey = 'Yesterday';
+      } else {
+        groupKey = date.toLocaleDateString();
+      }
+
+      if (!groups[groupKey]) {
+        groups[groupKey] = [];
+      }
+      groups[groupKey].push(notification);
+    });
+
+    return groups;
+  }
+
+  const panelClasses = [
+    'notifications-panel',
+    `notifications-panel--${variant}`,
+    `notifications-panel--${theme}`,
+    `notifications-panel--${position}`,
+    isOpen && 'notifications-panel--open',
+    isExpanded && 'notifications-panel--expanded',
+    className,
+  ]
+    .filter(Boolean)
+    .join(' ');
+
+  if (!isOpen && variant === 'dropdown') {
+    return null;
+  }
 
   return (
     <div
-      className={`
-      absolute top-full right-0 mt-2 w-96 bg-white dark:bg-gray-900 
-      border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg
-      max-h-96 flex flex-col z-50
-      ${className}
-    `}
+      ref={panelRef}
+      className={panelClasses}
+      style={{ maxHeight: variant === 'dropdown' ? maxHeight : undefined }}
+      role="region"
+      aria-label={ariaLabel}
     >
       {/* Header */}
-      <div className="p-4 border-b border-gray-200 dark:border-gray-700">
-        <div className="flex items-center justify-between mb-3">
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
-            Notifications
-            {unreadCount > 0 && (
-              <Badge variant="primary" size="sm" className="ml-2">
-                {unreadCount}
-              </Badge>
-            )}
-          </h3>
-          <button
-            onClick={onClose}
-            className="p-1 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
-            aria-label="Close notifications"
-          >
-            <Icon name="close" className="w-5 h-5" />
-          </button>
+      <div className="notifications-panel__header">
+        <div className="notifications-panel__title">
+          <Icon name="bell" size="sm" />
+          <span>Notifications</span>
+          {notifications.length > 0 && (
+            <Badge
+              variant="secondary"
+              size="sm"
+              count={notifications.filter((n) => !n.isRead).length}
+            />
+          )}
         </div>
 
-        {/* Filter Tabs */}
-        <div className="flex space-x-1 bg-gray-100 dark:bg-gray-800 rounded-lg p-1">
-          <button
-            onClick={() => setFilter("all")}
-            className={`
-              flex-1 px-3 py-1 text-sm font-medium rounded-md transition-colors
-              ${
-                filter === "all"
-                  ? "bg-white dark:bg-gray-700 text-gray-900 dark:text-white shadow-sm"
-                  : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white"
-              }
-            `}
-          >
-            All
-          </button>
-          <button
-            onClick={() => setFilter("unread")}
-            className={`
-              flex-1 px-3 py-1 text-sm font-medium rounded-md transition-colors
-              ${
-                filter === "unread"
-                  ? "bg-white dark:bg-gray-700 text-gray-900 dark:text-white shadow-sm"
-                  : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white"
-              }
-            `}
-          >
-            Unread
-          </button>
-        </div>
+        <div className="notifications-panel__header-actions">
+          {onRefresh && (
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={onRefresh}
+              title="Refresh notifications"
+              className="notifications-panel__refresh"
+            >
+              <Icon name="refresh-cw" size="sm" />
+            </Button>
+          )}
 
-        {/* Mark All as Read */}
-        {unreadCount > 0 && (
-          <button
-            onClick={onMarkAllAsRead}
-            className="mt-2 text-sm text-blue-600 dark:text-blue-400 hover:underline"
-          >
-            Mark all as read
-          </button>
-        )}
+          {variant !== 'page' && (
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => setIsExpanded(!isExpanded)}
+              title={isExpanded ? 'Collapse' : 'Expand'}
+              className="notifications-panel__expand"
+            >
+              <Icon name={isExpanded ? 'minimize-2' : 'maximize-2'} size="sm" />
+            </Button>
+          )}
+
+          {onClose && (
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={onClose}
+              title="Close notifications"
+              className="notifications-panel__close"
+            >
+              <Icon name="x" size="sm" />
+            </Button>
+          )}
+        </div>
       </div>
 
-      {/* Notifications List */}
-      <div className="flex-1 overflow-y-auto">
-        {filteredNotifications.length === 0 ? (
-          <div className="p-8 text-center text-gray-500 dark:text-gray-400">
-            <Icon
-              name="notifications-outline"
-              className="w-12 h-12 mx-auto mb-3 opacity-50"
-            />
-            <p className="text-sm">
-              {filter === "unread"
-                ? "No unread notifications"
-                : "No notifications yet"}
-            </p>
+      {/* Filters and Actions */}
+      {(showFilter || showMarkAllRead || showClearAll || enableBulkActions) && (
+        <div className="notifications-panel__controls">
+          {showFilter && (
+            <div className="notifications-panel__filters">
+              <select
+                value={filterType}
+                onChange={(e) => onFilterChange?.(e.target.value)}
+                className="notifications-panel__filter-select"
+              >
+                <option value="all">All</option>
+                <option value="unread">Unread</option>
+                <option value="starred">Starred</option>
+                <option value="like">Likes</option>
+                <option value="comment">Comments</option>
+                <option value="follow">Follows</option>
+                <option value="mention">Mentions</option>
+              </select>
+
+              <select
+                value={sortBy}
+                onChange={(e) => onSortChange?.(e.target.value)}
+                className="notifications-panel__sort-select"
+              >
+                <option value="newest">Newest</option>
+                <option value="oldest">Oldest</option>
+                <option value="unread">Unread first</option>
+              </select>
+            </div>
+          )}
+
+          {enableBulkActions && sortedNotifications.length > 0 && (
+            <div className="notifications-panel__bulk-actions">
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={handleSelectAll}
+                className="notifications-panel__select-all"
+              >
+                {selectedNotifications.size === sortedNotifications.length
+                  ? 'Deselect all'
+                  : 'Select all'}
+              </Button>
+
+              {selectedNotifications.size > 0 && (
+                <>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={handleBulkMarkRead}
+                    className="notifications-panel__bulk-read"
+                  >
+                    Mark read ({selectedNotifications.size})
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={handleBulkDelete}
+                    className="notifications-panel__bulk-delete"
+                  >
+                    Delete ({selectedNotifications.size})
+                  </Button>
+                </>
+              )}
+            </div>
+          )}
+
+          {(showMarkAllRead || showClearAll) && (
+            <div className="notifications-panel__actions">
+              {showMarkAllRead && notifications.some((n) => !n.isRead) && (
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={onMarkAllRead}
+                  className="notifications-panel__mark-all-read"
+                >
+                  Mark all read
+                </Button>
+              )}
+
+              {showClearAll && notifications.length > 0 && (
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={onClearAll}
+                  className="notifications-panel__clear-all"
+                >
+                  Clear all
+                </Button>
+              )}
+            </div>
+          )}
+        </div>
+      )}
+
+      {lastUpdated && (
+        <div className="notifications-panel__last-updated">
+          Last updated: {formatTimestamp(lastUpdated)}
+        </div>
+      )}
+
+      {/* Content */}
+      <div className="notifications-panel__content">
+        {isLoading ? (
+          <div className="notifications-panel__loading">
+            <LoadingSpinner size="lg" />
+            <span>Loading notifications...</span>
+          </div>
+        ) : sortedNotifications.length === 0 ? (
+          <div className="notifications-panel__empty">
+            <Icon name={emptyStateIcon} size="xl" className="notifications-panel__empty-icon" />
+            <h3 className="notifications-panel__empty-title">{emptyStateTitle}</h3>
+            <p className="notifications-panel__empty-description">{emptyStateDescription}</p>
           </div>
         ) : (
-          <div className="divide-y divide-gray-200 dark:divide-gray-700">
-            {filteredNotifications.map((notification) => (
-              <div
-                key={notification.id}
-                className={`
-                  p-4 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors cursor-pointer
-                  ${!notification.isRead ? "bg-blue-50 dark:bg-blue-900/10" : ""}
-                `}
-                onClick={() => {
-                  onNotificationClick?.(notification);
-                  if (!notification.isRead) {
-                    onMarkAsRead?.(notification.id);
-                  }
-                }}
-              >
-                <div className="flex items-start space-x-3">
-                  <div className="relative">
-                    <Avatar
-                      src={notification.user.avatar}
-                      alt={notification.user.name}
-                      size="sm"
-                    />
-                    <div
-                      className={`
-                      absolute -bottom-1 -right-1 w-5 h-5 rounded-full 
-                      bg-white dark:bg-gray-900 flex items-center justify-center
-                      border-2 border-white dark:border-gray-900
-                    `}
-                    >
-                      <Icon
-                        name={getNotificationIcon(notification.type)}
-                        className={`w-3 h-3 ${getNotificationColor(notification.type)}`}
+          <div className="notifications-panel__list">
+            {Object.entries(groupedNotifications).map(([groupKey, groupNotifications]) => (
+              <div key={groupKey} className="notifications-panel__group">
+                {groupByDate && <div className="notifications-panel__group-title">{groupKey}</div>}
+
+                {groupNotifications.map((notification, index) => (
+                  <div
+                    key={notification.id}
+                    className={[
+                      'notifications-panel__item',
+                      !notification.isRead && 'notifications-panel__item--unread',
+                      notification.isStarred && 'notifications-panel__item--starred',
+                      selectedNotifications.has(notification.id) &&
+                        'notifications-panel__item--selected',
+                    ]
+                      .filter(Boolean)
+                      .join(' ')}
+                  >
+                    {enableBulkActions && (
+                      <input
+                        type="checkbox"
+                        checked={selectedNotifications.has(notification.id)}
+                        onChange={() => handleBulkToggle(notification.id)}
+                        className="notifications-panel__item-checkbox"
+                        aria-label={`Select notification: ${notification.title}`}
                       />
-                    </div>
-                  </div>
+                    )}
 
-                  <div className="flex-1 min-w-0">
-                    <p
-                      className={`
-                      text-sm text-gray-900 dark:text-white mb-1
-                      ${!notification.isRead ? "font-medium" : ""}
-                    `}
+                    <Button
+                      variant="ghost"
+                      className="notifications-panel__item-content"
+                      onClick={() => handleNotificationClick(notification)}
                     >
-                      <span className="font-medium">
-                        {notification.user.name}
-                      </span>{" "}
-                      {notification.content}
-                    </p>
+                      {showAvatars && (
+                        <div className="notifications-panel__item-avatar">
+                          {notification.avatar || notification.targetUser?.avatar ? (
+                            <Avatar
+                              src={notification.avatar || notification.targetUser?.avatar}
+                              alt={notification.targetUser?.name || 'User'}
+                              name={notification.targetUser?.name}
+                              size="sm"
+                            />
+                          ) : (
+                            <div className="notifications-panel__item-icon">
+                              <Icon name={getNotificationIcon(notification.type)} size="sm" />
+                            </div>
+                          )}
+                        </div>
+                      )}
 
-                    <p className="text-xs text-gray-500 dark:text-gray-400">
-                      {formatTime(notification.timestamp)}
-                    </p>
+                      <div className="notifications-panel__item-body">
+                        <div className="notifications-panel__item-title">
+                          {notification.title}
+                          {!notification.isRead && (
+                            <div className="notifications-panel__item-unread-indicator" />
+                          )}
+                        </div>
 
-                    {/* Friend Request Actions */}
-                    {notification.type === "friend_request" && (
-                      <div className="flex space-x-2 mt-2">
-                        <Button
-                          size="sm"
-                          variant="primary"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            onAcceptFriendRequest?.(notification.user.id);
-                          }}
-                        >
-                          Accept
-                        </Button>
-                        <Button
-                          size="sm"
-                          variant="secondary"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            onDeclineFriendRequest?.(notification.user.id);
-                          }}
-                        >
-                          Decline
-                        </Button>
+                        {notification.description && (
+                          <div className="notifications-panel__item-description">
+                            {notification.description}
+                          </div>
+                        )}
+
+                        {showTimestamp && (
+                          <div className="notifications-panel__item-timestamp">
+                            {formatTimestamp(notification.timestamp)}
+                          </div>
+                        )}
+                      </div>
+
+                      {notification.isStarred && (
+                        <Icon name="star" size="sm" className="notifications-panel__item-star" />
+                      )}
+                    </Button>
+
+                    {showActions && (
+                      <div className="notifications-panel__item-actions">
+                        {onStarNotification && (
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              onStarNotification(notification.id);
+                            }}
+                            title={notification.isStarred ? 'Unstar' : 'Star'}
+                            className="notifications-panel__item-action"
+                          >
+                            <Icon
+                              name={notification.isStarred ? 'star' : 'star'}
+                              size="sm"
+                              className={notification.isStarred ? 'filled' : ''}
+                            />
+                          </Button>
+                        )}
+
+                        {!notification.isRead && onMarkAsRead && (
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              onMarkAsRead(notification.id);
+                            }}
+                            title="Mark as read"
+                            className="notifications-panel__item-action"
+                          >
+                            <Icon name="check" size="sm" />
+                          </Button>
+                        )}
+
+                        {onDeleteNotification && (
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              onDeleteNotification(notification.id);
+                            }}
+                            title="Delete notification"
+                            className="notifications-panel__item-action"
+                          >
+                            <Icon name="x" size="sm" />
+                          </Button>
+                        )}
                       </div>
                     )}
                   </div>
+                ))}
 
-                  {!notification.isRead && (
-                    <div className="w-2 h-2 bg-blue-600 rounded-full flex-shrink-0 mt-2" />
-                  )}
-                </div>
+                {index < Object.entries(groupedNotifications).length - 1 && (
+                  <Divider className="notifications-panel__group-divider" />
+                )}
               </div>
             ))}
           </div>
         )}
-      </div>
 
-      {/* Footer */}
-      <div className="p-3 border-t border-gray-200 dark:border-gray-700">
-        <button className="w-full text-sm text-blue-600 dark:text-blue-400 hover:underline text-center">
-          See all notifications
-        </button>
+        {/* Load More */}
+        {hasMore && (
+          <div className="notifications-panel__load-more">
+            <Button
+              variant="ghost"
+              size="md"
+              onClick={onLoadMore}
+              disabled={isLoadingMore}
+              className="notifications-panel__load-more-button"
+            >
+              {isLoadingMore ? (
+                <>
+                  <LoadingSpinner size="sm" />
+                  <span>Loading...</span>
+                </>
+              ) : (
+                'Load more notifications'
+              )}
+            </Button>
+          </div>
+        )}
       </div>
     </div>
   );
 };
+
+export default NotificationsPanel;
