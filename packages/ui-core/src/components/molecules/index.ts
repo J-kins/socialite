@@ -1,4 +1,4 @@
-// Core Molecule Components
+// Core Molecule Components (15 existing)
 export { SearchBox } from './SearchBox';
 export { AvatarWithName } from './AvatarWithName';
 export { DropdownItem } from './DropdownItem';
@@ -19,6 +19,12 @@ export { SocialActionButton } from './SocialActionButton';
 export { FileUploader } from './FileUploader';
 export { PostCard } from './PostCard';
 export { CommentInput } from './CommentInput';
+
+// Additional Molecule Components from HTML Analysis
+export { GalleryItem } from './GalleryItem';
+export { CommentListItem } from './CommentListItem';
+export { FormGroup } from './FormGroup';
+export { SocialLoginButton } from './SocialLoginButton';
 
 // Core Component Types
 export type { SearchBoxProps } from './SearchBox';

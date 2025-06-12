@@ -20,6 +20,12 @@ import './file-uploader.css';
 import './post-card.css';
 import './comment-input.css';
 
+// Additional Molecule Component Styles from HTML Analysis
+import './gallery-item.css';
+import './comment-list-item.css';
+import './form-group.css';
+import './social-login-button.css';
+
 // Export CSS files for build tools that need explicit imports
 export const moleculeStyles = [
   // Core Components
@@ -43,6 +49,12 @@ export const moleculeStyles = [
   'file-uploader.css',
   'post-card.css',
   'comment-input.css',
+
+  // Additional Components from HTML Analysis
+  'gallery-item.css',
+  'comment-list-item.css',
+  'form-group.css',
+  'social-login-button.css',
 ] as const;
 
 export type MoleculeStylesType = (typeof moleculeStyles)[number];
