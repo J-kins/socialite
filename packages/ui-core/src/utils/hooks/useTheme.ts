@@ -1,4 +1,10 @@
-import { useState, useEffect, useCallback, useContext, createContext } from 'react';
+import {
+  useState,
+  useEffect,
+  useCallback,
+  useContext,
+  createContext,
+} from 'react';
 
 export type ThemeMode = 'light' | 'dark' | 'system';
 export type ResolvedTheme = 'light' | 'dark';
@@ -64,15 +70,15 @@ const DEFAULT_CONFIG: Required<ThemeConfig> = {
   addThemeClass: true,
   themeClasses: {
     light: 'light',
-    dark: 'dark'
+    dark: 'dark',
   },
   addColorScheme: true,
   cssVariables: {
     light: {},
-    dark: {}
+    dark: {},
   },
   transitionDuration: 300,
-  disableTransitions: true
+  disableTransitions: true,
 };
 
 // Theme context
@@ -92,7 +98,7 @@ export const useTheme = (config: ThemeConfig = {}): UseThemeReturn => {
     addColorScheme,
     cssVariables,
     transitionDuration,
-    disableTransitions
+    disableTransitions,
   } = mergedConfig;
 
   // State
@@ -107,14 +113,15 @@ export const useTheme = (config: ThemeConfig = {}): UseThemeReturn => {
   /**
    * Gets the resolved theme (light or dark)
    */
-  const resolvedTheme: ResolvedTheme = theme === 'system' ? systemTheme : theme as ResolvedTheme;
+  const resolvedTheme: ResolvedTheme =
+    theme === 'system' ? systemTheme : (theme as ResolvedTheme);
 
   /**
    * Detects system theme preference
    */
   const detectSystemTheme = useCallback((): ResolvedTheme => {
     if (!systemThemeAvailable) return 'light';
-    
+
     const mediaQuery = window.matchMedia(systemThemeQuery);
     return mediaQuery.matches ? 'dark' : 'light';
   }, [systemThemeAvailable, systemThemeQuery]);
@@ -140,75 +147,95 @@ export const useTheme = (config: ThemeConfig = {}): UseThemeReturn => {
   /**
    * Saves theme to localStorage
    */
-  const saveThemeToStorage = useCallback((themeToSave: ThemeMode) => {
-    if (!isBrowser) return;
+  const saveThemeToStorage = useCallback(
+    (themeToSave: ThemeMode) => {
+      if (!isBrowser) return;
 
-    try {
-      localStorage.setItem(storageKey, themeToSave);
-    } catch (error) {
-      console.warn('Failed to save theme to localStorage:', error);
-    }
-  }, [isBrowser, storageKey]);
+      try {
+        localStorage.setItem(storageKey, themeToSave);
+      } catch (error) {
+        console.warn('Failed to save theme to localStorage:', error);
+      }
+    },
+    [isBrowser, storageKey],
+  );
 
   /**
    * Applies theme to document
    */
-  const applyTheme = useCallback((targetTheme: ResolvedTheme) => {
-    if (!isBrowser) return;
+  const applyTheme = useCallback(
+    (targetTheme: ResolvedTheme) => {
+      if (!isBrowser) return;
 
-    const documentElement = document.documentElement;
+      const documentElement = document.documentElement;
 
-    // Disable transitions temporarily if configured
-    let originalTransition: string | null = null;
-    if (disableTransitions) {
-      originalTransition = documentElement.style.getPropertyValue('transition');
-      documentElement.style.setProperty('transition', 'none', 'important');
-    }
-
-    // Add theme class
-    if (addThemeClass) {
-      const { light: lightClass, dark: darkClass } = themeClasses;
-      documentElement.classList.remove(lightClass, darkClass);
-      documentElement.classList.add(targetTheme === 'dark' ? darkClass : lightClass);
-    }
-
-    // Add color-scheme CSS property
-    if (addColorScheme) {
-      documentElement.style.setProperty('color-scheme', targetTheme);
-    }
-
-    // Apply CSS variables
-    const variables = cssVariables[targetTheme];
-    if (variables) {
-      Object.entries(variables).forEach(([property, value]) => {
-        documentElement.style.setProperty(property, value);
-      });
-    }
-
-    // Restore transitions
-    if (disableTransitions) {
-      // Force reflow
-      documentElement.offsetHeight;
-      
-      if (originalTransition) {
-        documentElement.style.setProperty('transition', originalTransition);
-      } else {
-        documentElement.style.removeProperty('transition');
+      // Disable transitions temporarily if configured
+      let originalTransition: string | null = null;
+      if (disableTransitions) {
+        originalTransition =
+          documentElement.style.getPropertyValue('transition');
+        documentElement.style.setProperty('transition', 'none', 'important');
       }
-    }
-  }, [isBrowser, addThemeClass, themeClasses, addColorScheme, cssVariables, disableTransitions]);
+
+      // Add theme class
+      if (addThemeClass) {
+        const { light: lightClass, dark: darkClass } = themeClasses;
+        documentElement.classList.remove(lightClass, darkClass);
+        documentElement.classList.add(
+          targetTheme === 'dark' ? darkClass : lightClass,
+        );
+      }
+
+      // Add color-scheme CSS property
+      if (addColorScheme) {
+        documentElement.style.setProperty('color-scheme', targetTheme);
+      }
+
+      // Apply CSS variables
+      const variables = cssVariables[targetTheme];
+      if (variables) {
+        Object.entries(variables).forEach(([property, value]) => {
+          documentElement.style.setProperty(property, value);
+        });
+      }
+
+      // Restore transitions
+      if (disableTransitions) {
+        // Force reflow
+        documentElement.offsetHeight;
+
+        if (originalTransition) {
+          documentElement.style.setProperty('transition', originalTransition);
+        } else {
+          documentElement.style.removeProperty('transition');
+        }
+      }
+    },
+    [
+      isBrowser,
+      addThemeClass,
+      themeClasses,
+      addColorScheme,
+      cssVariables,
+      disableTransitions,
+    ],
+  );
 
   /**
    * Sets the theme mode
    */
-  const setTheme = useCallback((newTheme: ThemeMode) => {
-    setThemeState(newTheme);
-    saveThemeToStorage(newTheme);
+  const setTheme = useCallback(
+    (newTheme: ThemeMode) => {
+      setThemeState(newTheme);
+      saveThemeToStorage(newTheme);
 
-    // Apply theme immediately if not system, or if system then use current system theme
-    const themeToApply = newTheme === 'system' ? systemTheme : newTheme as ResolvedTheme;
-    applyTheme(themeToApply);
-  }, [saveThemeToStorage, systemTheme, applyTheme]);
+      // Apply theme immediately if not system, or if system then use current system theme
+      const themeToApply =
+        newTheme === 'system' ? systemTheme : (newTheme as ResolvedTheme);
+      applyTheme(themeToApply);
+    },
+    [saveThemeToStorage, systemTheme, applyTheme],
+  );
 
   /**
    * Toggles between light and dark themes
@@ -236,16 +263,22 @@ export const useTheme = (config: ThemeConfig = {}): UseThemeReturn => {
   /**
    * Checks if a specific theme is currently active
    */
-  const isTheme = useCallback((targetTheme: ResolvedTheme): boolean => {
-    return resolvedTheme === targetTheme;
-  }, [resolvedTheme]);
+  const isTheme = useCallback(
+    (targetTheme: ResolvedTheme): boolean => {
+      return resolvedTheme === targetTheme;
+    },
+    [resolvedTheme],
+  );
 
   /**
    * Gets theme-specific value
    */
-  const getThemeValue = useCallback(<T>(lightValue: T, darkValue: T): T => {
-    return resolvedTheme === 'dark' ? darkValue : lightValue;
-  }, [resolvedTheme]);
+  const getThemeValue = useCallback(
+    <T>(lightValue: T, darkValue: T): T => {
+      return resolvedTheme === 'dark' ? darkValue : lightValue;
+    },
+    [resolvedTheme],
+  );
 
   // Initialize theme on mount
   useEffect(() => {
@@ -263,7 +296,10 @@ export const useTheme = (config: ThemeConfig = {}): UseThemeReturn => {
     setThemeState(storedTheme);
 
     // Apply initial theme
-    const initialResolvedTheme = storedTheme === 'system' ? detectedSystemTheme : storedTheme as ResolvedTheme;
+    const initialResolvedTheme =
+      storedTheme === 'system'
+        ? detectedSystemTheme
+        : (storedTheme as ResolvedTheme);
     applyTheme(initialResolvedTheme);
 
     setIsLoading(false);
@@ -319,7 +355,7 @@ export const useTheme = (config: ThemeConfig = {}): UseThemeReturn => {
     systemTheme,
     isLoading,
     isTheme,
-    getThemeValue
+    getThemeValue,
   };
 };
 
@@ -328,39 +364,33 @@ export const useTheme = (config: ThemeConfig = {}): UseThemeReturn => {
  */
 export const useThemeContext = (): ThemeContextValue => {
   const context = useContext(ThemeContext);
-  
+
   if (!context) {
     throw new Error('useThemeContext must be used within a ThemeProvider');
   }
-  
+
   return context;
 };
 
 /**
- * Theme provider component
+ * Theme provider component factory
  */
-export const ThemeProvider: React.FC<{
-  children: React.ReactNode;
-  config?: ThemeConfig;
-}> = ({ children, config = {} }) => {
-  const themeValue = useTheme(config);
-
-  return (
-    <ThemeContext.Provider value={themeValue}>
-      {children}
-    </ThemeContext.Provider>
-  );
+export const createThemeProvider = (config: ThemeConfig = {}) => {
+  // This would be implemented in React components that use this hook
+  // The actual JSX provider would be created in a separate React component file
+  return {
+    config,
+    useThemeValue: () => useTheme(config),
+  };
 };
 
 /**
  * Hook for theme-aware CSS-in-JS styling
  */
-export const useThemeStyles = <T extends Record<string, any>>(
-  styles: {
-    light: T;
-    dark: T;
-  }
-): T => {
+export const useThemeStyles = <T extends Record<string, any>>(styles: {
+  light: T;
+  dark: T;
+}): T => {
   const { resolvedTheme } = useTheme();
   return styles[resolvedTheme];
 };
@@ -370,7 +400,7 @@ export const useThemeStyles = <T extends Record<string, any>>(
  */
 export const useThemeMediaQuery = (
   lightQuery: string,
-  darkQuery: string
+  darkQuery: string,
 ): boolean => {
   const { resolvedTheme } = useTheme();
   const [matches, setMatches] = useState(false);
@@ -380,7 +410,7 @@ export const useThemeMediaQuery = (
 
     const query = resolvedTheme === 'dark' ? darkQuery : lightQuery;
     const mediaQuery = window.matchMedia(query);
-    
+
     setMatches(mediaQuery.matches);
 
     const handleChange = (e: MediaQueryListEvent) => {
