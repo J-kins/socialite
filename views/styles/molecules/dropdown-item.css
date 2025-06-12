@@ -1,0 +1,119 @@
+/**
+ * DropdownItem Molecule Styles
+ * Dropdown menu item styling
+ */
+
+.dropdown-item {
+  @apply px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer transition-colors duration-200;
+  @apply first:rounded-t-lg last:rounded-b-lg;
+}
+
+.dropdown-item:focus {
+  @apply bg-gray-100 outline-none ring-2 ring-blue-500 ring-inset;
+}
+
+.dropdown-item.dropdown-item--active {
+  @apply bg-blue-600 text-white;
+}
+
+.dropdown-item.dropdown-item--active:hover {
+  @apply bg-blue-700;
+}
+
+.dropdown-item.dropdown-item--disabled {
+  @apply text-gray-400 cursor-not-allowed pointer-events-none;
+}
+
+.dropdown-item.dropdown-item--danger {
+  @apply text-red-600 hover:bg-red-50 hover:text-red-700;
+}
+
+.dropdown-item.dropdown-item--danger:focus {
+  @apply bg-red-50 ring-red-500;
+}
+
+/* With icon */
+.dropdown-item .dropdown-item-icon {
+  @apply inline-flex items-center mr-3 w-4 h-4 text-gray-400;
+}
+
+.dropdown-item.dropdown-item--active .dropdown-item-icon {
+  @apply text-white;
+}
+
+.dropdown-item.dropdown-item--danger .dropdown-item-icon {
+  @apply text-red-500;
+}
+
+/* With description */
+.dropdown-item .dropdown-item-content {
+  @apply flex flex-col;
+}
+
+.dropdown-item .dropdown-item-title {
+  @apply font-medium;
+}
+
+.dropdown-item .dropdown-item-description {
+  @apply text-xs text-gray-500 mt-0.5;
+}
+
+.dropdown-item.dropdown-item--active .dropdown-item-description {
+  @apply text-blue-100;
+}
+
+/* Keyboard indicator */
+.dropdown-item .dropdown-item-shortcut {
+  @apply ml-auto text-xs text-gray-400 font-mono;
+}
+
+.dropdown-item.dropdown-item--active .dropdown-item-shortcut {
+  @apply text-blue-100;
+}
+
+/* Divider item */
+.dropdown-item.dropdown-item--divider {
+  @apply border-t border-gray-200 my-1 p-0 cursor-default pointer-events-none;
+}
+
+/* Dense layout */
+.dropdown-item.dropdown-item--dense {
+  @apply py-1.5;
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .dropdown-item {
+    @apply text-gray-200 hover:bg-gray-700;
+  }
+
+  .dropdown-item:focus {
+    @apply bg-gray-700;
+  }
+
+  .dropdown-item.dropdown-item--danger {
+    @apply text-red-400 hover:bg-red-900/20;
+  }
+
+  .dropdown-item.dropdown-item--divider {
+    @apply border-gray-600;
+  }
+}
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+  .dropdown-item:focus {
+    @apply ring-4 ring-blue-600;
+  }
+
+  .dropdown-item.dropdown-item--danger:focus {
+    @apply ring-4 ring-red-600;
+  }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .dropdown-item {
+    @apply transition-none;
+  }
+}

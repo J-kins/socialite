@@ -1,0 +1,229 @@
+/**
+ * ToggleThemeSwitch Molecule Styles
+ * Theme toggle switch styling
+ */
+
+.toggle-theme-switch {
+  @apply flex items-center gap-3 p-2 rounded-lg transition-colors duration-200;
+  @apply hover:bg-gray-100 cursor-pointer;
+}
+
+.toggle-theme-switch:focus-within {
+  @apply ring-2 ring-blue-500 ring-offset-2 outline-none;
+}
+
+/* Icon styling */
+.toggle-theme-switch .theme-icon {
+  @apply flex-shrink-0 text-gray-600 transition-all duration-300;
+}
+
+.toggle-theme-switch .theme-icon.sun-icon {
+  @apply text-yellow-500;
+}
+
+.toggle-theme-switch .theme-icon.moon-icon {
+  @apply text-blue-500;
+}
+
+/* Switch styling */
+.toggle-theme-switch .theme-switch {
+  @apply relative;
+}
+
+/* Label styling */
+.toggle-theme-switch .theme-label {
+  @apply text-sm font-medium text-gray-700 select-none;
+}
+
+/* Interactive states */
+.toggle-theme-switch.toggle-theme-switch--active .theme-icon {
+  @apply scale-110;
+}
+
+/* Size variants */
+.toggle-theme-switch.toggle-theme-switch--small {
+  @apply p-1 gap-2;
+}
+
+.toggle-theme-switch.toggle-theme-switch--small .theme-icon {
+  @apply w-3 h-3;
+}
+
+.toggle-theme-switch.toggle-theme-switch--small .theme-label {
+  @apply text-xs;
+}
+
+.toggle-theme-switch.toggle-theme-switch--large {
+  @apply p-3 gap-4;
+}
+
+.toggle-theme-switch.toggle-theme-switch--large .theme-icon {
+  @apply w-6 h-6;
+}
+
+.toggle-theme-switch.toggle-theme-switch--large .theme-label {
+  @apply text-base;
+}
+
+/* Layout variants */
+.toggle-theme-switch.toggle-theme-switch--vertical {
+  @apply flex-col text-center;
+}
+
+.toggle-theme-switch.toggle-theme-switch--reverse {
+  @apply flex-row-reverse;
+}
+
+.toggle-theme-switch.toggle-theme-switch--center {
+  @apply justify-center;
+}
+
+/* Card variant */
+.toggle-theme-switch.toggle-theme-switch--card {
+  @apply bg-white border border-gray-200 rounded-lg shadow-sm p-4;
+  @apply hover:shadow-md hover:border-gray-300;
+}
+
+/* Animated background */
+.toggle-theme-switch.toggle-theme-switch--animated {
+  @apply relative overflow-hidden;
+}
+
+.toggle-theme-switch.toggle-theme-switch--animated::before {
+  content: "";
+  @apply absolute inset-0 bg-gradient-to-r from-yellow-200 to-blue-200 opacity-0 transition-opacity duration-500;
+}
+
+.toggle-theme-switch.toggle-theme-switch--animated.toggle-theme-switch--active::before {
+  @apply opacity-30;
+}
+
+/* Auto theme detection indicator */
+.toggle-theme-switch .auto-indicator {
+  @apply absolute -top-1 -right-1 w-2 h-2 bg-green-500 rounded-full;
+  @apply opacity-0 transition-opacity duration-200;
+}
+
+.toggle-theme-switch.toggle-theme-switch--auto .auto-indicator {
+  @apply opacity-100;
+}
+
+/* System preference indicator */
+.toggle-theme-switch .system-preference {
+  @apply text-xs text-gray-500 mt-1;
+}
+
+/* Keyboard shortcut hint */
+.toggle-theme-switch .keyboard-hint {
+  @apply text-xs text-gray-400 ml-auto font-mono;
+}
+
+/* Status text */
+.toggle-theme-switch .status-text {
+  @apply text-xs text-gray-500;
+}
+
+.toggle-theme-switch.toggle-theme-switch--light .status-text::before {
+  content: "Light mode";
+}
+
+.toggle-theme-switch.toggle-theme-switch--dark .status-text::before {
+  content: "Dark mode";
+}
+
+.toggle-theme-switch.toggle-theme-switch--auto .status-text::before {
+  content: "Auto";
+}
+
+/* Transition animations */
+.toggle-theme-switch .theme-icon,
+.toggle-theme-switch .theme-switch {
+  @apply transition-all duration-300 ease-in-out;
+}
+
+/* Theme transition effect */
+.toggle-theme-switch.toggle-theme-switch--transitioning .theme-icon {
+  @apply animate-spin;
+}
+
+/* Mobile responsive */
+@media (max-width: 640px) {
+  .toggle-theme-switch .theme-label {
+    @apply hidden;
+  }
+
+  .toggle-theme-switch .keyboard-hint {
+    @apply hidden;
+  }
+
+  .toggle-theme-switch.toggle-theme-switch--card {
+    @apply p-2;
+  }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .toggle-theme-switch {
+    @apply hover:bg-gray-800;
+  }
+
+  .toggle-theme-switch .theme-label {
+    @apply text-gray-300;
+  }
+
+  .toggle-theme-switch .status-text {
+    @apply text-gray-400;
+  }
+
+  .toggle-theme-switch.toggle-theme-switch--card {
+    @apply bg-gray-800 border-gray-700;
+  }
+}
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+  .toggle-theme-switch:focus-within {
+    @apply ring-4 ring-blue-600;
+  }
+
+  .toggle-theme-switch .theme-icon {
+    @apply text-black;
+  }
+
+  .toggle-theme-switch.toggle-theme-switch--dark .theme-icon {
+    @apply text-white;
+  }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .toggle-theme-switch,
+  .toggle-theme-switch .theme-icon,
+  .toggle-theme-switch .theme-switch {
+    @apply transition-none;
+  }
+
+  .toggle-theme-switch.toggle-theme-switch--active .theme-icon {
+    @apply scale-100;
+  }
+
+  .toggle-theme-switch.toggle-theme-switch--transitioning .theme-icon {
+    @apply animate-none;
+  }
+
+  .toggle-theme-switch.toggle-theme-switch--animated::before {
+    @apply transition-none;
+  }
+}
+
+/* Focus trap for accessibility */
+.toggle-theme-switch:focus-within .theme-switch input:focus {
+  @apply outline-none;
+}
+
+/* Print styles */
+@media print {
+  .toggle-theme-switch {
+    @apply hidden;
+  }
+}

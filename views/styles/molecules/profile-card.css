@@ -1,0 +1,257 @@
+/**
+ * ProfileCard Molecule Styles
+ * Compact user profile display styling
+ */
+
+.profile-card {
+  @apply bg-white border border-gray-200 rounded-lg shadow-sm p-4 text-center transition-all duration-200;
+  @apply hover:shadow-md hover:border-gray-300;
+}
+
+.profile-card:focus-within {
+  @apply ring-2 ring-blue-500 ring-offset-2 outline-none;
+}
+
+/* Avatar styling */
+.profile-card .profile-avatar {
+  @apply mx-auto mb-3 relative;
+}
+
+.profile-card .profile-avatar .status-indicator {
+  @apply absolute -bottom-1 -right-1 w-4 h-4 bg-green-500 border-2 border-white rounded-full;
+}
+
+.profile-card .profile-avatar .status-indicator.offline {
+  @apply bg-gray-400;
+}
+
+.profile-card .profile-avatar .status-indicator.away {
+  @apply bg-yellow-500;
+}
+
+.profile-card .profile-avatar .status-indicator.busy {
+  @apply bg-red-500;
+}
+
+/* Content styling */
+.profile-card .profile-name {
+  @apply font-semibold text-gray-900 mb-1 truncate;
+}
+
+.profile-card .profile-bio {
+  @apply text-sm text-gray-600 mb-3 line-clamp-2;
+}
+
+.profile-card .profile-stats {
+  @apply flex justify-center gap-4 mb-3 text-sm;
+}
+
+.profile-card .profile-stat {
+  @apply text-center;
+}
+
+.profile-card .profile-stat-number {
+  @apply font-semibold text-gray-900 block;
+}
+
+.profile-card .profile-stat-label {
+  @apply text-gray-500 text-xs;
+}
+
+/* Action buttons */
+.profile-card .profile-actions {
+  @apply flex gap-2 justify-center;
+}
+
+.profile-card .profile-action {
+  @apply flex-1 max-w-24;
+}
+
+/* Size variants */
+.profile-card.profile-card--small {
+  @apply p-3;
+}
+
+.profile-card.profile-card--small .profile-avatar {
+  @apply w-12 h-12 mb-2;
+}
+
+.profile-card.profile-card--small .profile-name {
+  @apply text-sm;
+}
+
+.profile-card.profile-card--small .profile-bio {
+  @apply text-xs mb-2;
+}
+
+.profile-card.profile-card--large {
+  @apply p-6;
+}
+
+.profile-card.profile-card--large .profile-avatar {
+  @apply w-20 h-20 mb-4;
+}
+
+.profile-card.profile-card--large .profile-name {
+  @apply text-xl mb-2;
+}
+
+/* Interactive states */
+.profile-card.profile-card--clickable {
+  @apply cursor-pointer;
+}
+
+.profile-card.profile-card--clickable:hover {
+  @apply transform scale-105 shadow-lg;
+}
+
+.profile-card.profile-card--selected {
+  @apply border-blue-500 bg-blue-50;
+}
+
+/* Status styling */
+.profile-card.profile-card--online {
+  @apply border-green-200 bg-green-50/30;
+}
+
+.profile-card.profile-card--verified .profile-name::after {
+  content: "✓";
+  @apply ml-1 text-blue-500 text-sm;
+}
+
+/* Badge overlays */
+.profile-card .profile-badge {
+  @apply absolute top-2 right-2 text-xs px-2 py-1 rounded-full;
+}
+
+.profile-card .profile-badge.premium {
+  @apply bg-yellow-100 text-yellow-800;
+}
+
+.profile-card .profile-badge.vip {
+  @apply bg-purple-100 text-purple-800;
+}
+
+.profile-card .profile-badge.new {
+  @apply bg-green-100 text-green-800;
+}
+
+.profile-card {
+  @apply relative;
+}
+
+/* Horizontal layout variant */
+.profile-card.profile-card--horizontal {
+  @apply flex items-center text-left p-3;
+}
+
+.profile-card.profile-card--horizontal .profile-avatar {
+  @apply mx-0 mr-3 mb-0 flex-shrink-0;
+}
+
+.profile-card.profile-card--horizontal .profile-content {
+  @apply flex-1 min-w-0;
+}
+
+.profile-card.profile-card--horizontal .profile-actions {
+  @apply justify-start mt-2;
+}
+
+/* Loading state */
+.profile-card.profile-card--loading {
+  @apply opacity-60 pointer-events-none;
+}
+
+.profile-card.profile-card--loading .profile-avatar {
+  @apply animate-pulse bg-gray-200;
+}
+
+.profile-card.profile-card--loading .profile-name,
+.profile-card.profile-card--loading .profile-bio {
+  @apply animate-pulse bg-gray-200 text-transparent rounded;
+}
+
+/* Mobile responsive */
+@media (max-width: 640px) {
+  .profile-card .profile-stats {
+    @apply gap-2 text-xs;
+  }
+
+  .profile-card .profile-actions {
+    @apply flex-col gap-1;
+  }
+
+  .profile-card.profile-card--horizontal {
+    @apply flex-col text-center;
+  }
+
+  .profile-card.profile-card--horizontal .profile-avatar {
+    @apply mx-auto mb-2;
+  }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .profile-card {
+    @apply bg-gray-800 border-gray-700;
+  }
+
+  .profile-card:hover {
+    @apply border-gray-600;
+  }
+
+  .profile-card .profile-name {
+    @apply text-gray-100;
+  }
+
+  .profile-card .profile-bio {
+    @apply text-gray-300;
+  }
+
+  .profile-card .profile-stat-number {
+    @apply text-gray-100;
+  }
+
+  .profile-card .profile-stat-label {
+    @apply text-gray-400;
+  }
+}
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+  .profile-card {
+    @apply border-2 border-black;
+  }
+
+  .profile-card:focus-within {
+    @apply ring-4 ring-blue-600;
+  }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .profile-card {
+    @apply transition-none;
+  }
+
+  .profile-card.profile-card--clickable:hover {
+    @apply transform-none;
+  }
+
+  .profile-card.profile-card--loading .profile-avatar,
+  .profile-card.profile-card--loading .profile-name,
+  .profile-card.profile-card--loading .profile-bio {
+    @apply animate-none;
+  }
+}
+
+/* Print styles */
+@media print {
+  .profile-card {
+    @apply shadow-none border border-gray-400;
+  }
+
+  .profile-card .profile-actions {
+    @apply hidden;
+  }
+}

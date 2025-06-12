@@ -1,0 +1,72 @@
+/**
+ * SearchBox Molecule Styles
+ * Search input with button styling
+ */
+
+.search-box {
+  @apply flex items-center gap-2 relative;
+}
+
+.search-box .search-input {
+  @apply flex-1 pr-10;
+}
+
+.search-box .search-button {
+  @apply absolute right-2 top-1/2 transform -translate-y-1/2;
+  @apply bg-transparent hover:bg-gray-100 text-gray-400 hover:text-gray-600;
+  @apply transition-colors duration-200;
+}
+
+.search-box.search-box--expanded {
+  @apply w-full max-w-lg;
+}
+
+.search-box.search-box--focused .search-input {
+  @apply border-blue-500 ring-2 ring-blue-200;
+}
+
+/* Search suggestions dropdown */
+.search-box .search-dropdown {
+  @apply absolute top-full left-0 right-0 mt-1 bg-white border border-gray-200 rounded-lg shadow-lg z-50;
+  @apply max-h-64 overflow-y-auto;
+}
+
+.search-box .search-dropdown.hidden {
+  @apply opacity-0 invisible;
+}
+
+/* Mobile responsive */
+@media (max-width: 640px) {
+  .search-box {
+    @apply w-full;
+  }
+
+  .search-box .search-input {
+    @apply text-sm;
+  }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .search-box .search-dropdown {
+    @apply bg-gray-800 border-gray-700;
+  }
+}
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+  .search-box .search-input {
+    @apply border-2 border-black;
+  }
+
+  .search-box.search-box--focused .search-input {
+    @apply border-blue-600 ring-4 ring-blue-300;
+  }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .search-box .search-button {
+    @apply transition-none;
+  }
+}

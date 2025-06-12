@@ -1,0 +1,243 @@
+/**
+ * CreatePostOption Molecule Styles
+ * Post creation option button styling
+ */
+
+.create-post-option {
+  @apply block w-full;
+}
+
+.create-post-option .option-button {
+  @apply flex items-center gap-3 w-full px-4 py-3 text-left;
+  @apply hover:bg-gray-50 transition-colors duration-200;
+  @apply border-b border-gray-100 last:border-b-0;
+}
+
+.create-post-option .option-button:focus {
+  @apply outline-none ring-2 ring-blue-500 ring-inset bg-gray-50;
+}
+
+.create-post-option .option-button:active {
+  @apply bg-gray-100;
+}
+
+/* Icon styling */
+.create-post-option .option-icon {
+  @apply flex-shrink-0 w-5 h-5 text-blue-600;
+}
+
+.create-post-option .option-icon.photo {
+  @apply text-green-600;
+}
+
+.create-post-option .option-icon.video {
+  @apply text-red-600;
+}
+
+.create-post-option .option-icon.event {
+  @apply text-purple-600;
+}
+
+.create-post-option .option-icon.poll {
+  @apply text-yellow-600;
+}
+
+.create-post-option .option-icon.document {
+  @apply text-gray-600;
+}
+
+/* Text styling */
+.create-post-option .option-text {
+  @apply flex-1 font-medium text-gray-700;
+}
+
+.create-post-option .option-description {
+  @apply text-sm text-gray-500 mt-0.5;
+}
+
+/* Badge/indicator */
+.create-post-option .option-badge {
+  @apply ml-auto flex-shrink-0 text-xs px-2 py-1 rounded-full;
+}
+
+.create-post-option .option-badge.new {
+  @apply bg-green-100 text-green-800;
+}
+
+.create-post-option .option-badge.premium {
+  @apply bg-yellow-100 text-yellow-800;
+}
+
+.create-post-option .option-badge.beta {
+  @apply bg-blue-100 text-blue-800;
+}
+
+/* Disabled state */
+.create-post-option.disabled {
+  @apply opacity-50 pointer-events-none;
+}
+
+.create-post-option.disabled .option-icon {
+  @apply text-gray-400;
+}
+
+.create-post-option.disabled .option-text {
+  @apply text-gray-400;
+}
+
+/* Active/selected state */
+.create-post-option.active .option-button {
+  @apply bg-blue-50 border-blue-200;
+}
+
+.create-post-option.active .option-text {
+  @apply text-blue-700;
+}
+
+/* Size variants */
+.create-post-option.create-post-option--compact .option-button {
+  @apply px-3 py-2;
+}
+
+.create-post-option.create-post-option--compact .option-icon {
+  @apply w-4 h-4;
+}
+
+.create-post-option.create-post-option--compact .option-text {
+  @apply text-sm;
+}
+
+.create-post-option.create-post-option--large .option-button {
+  @apply px-6 py-4;
+}
+
+.create-post-option.create-post-option--large .option-icon {
+  @apply w-6 h-6;
+}
+
+.create-post-option.create-post-option--large .option-text {
+  @apply text-lg;
+}
+
+/* Grid layout variant */
+.create-post-option.create-post-option--grid {
+  @apply aspect-square;
+}
+
+.create-post-option.create-post-option--grid .option-button {
+  @apply flex-col text-center justify-center h-full p-4;
+}
+
+.create-post-option.create-post-option--grid .option-icon {
+  @apply w-8 h-8 mb-2;
+}
+
+.create-post-option.create-post-option--grid .option-description {
+  @apply hidden;
+}
+
+/* Loading state */
+.create-post-option.loading {
+  @apply opacity-60 pointer-events-none;
+}
+
+.create-post-option.loading .option-icon {
+  @apply animate-pulse;
+}
+
+/* Keyboard shortcut indicator */
+.create-post-option .option-shortcut {
+  @apply ml-2 text-xs text-gray-400 font-mono;
+  @apply bg-gray-100 px-1.5 py-0.5 rounded;
+}
+
+/* Mobile responsive */
+@media (max-width: 640px) {
+  .create-post-option .option-button {
+    @apply px-3 py-2.5;
+  }
+
+  .create-post-option .option-description {
+    @apply hidden;
+  }
+
+  .create-post-option .option-shortcut {
+    @apply hidden;
+  }
+
+  .create-post-option.create-post-option--grid .option-button {
+    @apply p-3;
+  }
+
+  .create-post-option.create-post-option--grid .option-icon {
+    @apply w-6 h-6;
+  }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .create-post-option .option-button {
+    @apply hover:bg-gray-800 border-gray-700;
+  }
+
+  .create-post-option .option-button:focus {
+    @apply bg-gray-800;
+  }
+
+  .create-post-option .option-button:active {
+    @apply bg-gray-700;
+  }
+
+  .create-post-option .option-text {
+    @apply text-gray-200;
+  }
+
+  .create-post-option .option-description {
+    @apply text-gray-400;
+  }
+
+  .create-post-option .option-shortcut {
+    @apply bg-gray-800 text-gray-300;
+  }
+
+  .create-post-option.active .option-button {
+    @apply bg-blue-900/50 border-blue-800;
+  }
+}
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+  .create-post-option .option-button {
+    @apply border-2 border-gray-300;
+  }
+
+  .create-post-option .option-button:focus {
+    @apply ring-4 ring-blue-600;
+  }
+
+  .create-post-option .option-icon {
+    @apply text-black;
+  }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .create-post-option .option-button {
+    @apply transition-none;
+  }
+
+  .create-post-option.loading .option-icon {
+    @apply animate-none;
+  }
+}
+
+/* Print styles */
+@media print {
+  .create-post-option .option-shortcut {
+    @apply hidden;
+  }
+
+  .create-post-option .option-badge {
+    @apply hidden;
+  }
+}

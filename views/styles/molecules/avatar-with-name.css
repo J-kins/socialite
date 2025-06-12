@@ -1,0 +1,104 @@
+/**
+ * AvatarWithName Molecule Styles
+ * User avatar with name display styling
+ */
+
+.avatar-with-name {
+  @apply flex items-center gap-2;
+}
+
+.avatar-with-name .avatar {
+  @apply flex-shrink-0;
+}
+
+.avatar-with-name .avatar-name {
+  @apply truncate min-w-0;
+}
+
+.avatar-with-name.avatar-with-name--vertical {
+  @apply flex-col text-center;
+}
+
+.avatar-with-name.avatar-with-name--vertical .avatar-name {
+  @apply mt-2;
+}
+
+/* Size variants */
+.avatar-with-name.avatar-with-name--small .avatar {
+  @apply w-6 h-6;
+}
+
+.avatar-with-name.avatar-with-name--small .avatar-name {
+  @apply text-sm;
+}
+
+.avatar-with-name.avatar-with-name--medium .avatar {
+  @apply w-8 h-8;
+}
+
+.avatar-with-name.avatar-with-name--large .avatar {
+  @apply w-12 h-12;
+}
+
+.avatar-with-name.avatar-with-name--large .avatar-name {
+  @apply text-lg font-medium;
+}
+
+/* Interactive states */
+.avatar-with-name.avatar-with-name--clickable {
+  @apply cursor-pointer transition-colors duration-200;
+}
+
+.avatar-with-name.avatar-with-name--clickable:hover {
+  @apply bg-gray-50 rounded-lg p-2 -m-2;
+}
+
+.avatar-with-name.avatar-with-name--clickable:focus-within {
+  @apply bg-gray-50 rounded-lg p-2 -m-2 ring-2 ring-blue-500 ring-offset-2;
+}
+
+/* Status indicators */
+.avatar-with-name .user-status {
+  @apply text-xs text-gray-500 block;
+}
+
+.avatar-with-name .user-status.online {
+  @apply text-green-600;
+}
+
+.avatar-with-name .user-status.away {
+  @apply text-yellow-600;
+}
+
+.avatar-with-name .user-status.offline {
+  @apply text-gray-400;
+}
+
+/* Mobile responsive */
+@media (max-width: 640px) {
+  .avatar-with-name.avatar-with-name--responsive .avatar-name {
+    @apply hidden;
+  }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .avatar-with-name.avatar-with-name--clickable:hover,
+  .avatar-with-name.avatar-with-name--clickable:focus-within {
+    @apply bg-gray-800;
+  }
+}
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+  .avatar-with-name.avatar-with-name--clickable:focus-within {
+    @apply ring-4 ring-blue-600;
+  }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .avatar-with-name.avatar-with-name--clickable {
+    @apply transition-none;
+  }
+}
