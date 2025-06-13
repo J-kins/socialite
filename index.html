@@ -1,826 +1,1490 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <!-- Favicon -->
-    <link href="assets/images/favicon.png" rel="icon" type="image/png">
+    <link href="assets/images/favicon.png" rel="icon" type="image/png" />
 
     <!-- title and description-->
     <title>Nexify</title>
-    <meta name="description" content="Nexify - Social sharing network HTML Template">
-   
+    <meta
+      name="description"
+      content="Nexify - Social sharing network HTML Template"
+    />
+
     <!-- css files -->
-    <link rel="stylesheet" href="assets/css/tailwind.css">
-    <link rel="stylesheet" href="assets/css/style.css">  
-    <link rel="stylesheet" href="src/assets/css/styles.css">
-    
+    <link rel="stylesheet" href="assets/css/tailwind.css" />
+    <link rel="stylesheet" href="assets/css/style.css" />
+    <link rel="stylesheet" href="src/assets/css/styles.css" />
+
     <!-- google font -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700;800&display=swap" rel="stylesheet">
- 
-</head>
-<body>
-
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
     <!-- Loading Spinner -->
-    <div id="loadingSpinner" class="fixed inset-0 bg-white dark:bg-dark2 z-50 flex items-center justify-center">
-        <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div>
+    <div
+      id="loadingSpinner"
+      class="fixed inset-0 bg-white dark:bg-dark2 z-50 flex items-center justify-center"
+    >
+      <div
+        class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"
+      ></div>
     </div>
- 
+
     <div id="wrapper" class="hidden">
-
-        <!-- header -->
-        <header class="z-[100] h-[--m-top] fixed top-0 left-0 w-full flex items-center bg-white/80 sky-50 backdrop-blur-xl border-b border-slate-200 dark:bg-dark2 dark:border-slate-800">
-
-            <div class="flex items-center w-full xl:px-6 px-2 max-lg:gap-10">
-
-                <div class="2xl:w-[--w-side] lg:w-[--w-side-sm]">
-
-                    <!-- left -->
-                    <div class="flex items-center gap-1"> 
-
-                        <!-- icon menu -->
-                        <button uk-toggle="target: #site__sidebar ; cls :!-translate-x-0"
-                                class="flex items-center justify-center w-8 h-8 text-xl rounded-full hover:bg-gray-100 xl:hidden dark:hover:bg-slate-600 group"> 
-                                <ion-icon name="menu-outline" class="text-2xl group-aria-expanded:hidden"></ion-icon>
-                                <ion-icon name="close-outline" class="hidden text-2xl group-aria-expanded:block"></ion-icon>
-                        </button>
-                        <div id="logo">
-                            <a href="index.html"> 
-                                <img src="assets/images/logo.png" alt="" class="w-28 md:block hidden dark:!hidden">
-                                <img src="assets/images/logo-light.png" alt="" class="dark:md:block hidden">
-                                <img src="assets/images/logo-mobile.png" class="hidden max-md:block w-20 dark:!hidden" alt="">
-                                <img src="assets/images/logo-mobile-light.png" class="hidden dark:max-md:block w-20" alt="">
-                            </a>
-                        </div>
-                         
-                    </div>
-
-                </div>
-                <div class="flex-1 relative">
-
-                    <div class="max-w-[1220px] mx-auto flex items-center">
-                        
-                        <!-- search -->
-                        <div id="search--box" class="xl:w-[680px] sm:w-96 sm:relative rounded-xl overflow-hidden z-20 bg-secondery max-md:hidden w-screen left-0 max-sm:fixed max-sm:top-2 dark:!bg-white/5">
-                            <ion-icon name="search" class="absolute left-4 top-1/2 -translate-y-1/2"></ion-icon>
-                            <input type="text" id="searchInput" placeholder="Search Friends, videos .." class="w-full !pl-10 !font-normal !bg-transparent h-12 !text-sm">
-                        </div>  
-                        <!-- search dropdown-->
-                        <div id="searchDropdown" class="hidden uk- open z-10"
-                                uk-drop="pos: bottom-center ; animation: uk-animation-slide-bottom-small;mode:click ">
-                            
-                                <div class="xl:w-[694px] sm:w-96 bg-white dark:bg-dark3 w-screen p-2 rounded-lg shadow-lg -mt-14 pt-14">
-                                    <div class="flex justify-between px-2 py-2.5 text-sm font-medium"> 
-                                        <div class=" text-black dark:text-white">Recent</div>
-                                        <button type="button" class="text-blue-500">Clear</button>
-                                    </div>
-                                    <nav id="searchResults" class="text-sm font-medium text-black dark:text-white">
-                                        <!-- Dynamic search results will be inserted here -->
-                                    </nav>
-                                </div>
-                                
-                        </div>
-
-                        <!-- header icons -->
-                        <div class="flex items-center sm:gap-4 gap-2 absolute right-5 top-1/2 -translate-y-1/2 text-black">
-                            <!-- create -->
-                            <button type="button" class="sm:p-2 p-1 rounded-full relative sm:bg-secondery dark:text-white">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 max-sm:hidden">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"></path>
-                                  </svg>
-                                <ion-icon name="add-circle-outline" class="sm:hidden text-2xl "></ion-icon>
-                            </button>
-                            <div    class="hidden bg-white p-4 rounded-lg overflow-hidden drop-shadow-xl dark:bg-slate-700 md:w-[324px] w-screen border2"
-                                    uk-drop="offset:6;pos: bottom-right; mode: click; animate-out: true; animation: uk-animation-scale-up uk-transform-origin-top-right ">
-                                
-                                    <h3 class="font-bold text-md"> Create  </h3>
-
-                                    <!-- slider -->
-                                    <div class="mt-4" tabindex="-1" uk-slider="finite:true;sets: true">
-
-                                        <div class="uk-slider-container pb-1">
-                                        
-                                            <ul class="uk-slider-items grid-small" uk-scrollspy="target: > li; cls: uk-animation-scale-up , uk-animation-slide-right-small; delay: 20 ;repeat: true">
-                                                <li class="w-28" uk-scrollspy-class="uk-animation-fade">
-                                                    <div class="p-3 px-4 rounded-lg bg-teal-100/60 text-teal-600 dark:text-white dark:bg-dark4">
-                                                        <ion-icon name="book" class="text-2xl drop-shadow-md"></ion-icon>
-                                                        <div class="mt-1.5 text-sm font-medium"> Story </div>
-                                                    </div>
-                                                </li>   
-                                                <li class="w-28">
-                                                    <div class="p-3 px-4 rounded-lg bg-sky-100/60 text-sky-600 dark:text-white dark:bg-dark4" uk-toggle="target: #create-status">
-                                                        <ion-icon name="camera" class="text-2xl drop-shadow-md"></ion-icon>
-                                                        <div class="mt-1.5 text-sm font-medium"> Post </div>
-                                                    </div>
-                                                </li> 
-                                                <li class="w-28">
-                                                    <div class="p-3 px-4 rounded-lg bg-purple-100/60 text-purple-600 dark:text-white dark:bg-dark4">
-                                                        <ion-icon name="videocam" class="text-2xl drop-shadow-md"></ion-icon>
-                                                        <div class="mt-1.5 text-sm font-medium"> Reel </div>
-                                                    </div>
-                                                </li> 
-                                                <li class="w-28">
-                                                    <div class="p-3 px-4 rounded-lg bg-pink-100/60 text-pink-600 dark:text-white dark:bg-dark4">
-                                                        <ion-icon name="location" class="text-2xl drop-shadow-md"></ion-icon>
-                                                        <div class="mt-1.5 text-sm font-medium"> location </div>
-                                                    </div>
-                                                </li> 
-                                                <li class="w-28">
-                                                    <div class="p-3 px-4 rounded-lg bg-sky-100/70 text-sky-600 dark:text-white dark:bg-dark4">
-                                                        <ion-icon name="happy" class="text-2xl  drop-shadow-md"></ion-icon>
-                                                        <div class="mt-1.5 text-sm font-medium"> Status </div>
-                                                    </div> 
-                                                </li> 
-                                            </ul>
-                                    
-                                        </div>
-                                    
-                                        <!-- slide nav icons -->
-                                        <div class="dark:hidden">
-                                            <a class="absolute -translate-y-1/2 top-1/2 -left-4 flex items-center w-8 h-full px-1.5 justify-start bg-gradient-to-r from-white via-white dark:from-slate-600 dark:via-slate-500 dark:from-transparent dark:via-transparent" href="#" uk-slider-item="previous"> <ion-icon name="chevron-back" class="text-xl dark:text-white"></ion-icon> </a>
-                                            <a class="absolute -translate-y-1/2 top-1/2 -right-4 flex items-center w-8 h-full px-1.5 justify-end bg-gradient-to-l from-white via-white dark:from-transparent dark:via-transparent" href="#" uk-slider-item="next">  <ion-icon name="chevron-forward" class="text-xl dark:text-white"></ion-icon> </a>
-                                        </div>
-                
-
-                                        <!-- slide nav -->
-                                        <div class="justify-center mt-2 -mb-2 hidden dark:flex">
-                                            <ul class="inline-flex flex-wrap justify-center gap-1 uk-dotnav uk-slider-nav"> </ul>
-                                        </div>
-
-                                    </div>
-    
-                                    <!-- list -->
-                                    <ul class="-m-1 mt-4 pb-1 text-xs text-gray-500 dark:text-white" uk-scrollspy="target: > li; cls: uk-animation-scale-up , uk-animation-slide-bottom-small ;repeat: true">
-                                        <li class="flex items-center gap-4 hover:bg-secondery rounded-md p-1.5 cursor-pointer dark:hover:bg-white/10">
-                                            <img src="assets/images/icons/group.png" alt="" class="w-7">
-                                            <div class="flex-1">
-                                                <a href="groups.html"><h4 class="font-medium text-sm text-black dark:text-white"> Groups </h4></a>
-                                                <div class="mt-1 text-xs text-gray-500 dark:text-white"> Meet people with similar interests. </div>
-                                            </div>
-                                        </li>
-                                        <li class="flex items-center gap-4 hover:bg-secondery rounded-md p-1.5 cursor-pointer dark:hover:bg-white/10">
-                                            <img src="assets/images/icons/page.png" alt="" class="w-7">
-                                            <div class="flex-1">
-                                                <a href="pages.html"><h4 class="font-medium text-sm text-black dark:text-white"> Pages </h4></a>
-                                                <div class="mt-1"> Find and connect with businesses.
-                                            </div>
-                                        </li>
-                                        <li class="flex items-center gap-4 hover:bg-secondery rounded-md p-1.5 cursor-pointer dark:hover:bg-white/10">
-                                            <img src="assets/images/icons/event.png" class="w-7">
-                                            <div class="flex-1">
-                                                <a href="event.html"><h4 class="font-medium text-sm text-black dark:text-white"> Event </h4></a>
-                                                <div class="mt-1">Discover fun activities near you .</div>
-                                            </div>
-                                        </li>
-                                        <li class="flex items-center gap-4 hover:bg-secondery rounded-md p-1.5 cursor-pointer dark:hover:bg-white/10">
-                                            <img src="assets/images/icons/market.png" class="w-8 -ml-1">
-                                            <div class="flex-1">
-                                                <a href="market.html"><h4 class="font-medium text-sm text-black dark:text-white"> Market </h4></a>
-                                                <div class="mt-1">Find local buyers and sellers .</div>
-                                            </div>
-                                        </li>
-                                        <li class="flex items-center gap-4 hover:bg-secondery rounded-md p-1.5 cursor-pointer dark:hover:bg-white/10">
-                                            <img src="assets/images/icons/game.png" alt="" class="w-7">
-                                            <div class="flex-1">
-                                                <a href="games.html"><h4 class="font-medium text-sm text-black dark:text-white"> Games </h4></a>
-                                                <div class="mt-1"> play game with friends have fun. </div>
-                                            </div>
-                                        </li>
-                                    </ul>
-
-
-                            </div>
-    
-                            <!-- notification -->
-                            <button type="button" id="notificationBtn" class="sm:p-2 p-1 rounded-full relative sm:bg-secondery dark:text-white" uk-tooltip="title: Notification; pos: bottom; offset:6">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6 max-sm:hidden">
-                                    <path d="M5.85 3.5a.75.75 0 00-1.117-1 9.719 9.719 0 00-2.348 4.876.75.75 0 001.479.248A8.219 8.219 0 015.85 3.5zM19.267 2.5a.75.75 0 10-1.118 1 8.22 8.22 0 011.987 4.124.75.75 0 001.48-.248A9.72 9.72 0 0019.266 2.5z" />
-                                    <path fill-rule="evenodd" d="M12 2.25A6.75 6.75 0 005.25 9v.75a8.217 8.217 0 01-2.119 5.52.75.75 0 00.298 1.206c1.544.57 3.16.99 4.831 1.243a3.75 3.75 0 107.48 0 24.583 24.583 0 004.83-1.244.75.75 0 00.298-1.205 8.217 8.217 0 01-2.118-5.52V9A6.75 6.75 0 0012 2.25zM9.75 18c0-.034 0-.067.002-.1a25.05 25.05 0 004.496 0l.002.1a2.25 2.25 0 11-4.5 0z" clip-rule="evenodd" />
-                                </svg>
-                                <div id="notificationBadge" class="absolute top-0 right-0 -m-1 bg-red-600 text-white text-xs px-1 rounded-full hidden">0</div>
-                                <ion-icon name="notifications-outline" class="sm:hidden text-2xl"></ion-icon>
-                            </button> 
-                            <div  class="hidden bg-white pr-1.5 rounded-lg drop-shadow-xl dark:bg-slate-700 md:w-[365px] w-screen border2"
-                                uk-drop="offset:6;pos: bottom-right; mode: click; animate-out: true; animation: uk-animation-scale-up uk-transform-origin-top-right ">
-                            
-                                <!-- heading -->
-                                <div class="flex items-center justify-between gap-2 p-4 pb-2">
-                                    <h3 class="font-bold text-xl"> Notifications </h3>
-
-                                    <div class="flex gap-2.5"> 
-                                        <button type="button" class="p-1 flex rounded-full focus:bg-secondery dark:text-white"> <ion-icon class="text-xl" name="ellipsis-horizontal"></ion-icon> </button>
-                                        <div  class="w-[280px] group" uk-dropdown="pos: bottom-right; animation: uk-animation-scale-up uk-transform-origin-top-right; animate-out: true; mode: click; offset:5"> 
-                                            <nav class="text-sm"> 
-                                                <a href="#"> <ion-icon class="text-xl shrink-0" name="checkmark-circle-outline"></ion-icon>  Mark all as read</a>  
-                                                <a href="#"> <ion-icon class="text-xl shrink-0" name="settings-outline"></ion-icon> Notification setting</a>  
-                                                <a href="#"> <ion-icon class="text-xl shrink-0" name="notifications-off-outline"></ion-icon> Mute Notification </a>  
-                                            </nav>
-                                        </div> 
-                                    </div>
-                                </div>
-    
-                                <div id="notificationsList" class="text-sm h-[400px] w-full overflow-y-auto pr-2">
-                                    <!-- Dynamic notifications will be loaded here -->
-                                </div> 
-    
-                            </div>
-    
-                            <!-- messages -->
-                            <button type="button" id="messagesBtn" class="sm:p-2 p-1 rounded-full relative sm:bg-secondery dark:text-white" uk-tooltip="title: Messages; pos: bottom; offset:6">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6 max-sm:hidden">
-                                    <path fill-rule="evenodd" d="M4.848 2.771A49.144 49.144 0 0112 2.25c2.43 0 4.817.178 7.152.52 1.978.292 3.348 2.024 3.348 3.97v6.02c0 1.946-1.37 3.678-3.348 3.97a48.901 48.901 0 01-3.476.383.39.39 0 00-.297.17l-2.755 4.133a.75.75 0 01-1.248 0l-2.755-4.133a.39.39 0 00-.297-.17 48.9 48.9 0 01-3.476-.384c-1.978-.29-3.348-2.024-3.348-3.97V6.741c0-1.946 1.37-3.68 3.348-3.97z" clip-rule="evenodd" />
-                                </svg>
-                                <div id="messagesBadge" class="absolute top-0 right-0 -m-1 bg-blue-600 text-white text-xs px-1 rounded-full hidden">0</div>
-                                <ion-icon name="chatbubble-ellipses-outline" class="sm:hidden text-2xl"></ion-icon>
-                            </button>
-
-                            <!-- profile -->
-                            <div class="rounded-full relative bg-secondery cursor-pointer shrink-0">
-                                <img id="headerUserAvatar" src="assets/images/avatars/avatar-2.jpg" alt="" class="sm:w-9 sm:h-9 w-7 h-7 rounded-full shadow shrink-0"> 
-                            </div>
-                            <div  class="hidden bg-white rounded-lg drop-shadow-xl dark:bg-slate-700 w-64 border2"
-                                uk-drop="offset:6;pos: bottom-right;animate-out: true; animation: uk-animation-scale-up uk-transform-origin-top-right ">
-                                
-                                <a href="timeline.html">
-                                    <div class="p-4 py-5 flex items-center gap-4">
-                                        <img id="dropdownUserAvatar" src="assets/images/avatars/avatar-2.jpg" alt="" class="w-10 h-10 rounded-full shadow">
-                                        <div class="flex-1">
-                                            <h4 id="dropdownUserName" class="text-sm font-medium text-black">Mike Elnon</h4>
-                                            <div id="dropdownUserEmail" class="text-sm text-blue-600 mt-[-2px]">@mikelnon</div>
-                                        </div>
-                                    </div>
-                                </a>
-
-                                <hr class="dark:border-gray-600/60">
-
-                                <nav class="p-2 text-sm text-black font-normal dark:text-white">
-                                    <a href="upgrade.html">
-                                        <div class="flex items-center gap-2.5 hover:bg-secondery p-2 px-2.5 rounded-md dark:hover:bg-white/10"> 
-                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                                                <path stroke-linecap="round" stroke-linejoin="round" d="M21 11.25v8.25a1.5 1.5 0 01-1.5 1.5H5.25a1.5 1.5 0 01-1.5-1.5v-8.25M12 4.875A2.625 2.625 0 109.375 7.5H12m0-2.625V7.5m0-2.625A2.625 2.625 0 1114.625 7.5H12m0 0V21m-8.625-9.75h18c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125h-18c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125z" />
-                                            </svg>
-                                            Upgrade To Premium
-                                        </div>
-                                    </a>
-                                    <a href="setting.html">
-                                        <div class="flex items-center gap-2.5 hover:bg-secondery p-2 px-2.5 rounded-md dark:hover:bg-white/10"> 
-                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                                                <path stroke-linecap="round" stroke-linejoin="round" d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.324.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 011.37.49l1.296 2.247a1.125 1.125 0 01-.26 1.431l-1.003.827c-.293.24-.438.613-.431.992a6.759 6.759 0 010 .255c-.007.378.138.75.43.99l1.005.828c.424.35.534.954.26 1.43l-1.298 2.247a1.125 1.125 0 01-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.57 6.57 0 01-.22.128c-.331.183-.581.495-.644.869l-.213 1.28c-.09.543-.56.941-1.11.941h-2.594c-.55 0-1.02-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 01-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 01-1.369-.49l-1.297-2.247a1.125 1.125 0 01.26-1.431l1.004-.827c.292-.24.437-.613.43-.992a6.932 6.932 0 010-.255c.007-.378-.138-.75-.43-.99l-1.004-.828a1.125 1.125 0 01-.26-1.43l1.297-2.247a1.125 1.125 0 011.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.087.22-.128.332-.183.582-.495.644-.869l.214-1.281z" />
-                                                <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                                            </svg>
-                                            My Account
-                                        </div>
-                                    </a>  
-                                    <button type="button" id="logoutBtn">
-                                        <div class="flex items-center gap-2.5 hover:bg-secondery p-2 px-2.5 rounded-md dark:hover:bg-white/10"> 
-                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                                                <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l-3 3m0 0l3 3m-3-3h12.75" />
-                                            </svg>
-                                            Log Out 
-                                        </div>
-                                    </button>
-
-                                </nav>
-
-                            </div>
-
-                            <!-- Guest Login Button -->
-                            <button type="button" id="loginBtn" class="hidden bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors">
-                                Login
-                            </button>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
+      <!-- header -->
+      <header
+        class="z-[100] h-[--m-top] fixed top-0 left-0 w-full flex items-center bg-white/80 sky-50 backdrop-blur-xl border-b border-slate-200 dark:bg-dark2 dark:border-slate-800"
+      >
+        <div class="flex items-center w-full xl:px-6 px-2 max-lg:gap-10">
+          <div class="2xl:w-[--w-side] lg:w-[--w-side-sm]">
+            <!-- left -->
+            <div class="flex items-center gap-1">
+              <!-- icon menu -->
+              <button
+                uk-toggle="target: #site__sidebar ; cls :!-translate-x-0"
+                class="flex items-center justify-center w-8 h-8 text-xl rounded-full hover:bg-gray-100 xl:hidden dark:hover:bg-slate-600 group"
+              >
+                <ion-icon
+                  name="menu-outline"
+                  class="text-2xl group-aria-expanded:hidden"
+                ></ion-icon>
+                <ion-icon
+                  name="close-outline"
+                  class="hidden text-2xl group-aria-expanded:block"
+                ></ion-icon>
+              </button>
+              <div id="logo">
+                <a href="index.html">
+                  <img
+                    src="assets/images/logo.png"
+                    alt=""
+                    class="w-28 md:block hidden dark:!hidden"
+                  />
+                  <img
+                    src="assets/images/logo-light.png"
+                    alt=""
+                    class="dark:md:block hidden"
+                  />
+                  <img
+                    src="assets/images/logo-mobile.png"
+                    class="hidden max-md:block w-20 dark:!hidden"
+                    alt=""
+                  />
+                  <img
+                    src="assets/images/logo-mobile-light.png"
+                    class="hidden dark:max-md:block w-20"
+                    alt=""
+                  />
+                </a>
+              </div>
             </div>
-
-        </header>
-
-        <!-- Login Modal -->
-        <div id="loginModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center hidden">
-            <div class="bg-white dark:bg-dark2 rounded-lg shadow-xl w-full max-w-md mx-4">
-                <div class="p-6">
-                    <div class="flex items-center justify-between mb-4">
-                        <h2 class="text-xl font-bold text-black dark:text-white">Login to Nexify</h2>
-                        <button id="closeLoginModal" class="text-gray-400 hover:text-gray-600">
-                            <ion-icon name="close" class="w-6 h-6"></ion-icon>
-                        </button>
-                    </div>
-                    
-                    <form id="loginForm" class="space-y-4">
-                        <div>
-                            <label for="email" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Email</label>
-                            <input type="email" id="email" required 
-                                   class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:outline-none">
-                        </div>
-                        
-                        <div>
-                            <label for="password" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Password</label>
-                            <input type="password" id="password" required 
-                                   class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:outline-none">
-                        </div>
-                        
-                        <div id="loginError" class="text-red-500 text-sm hidden"></div>
-                        
-                        <div class="bg-blue-50 dark:bg-blue-900/30 p-3 rounded-lg mb-4">
-                            <p class="text-sm text-blue-700 dark:text-blue-300 font-medium mb-1">Demo Credentials:</p>
-                            <p class="text-xs text-blue-600 dark:text-blue-400">
-                                Email: <strong>john@example.com</strong><br>
-                                Email: <strong>jane@example.com</strong><br>
-                                Password: <strong>password123</strong>
-                            </p>
-                        </div>
-                        
-                        <button type="submit" class="w-full bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed">
-                            <span id="loginBtnText">Login</span>
-                            <span id="loginSpinner" class="hidden">
-                                <div class="animate-spin rounded-full h-4 w-4 border-b-2 border-white inline-block"></div>
-                            </span>
-                        </button>
-                    </form>
-                    
-                    <div class="mt-4 text-center">
-                        <p class="text-gray-600 dark:text-gray-400">
-                            Don't have an account? 
-                            <a href="#" id="showRegisterModal" class="text-blue-500 hover:text-blue-600">Sign up</a>
-                        </p>
-                    </div>
+          </div>
+          <div class="flex-1 relative">
+            <div class="max-w-[1220px] mx-auto flex items-center">
+              <!-- search -->
+              <div
+                id="search--box"
+                class="xl:w-[680px] sm:w-96 sm:relative rounded-xl overflow-hidden z-20 bg-secondery max-md:hidden w-screen left-0 max-sm:fixed max-sm:top-2 dark:!bg-white/5"
+              >
+                <ion-icon
+                  name="search"
+                  class="absolute left-4 top-1/2 -translate-y-1/2"
+                ></ion-icon>
+                <input
+                  type="text"
+                  id="searchInput"
+                  placeholder="Search Friends, videos .."
+                  class="w-full !pl-10 !font-normal !bg-transparent h-12 !text-sm"
+                />
+              </div>
+              <!-- search dropdown-->
+              <div
+                id="searchDropdown"
+                class="hidden uk- open z-10"
+                uk-drop="pos: bottom-center ; animation: uk-animation-slide-bottom-small;mode:click "
+              >
+                <div
+                  class="xl:w-[694px] sm:w-96 bg-white dark:bg-dark3 w-screen p-2 rounded-lg shadow-lg -mt-14 pt-14"
+                >
+                  <div
+                    class="flex justify-between px-2 py-2.5 text-sm font-medium"
+                  >
+                    <div class="text-black dark:text-white">Recent</div>
+                    <button type="button" class="text-blue-500">Clear</button>
+                  </div>
+                  <nav
+                    id="searchResults"
+                    class="text-sm font-medium text-black dark:text-white"
+                  >
+                    <!-- Dynamic search results will be inserted here -->
+                  </nav>
                 </div>
+              </div>
+
+              <!-- header icons -->
+              <div
+                class="flex items-center sm:gap-4 gap-2 absolute right-5 top-1/2 -translate-y-1/2 text-black"
+              >
+                <!-- create -->
+                <button
+                  type="button"
+                  class="sm:p-2 p-1 rounded-full relative sm:bg-secondery dark:text-white"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke-width="1.5"
+                    stroke="currentColor"
+                    class="w-5 h-5 max-sm:hidden"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      d="M12 4.5v15m7.5-7.5h-15"
+                    ></path>
+                  </svg>
+                  <ion-icon
+                    name="add-circle-outline"
+                    class="sm:hidden text-2xl"
+                  ></ion-icon>
+                </button>
+                <div
+                  class="hidden bg-white p-4 rounded-lg overflow-hidden drop-shadow-xl dark:bg-slate-700 md:w-[324px] w-screen border2"
+                  uk-drop="offset:6;pos: bottom-right; mode: click; animate-out: true; animation: uk-animation-scale-up uk-transform-origin-top-right "
+                >
+                  <h3 class="font-bold text-md">Create</h3>
+
+                  <!-- slider -->
+                  <div
+                    class="mt-4"
+                    tabindex="-1"
+                    uk-slider="finite:true;sets: true"
+                  >
+                    <div class="uk-slider-container pb-1">
+                      <ul
+                        class="uk-slider-items grid-small"
+                        uk-scrollspy="target: > li; cls: uk-animation-scale-up , uk-animation-slide-right-small; delay: 20 ;repeat: true"
+                      >
+                        <li class="w-28" uk-scrollspy-class="uk-animation-fade">
+                          <div
+                            class="p-3 px-4 rounded-lg bg-teal-100/60 text-teal-600 dark:text-white dark:bg-dark4"
+                          >
+                            <ion-icon
+                              name="book"
+                              class="text-2xl drop-shadow-md"
+                            ></ion-icon>
+                            <div class="mt-1.5 text-sm font-medium">Story</div>
+                          </div>
+                        </li>
+                        <li class="w-28">
+                          <div
+                            class="p-3 px-4 rounded-lg bg-sky-100/60 text-sky-600 dark:text-white dark:bg-dark4"
+                            uk-toggle="target: #create-status"
+                          >
+                            <ion-icon
+                              name="camera"
+                              class="text-2xl drop-shadow-md"
+                            ></ion-icon>
+                            <div class="mt-1.5 text-sm font-medium">Post</div>
+                          </div>
+                        </li>
+                        <li class="w-28">
+                          <div
+                            class="p-3 px-4 rounded-lg bg-purple-100/60 text-purple-600 dark:text-white dark:bg-dark4"
+                          >
+                            <ion-icon
+                              name="videocam"
+                              class="text-2xl drop-shadow-md"
+                            ></ion-icon>
+                            <div class="mt-1.5 text-sm font-medium">Reel</div>
+                          </div>
+                        </li>
+                        <li class="w-28">
+                          <div
+                            class="p-3 px-4 rounded-lg bg-pink-100/60 text-pink-600 dark:text-white dark:bg-dark4"
+                          >
+                            <ion-icon
+                              name="location"
+                              class="text-2xl drop-shadow-md"
+                            ></ion-icon>
+                            <div class="mt-1.5 text-sm font-medium">
+                              location
+                            </div>
+                          </div>
+                        </li>
+                        <li class="w-28">
+                          <div
+                            class="p-3 px-4 rounded-lg bg-sky-100/70 text-sky-600 dark:text-white dark:bg-dark4"
+                          >
+                            <ion-icon
+                              name="happy"
+                              class="text-2xl drop-shadow-md"
+                            ></ion-icon>
+                            <div class="mt-1.5 text-sm font-medium">Status</div>
+                          </div>
+                        </li>
+                      </ul>
+                    </div>
+
+                    <!-- slide nav icons -->
+                    <div class="dark:hidden">
+                      <a
+                        class="absolute -translate-y-1/2 top-1/2 -left-4 flex items-center w-8 h-full px-1.5 justify-start bg-gradient-to-r from-white via-white dark:from-slate-600 dark:via-slate-500 dark:from-transparent dark:via-transparent"
+                        href="#"
+                        uk-slider-item="previous"
+                      >
+                        <ion-icon
+                          name="chevron-back"
+                          class="text-xl dark:text-white"
+                        ></ion-icon>
+                      </a>
+                      <a
+                        class="absolute -translate-y-1/2 top-1/2 -right-4 flex items-center w-8 h-full px-1.5 justify-end bg-gradient-to-l from-white via-white dark:from-transparent dark:via-transparent"
+                        href="#"
+                        uk-slider-item="next"
+                      >
+                        <ion-icon
+                          name="chevron-forward"
+                          class="text-xl dark:text-white"
+                        ></ion-icon>
+                      </a>
+                    </div>
+
+                    <!-- slide nav -->
+                    <div class="justify-center mt-2 -mb-2 hidden dark:flex">
+                      <ul
+                        class="inline-flex flex-wrap justify-center gap-1 uk-dotnav uk-slider-nav"
+                      ></ul>
+                    </div>
+                  </div>
+
+                  <!-- list -->
+                  <ul
+                    class="-m-1 mt-4 pb-1 text-xs text-gray-500 dark:text-white"
+                    uk-scrollspy="target: > li; cls: uk-animation-scale-up , uk-animation-slide-bottom-small ;repeat: true"
+                  >
+                    <li
+                      class="flex items-center gap-4 hover:bg-secondery rounded-md p-1.5 cursor-pointer dark:hover:bg-white/10"
+                    >
+                      <img
+                        src="assets/images/icons/group.png"
+                        alt=""
+                        class="w-7"
+                      />
+                      <div class="flex-1">
+                        <a href="groups.html"
+                          ><h4
+                            class="font-medium text-sm text-black dark:text-white"
+                          >
+                            Groups
+                          </h4></a
+                        >
+                        <div class="mt-1 text-xs text-gray-500 dark:text-white">
+                          Meet people with similar interests.
+                        </div>
+                      </div>
+                    </li>
+                    <li
+                      class="flex items-center gap-4 hover:bg-secondery rounded-md p-1.5 cursor-pointer dark:hover:bg-white/10"
+                    >
+                      <img
+                        src="assets/images/icons/page.png"
+                        alt=""
+                        class="w-7"
+                      />
+                      <div class="flex-1">
+                        <a href="pages.html"
+                          ><h4
+                            class="font-medium text-sm text-black dark:text-white"
+                          >
+                            Pages
+                          </h4></a
+                        >
+                        <div class="mt-1">
+                          Find and connect with businesses.
+                        </div>
+                      </div>
+                    </li>
+                    <li
+                      class="flex items-center gap-4 hover:bg-secondery rounded-md p-1.5 cursor-pointer dark:hover:bg-white/10"
+                    >
+                      <img src="assets/images/icons/event.png" class="w-7" />
+                      <div class="flex-1">
+                        <a href="event.html"
+                          ><h4
+                            class="font-medium text-sm text-black dark:text-white"
+                          >
+                            Event
+                          </h4></a
+                        >
+                        <div class="mt-1">
+                          Discover fun activities near you .
+                        </div>
+                      </div>
+                    </li>
+                    <li
+                      class="flex items-center gap-4 hover:bg-secondery rounded-md p-1.5 cursor-pointer dark:hover:bg-white/10"
+                    >
+                      <img
+                        src="assets/images/icons/market.png"
+                        class="w-8 -ml-1"
+                      />
+                      <div class="flex-1">
+                        <a href="market.html"
+                          ><h4
+                            class="font-medium text-sm text-black dark:text-white"
+                          >
+                            Market
+                          </h4></a
+                        >
+                        <div class="mt-1">Find local buyers and sellers .</div>
+                      </div>
+                    </li>
+                    <li
+                      class="flex items-center gap-4 hover:bg-secondery rounded-md p-1.5 cursor-pointer dark:hover:bg-white/10"
+                    >
+                      <img
+                        src="assets/images/icons/game.png"
+                        alt=""
+                        class="w-7"
+                      />
+                      <div class="flex-1">
+                        <a href="games.html"
+                          ><h4
+                            class="font-medium text-sm text-black dark:text-white"
+                          >
+                            Games
+                          </h4></a
+                        >
+                        <div class="mt-1">play game with friends have fun.</div>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+
+                <!-- notification -->
+                <button
+                  type="button"
+                  id="notificationBtn"
+                  class="sm:p-2 p-1 rounded-full relative sm:bg-secondery dark:text-white"
+                  uk-tooltip="title: Notification; pos: bottom; offset:6"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                    class="w-6 h-6 max-sm:hidden"
+                  >
+                    <path
+                      d="M5.85 3.5a.75.75 0 00-1.117-1 9.719 9.719 0 00-2.348 4.876.75.75 0 001.479.248A8.219 8.219 0 015.85 3.5zM19.267 2.5a.75.75 0 10-1.118 1 8.22 8.22 0 011.987 4.124.75.75 0 001.48-.248A9.72 9.72 0 0019.266 2.5z"
+                    />
+                    <path
+                      fill-rule="evenodd"
+                      d="M12 2.25A6.75 6.75 0 005.25 9v.75a8.217 8.217 0 01-2.119 5.52.75.75 0 00.298 1.206c1.544.57 3.16.99 4.831 1.243a3.75 3.75 0 107.48 0 24.583 24.583 0 004.83-1.244.75.75 0 00.298-1.205 8.217 8.217 0 01-2.118-5.52V9A6.75 6.75 0 0012 2.25zM9.75 18c0-.034 0-.067.002-.1a25.05 25.05 0 004.496 0l.002.1a2.25 2.25 0 11-4.5 0z"
+                      clip-rule="evenodd"
+                    />
+                  </svg>
+                  <div
+                    id="notificationBadge"
+                    class="absolute top-0 right-0 -m-1 bg-red-600 text-white text-xs px-1 rounded-full hidden"
+                  >
+                    0
+                  </div>
+                  <ion-icon
+                    name="notifications-outline"
+                    class="sm:hidden text-2xl"
+                  ></ion-icon>
+                </button>
+                <div
+                  class="hidden bg-white pr-1.5 rounded-lg drop-shadow-xl dark:bg-slate-700 md:w-[365px] w-screen border2"
+                  uk-drop="offset:6;pos: bottom-right; mode: click; animate-out: true; animation: uk-animation-scale-up uk-transform-origin-top-right "
+                >
+                  <!-- heading -->
+                  <div class="flex items-center justify-between gap-2 p-4 pb-2">
+                    <h3 class="font-bold text-xl">Notifications</h3>
+
+                    <div class="flex gap-2.5">
+                      <button
+                        type="button"
+                        class="p-1 flex rounded-full focus:bg-secondery dark:text-white"
+                      >
+                        <ion-icon
+                          class="text-xl"
+                          name="ellipsis-horizontal"
+                        ></ion-icon>
+                      </button>
+                      <div
+                        class="w-[280px] group"
+                        uk-dropdown="pos: bottom-right; animation: uk-animation-scale-up uk-transform-origin-top-right; animate-out: true; mode: click; offset:5"
+                      >
+                        <nav class="text-sm">
+                          <a href="#">
+                            <ion-icon
+                              class="text-xl shrink-0"
+                              name="checkmark-circle-outline"
+                            ></ion-icon>
+                            Mark all as read</a
+                          >
+                          <a href="#">
+                            <ion-icon
+                              class="text-xl shrink-0"
+                              name="settings-outline"
+                            ></ion-icon>
+                            Notification setting</a
+                          >
+                          <a href="#">
+                            <ion-icon
+                              class="text-xl shrink-0"
+                              name="notifications-off-outline"
+                            ></ion-icon>
+                            Mute Notification
+                          </a>
+                        </nav>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div
+                    id="notificationsList"
+                    class="text-sm h-[400px] w-full overflow-y-auto pr-2"
+                  >
+                    <!-- Dynamic notifications will be loaded here -->
+                  </div>
+                </div>
+
+                <!-- messages -->
+                <button
+                  type="button"
+                  id="messagesBtn"
+                  class="sm:p-2 p-1 rounded-full relative sm:bg-secondery dark:text-white"
+                  uk-tooltip="title: Messages; pos: bottom; offset:6"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                    class="w-6 h-6 max-sm:hidden"
+                  >
+                    <path
+                      fill-rule="evenodd"
+                      d="M4.848 2.771A49.144 49.144 0 0112 2.25c2.43 0 4.817.178 7.152.52 1.978.292 3.348 2.024 3.348 3.97v6.02c0 1.946-1.37 3.678-3.348 3.97a48.901 48.901 0 01-3.476.383.39.39 0 00-.297.17l-2.755 4.133a.75.75 0 01-1.248 0l-2.755-4.133a.39.39 0 00-.297-.17 48.9 48.9 0 01-3.476-.384c-1.978-.29-3.348-2.024-3.348-3.97V6.741c0-1.946 1.37-3.68 3.348-3.97z"
+                      clip-rule="evenodd"
+                    />
+                  </svg>
+                  <div
+                    id="messagesBadge"
+                    class="absolute top-0 right-0 -m-1 bg-blue-600 text-white text-xs px-1 rounded-full hidden"
+                  >
+                    0
+                  </div>
+                  <ion-icon
+                    name="chatbubble-ellipses-outline"
+                    class="sm:hidden text-2xl"
+                  ></ion-icon>
+                </button>
+
+                <!-- profile -->
+                <div
+                  class="rounded-full relative bg-secondery cursor-pointer shrink-0"
+                >
+                  <img
+                    id="headerUserAvatar"
+                    src="assets/images/avatars/avatar-2.jpg"
+                    alt=""
+                    class="sm:w-9 sm:h-9 w-7 h-7 rounded-full shadow shrink-0"
+                  />
+                </div>
+                <div
+                  class="hidden bg-white rounded-lg drop-shadow-xl dark:bg-slate-700 w-64 border2"
+                  uk-drop="offset:6;pos: bottom-right;animate-out: true; animation: uk-animation-scale-up uk-transform-origin-top-right "
+                >
+                  <a href="timeline.html">
+                    <div class="p-4 py-5 flex items-center gap-4">
+                      <img
+                        id="dropdownUserAvatar"
+                        src="assets/images/avatars/avatar-2.jpg"
+                        alt=""
+                        class="w-10 h-10 rounded-full shadow"
+                      />
+                      <div class="flex-1">
+                        <h4
+                          id="dropdownUserName"
+                          class="text-sm font-medium text-black"
+                        >
+                          Mike Elnon
+                        </h4>
+                        <div
+                          id="dropdownUserEmail"
+                          class="text-sm text-blue-600 mt-[-2px]"
+                        >
+                          @mikelnon
+                        </div>
+                      </div>
+                    </div>
+                  </a>
+
+                  <hr class="dark:border-gray-600/60" />
+
+                  <nav
+                    class="p-2 text-sm text-black font-normal dark:text-white"
+                  >
+                    <a href="upgrade.html">
+                      <div
+                        class="flex items-center gap-2.5 hover:bg-secondery p-2 px-2.5 rounded-md dark:hover:bg-white/10"
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke-width="1.5"
+                          stroke="currentColor"
+                          class="w-6 h-6"
+                        >
+                          <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            d="M21 11.25v8.25a1.5 1.5 0 01-1.5 1.5H5.25a1.5 1.5 0 01-1.5-1.5v-8.25M12 4.875A2.625 2.625 0 109.375 7.5H12m0-2.625V7.5m0-2.625A2.625 2.625 0 1114.625 7.5H12m0 0V21m-8.625-9.75h18c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125h-18c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125z"
+                          />
+                        </svg>
+                        Upgrade To Premium
+                      </div>
+                    </a>
+                    <a href="setting.html">
+                      <div
+                        class="flex items-center gap-2.5 hover:bg-secondery p-2 px-2.5 rounded-md dark:hover:bg-white/10"
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke-width="1.5"
+                          stroke="currentColor"
+                          class="w-6 h-6"
+                        >
+                          <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.324.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 011.37.49l1.296 2.247a1.125 1.125 0 01-.26 1.431l-1.003.827c-.293.24-.438.613-.431.992a6.759 6.759 0 010 .255c-.007.378.138.75.43.99l1.005.828c.424.35.534.954.26 1.43l-1.298 2.247a1.125 1.125 0 01-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.57 6.57 0 01-.22.128c-.331.183-.581.495-.644.869l-.213 1.28c-.09.543-.56.941-1.11.941h-2.594c-.55 0-1.02-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 01-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 01-1.369-.49l-1.297-2.247a1.125 1.125 0 01.26-1.431l1.004-.827c.292-.24.437-.613.43-.992a6.932 6.932 0 010-.255c.007-.378-.138-.75-.43-.99l-1.004-.828a1.125 1.125 0 01-.26-1.43l1.297-2.247a1.125 1.125 0 011.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.087.22-.128.332-.183.582-.495.644-.869l.214-1.281z"
+                          />
+                          <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                          />
+                        </svg>
+                        My Account
+                      </div>
+                    </a>
+                    <button type="button" id="logoutBtn">
+                      <div
+                        class="flex items-center gap-2.5 hover:bg-secondery p-2 px-2.5 rounded-md dark:hover:bg-white/10"
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke-width="1.5"
+                          stroke="currentColor"
+                          class="w-6 h-6"
+                        >
+                          <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l-3 3m0 0l3 3m-3-3h12.75"
+                          />
+                        </svg>
+                        Log Out
+                      </div>
+                    </button>
+                  </nav>
+                </div>
+
+                <!-- Guest Login Button -->
+                <button
+                  type="button"
+                  id="loginBtn"
+                  class="hidden bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors"
+                >
+                  Login
+                </button>
+              </div>
             </div>
+          </div>
         </div>
+      </header>
 
-        <!-- main content -->
-        <main id="site__main" class="2xl:ml-[--w-side]  xl:ml-[--w-side-sm] py-10 p-2.5 h-[calc(100vh-var(--m-top))] mt-[--m-top]">
-
-            <div class="lg:flex 2xl:gap-12 gap-10 2xl:max-w-[1220px] max-w-[1065px] mx-auto lg:mt-2 mt-6" id="js-oversized">
-
-                <!-- sidebar -->
-                <div id="site__sidebar" class="fixed top-0 left-0 z-[99] pt-[--m-top] overflow-hidden transition-transform xl:relative xl:top-auto xl:left-auto xl:pt-0 xl:translate-x-0 xl:z-auto xl:w-[--w-side] 2xl:w-[--w-side-big] max-xl:-translate-x-full bg-white shadow-2xl dark:bg-dark2">
-
-                    <!-- sidebar inner -->
-                    <div class="2xl:py-6 py-3 text-black text-sm dark:text-white">
-
-                        <nav id="side">
-                            <ul>
-                                <li class="active">
-                                    <a href="index.html">
-                                        <img src="assets/images/icons/home.png" alt="feed" class="w-6">
-                                        <span> Feed </span> 
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="messages.html">
-                                        <img src="assets/images/icons/message.png" alt="messages" class="w-5">
-                                        <span> messages </span> 
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="video.html">
-                                        <img src="assets/images/icons/video.png" alt="video" class="w-6">
-                                        <span> video </span> 
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="event.html">
-                                        <img src="assets/images/icons/event.png" alt="event" class="w-6">
-                                        <span> event </span> 
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="pages.html">
-                                        <img src="assets/images/icons/page.png" alt="pages" class="w-6">
-                                        <span> pages </span> 
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="groups.html">
-                                        <img src="assets/images/icons/group.png" alt="groups" class="w-6">
-                                        <span> groups </span> 
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="market.html">
-                                        <img src="assets/images/icons/market.png" alt="market" class="w-7 -ml-1">
-                                        <span> market </span> 
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="blog.html">
-                                        <img src="assets/images/icons/blog.png" alt="blog" class="w-6">
-                                        <span> blog </span> 
-                                    </a>
-                                </li>
-                                <li class="!hidden" id="show__more">
-                                    <a href="games.html">
-                                        <img src="assets/images/icons/game.png" alt="games" class="w-6">
-                                        <span> games </span> 
-                                    </a>
-                                </li>
-                                <li class="!hidden" id="show__more">
-                                    <a href="funding.html">
-                                        <img src="assets/images/icons/fund.png" alt="funding" class="w-6">
-                                        <span> funding </span> 
-                                    </a>
-                                </li>
-                            </ul>
-                            
-                            <button type="button" class="flex items-center gap-4 py-2 px-4 w-full hover:bg-secondery rounded-lg dark:hover:bg-white/10" uk-toggle="target: #show__more ; cls: !hidden"> 
-                                <svg class="w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h.01M12 12h.01M19 12h.01M6 12a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0z" />
-                                </svg>
-                                <span class="text-sm"> See all </span>
-                            </button>
-
-                        </nav>
-
-                        <div class="font-medium text-gray-500 text-sm p-3 pt-6 dark:text-white">
-                            <div class="flex items-center justify-between">
-                                <div> Shortcut </div>
-                                <ion-icon name="add" class="text-lg"></ion-icon>
-                            </div>
-                        </div>
-
-                        <nav id="side" class="mt-2">
-                            <ul>
-                                <li>
-                                    <a href="timeline-group.html">
-                                        <img src="assets/images/group/group-1.jpg" alt="" class="w-6 rounded-full object-cover">
-                                        <span> Delicious Foods  </span> 
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="timeline-group.html">
-                                        <img src="assets/images/group/group-2.jpg" alt="" class="w-6 rounded-full object-cover">
-                                        <span>  Abstract minimal </span> 
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="timeline-group.html">
-                                        <img src="assets/images/group/group-3.jpg" alt="" class="w-6 rounded-full object-cover">
-                                        <span> Delicious Foods  </span> 
-                                    </a>
-                                </li>
-                            </ul>
-                        </nav>
-
-                    </div>
-
-                    <!-- overly -->
-                    <div id="site__sidebar__overly" 
-                         class="absolute top-0 left-0 z-20 w-screen h-screen xl:hidden backdrop-blur-sm"
-                         uk-toggle="target: #site__sidebar ; cls :!-translate-x-full">
-                    </div>
-
-                </div>
-
-                <!-- main -->
-                <div class="flex-1 xl:space-y-6 space-y-3">
-
-                    <!-- stories -->
-                    <div class="bg-white rounded-xl shadow-sm p-4 space-y-4 text-xs font-medium border1 dark:bg-dark2">
-
-                        <div class="flex gap-3">
-                            <a href="#" class="block w-16 h-16 rounded-full relative border-2 border-dashed border-gray-300 shrink-0" uk-toggle="target: #create-status"> 
-                                <img id="storyUserAvatar" src="assets/images/avatars/avatar-2.jpg" alt="" class="absolute -top-0.5 left-1/2 w-full h-full rounded-full object-cover -translate-x-1/2">
-                                <div class="w-5 h-5 rounded-full bg-blue-600 border border-white absolute -bottom-0 right-0 flex justify-center items-center">
-                                    <ion-icon name="add" class="text-white text-sm"></ion-icon>
-                                </div>
-                            </a>
-
-                            <div class="flex-1 rounded-xl relative overflow-hidden" tabindex="-1" uk-slider="finite: true">
-
-                                <div class="uk-slider-container">
-                                    
-                                    <ul class="uk-slider-items w-[calc(100%+14px)]" id="storiesList">
-                                        <!-- Dynamic stories will be inserted here -->
-                                    </ul>
-                            
-                                </div>
-                            
-                                <div class="max-md:hidden">
-
-                                    <button type="button" class="absolute -translate-y-1/2 bg-white shadow rounded-full top-1/2 -left-3.5 grid w-8 h-8 place-items-center dark:bg-dark3" uk-slider-item="previous"> <ion-icon name="chevron-back" class="text-2xl"></ion-icon></button>
-                                    <button type="button" class="absolute -right-2 -translate-y-1/2 bg-white shadow rounded-full top-1/2 grid w-8 h-8 place-items-center dark:bg-dark3" uk-slider-item="next"> <ion-icon name="chevron-forward" class="text-2xl"></ion-icon> </button>
-
-                                </div>
-
-
-                            </div>
-
-                        </div>
-
-                    </div>
-
-                    <!-- feed story -->
-                    <div class="md:max-w-[580px] mx-auto flex-1 xl:space-y-6 space-y-3">
-
-                        <!-- add story -->
-                        <div class="bg-white rounded-xl shadow-sm md:p-4 p-2 space-y-4 text-sm font-medium border1 dark:bg-dark2">
-
-                            <div class="flex items-center md:gap-3 gap-1">
-                                <div class="flex-1 bg-slate-100 hover:bg-opacity-80 transition-all rounded-lg cursor-pointer dark:bg-dark3" uk-toggle="target: #create-status"> 
-                                    <div class="py-2.5 text-center dark:text-white"> What do you have in mind? </div>
-                                </div>
-                                <div class="cursor-pointer hover:bg-opacity-80 p-1 px-1.5 rounded-xl transition-all bg-pink-100/60 hover:bg-pink-100 dark:bg-white/10 dark:hover:bg-white/20" uk-toggle="target: #create-status">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 stroke-pink-600 fill-pink-200/70" viewBox="0 0 24 24" stroke-width="1.5" stroke="#2c3e50" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-                                        <path d="M15 8h.01" />
-                                        <path d="M12 3c7.2 0 9 1.8 9 9s-1.8 9 -9 9s-9 -1.8 -9 -9s1.8 -9 9 -9z" />
-                                        <path d="M3.5 15.5l4.5 -4.5c.928 -.893 2.072 -.893 3 0l5 5" />
-                                        <path d="M14 14l1 -1c.928 -.893 2.072 -.893 3 0l2.5 2.5" />
-                                    </svg>
-                                </div>
-                                <div class="cursor-pointer hover:bg-opacity-80 p-1 px-1.5 rounded-xl transition-all bg-sky-100/60 hover:bg-sky-100 dark:bg-white/10 dark:hover:bg-white/20" uk-toggle="target: #create-status">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 stroke-sky-600 fill-sky-200/70 " viewBox="0 0 24 24" stroke-width="1.5" stroke="#2c3e50" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-                                        <path d="M15 10l4.553 -2.276a1 1 0 0 1 1.447 .894v6.764a1 1 0 0 1 -1.447 .894l-4.553 -2.276v-4z" />
-                                        <path d="M3 6m0 2a2 2 0 0 1 2 -2h8a2 2 0 0 1 2 2v8a2 2 0 0 1 -2 2h-8a2 2 0 0 1 -2 -2z" />
-                                    </svg>
-                                </div> 
-                            </div>
-                            
-                        </div>
-                        
-                        <!-- Posts Container -->
-                        <div id="postsContainer">
-                            <!-- Dynamic posts will be loaded here -->
-                            <div class="text-center py-8">
-                                <div class="animate-pulse">
-                                    <div class="h-4 bg-gray-200 dark:bg-gray-700 rounded w-32 mx-auto mb-2"></div>
-                                    <div class="h-3 bg-gray-200 dark:bg-gray-700 rounded w-48 mx-auto"></div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Load More Button -->
-                        <div id="loadMoreContainer" class="text-center mt-8 hidden">
-                            <button id="loadMoreBtn" class="bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 px-6 py-3 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors">
-                                Load More Posts
-                            </button>
-                        </div>
-
-                    </div>
-    
-                </div>
-
-                <!-- right sidebar -->
-                <div class="2xl:w-[380px] lg:w-[330px] w-full">
-
-                    <div class="lg:space-y-4 lg:pb-8 max-lg:grid sm:grid-cols-2 max-lg:gap-6">
-                        
-                        <div class="box p-5 px-6">
-                                
-                            <div class="flex items-baseline justify-between text-black dark:text-white">
-                                <h3 class="font-bold text-base"> Suggested for you </h3>
-                                <a href="#" class="text-sm text-blue-500">See all</a>
-                            </div>
-
-                            <div class="side-list">
-
-                                <div class="side-list-item">
-                                    <a href="timeline.html">
-                                        <img src="assets/images/avatars/avatar-2.jpg" alt="" class="side-list-image rounded-full">
-                                    </a>
-                                    <div class="flex-1">
-                                        <a href="timeline.html"><h4 class="side-list-title">  John Michael </h4></a>
-                                        <div class="side-list-info"> 125k followers </div>
-                                    </div>
-                                    <button class="button bg-primary-soft text-primary dark:text-white">follow</button>
-                                </div>
-
-                                <div class="side-list-item">
-                                    <a href="timeline.html">
-                                        <img src="assets/images/avatars/avatar-3.jpg" alt="" class="side-list-image rounded-full">
-                                    </a>
-                                    <div class="flex-1">
-                                        <a href="timeline.html"><h4 class="side-list-title"> Monroe Parker </h4></a>
-                                        <div class="side-list-info"> 320k followers </div>
-                                    </div>
-                                    <button class="button bg-primary-soft text-primary dark:text-white">follow</button>
-                                </div>  
-
-                                <div class="side-list-item">
-                                    <a href="timeline.html">
-                                        <img src="assets/images/avatars/avatar-5.jpg" alt="" class="side-list-image rounded-full">
-                                    </a>
-                                    <div class="flex-1">
-                                        <a href="timeline.html"><h4 class="side-list-title"> James Lewis </h4></a>
-                                        <div class="side-list-info"> 192k followers </div>
-                                    </div>
-                                    <button class="button bg-primary-soft text-primary dark:text-white">follow</button>
-                                </div>
-
-                                <div class="side-list-item">
-                                    <a href="timeline.html">
-                                        <img src="assets/images/avatars/avatar-6.jpg" alt="" class="side-list-image rounded-full">
-                                    </a>
-                                    <div class="flex-1">
-                                        <a href="timeline.html"><h4 class="side-list-title"> Alexa stella </h4></a>
-                                        <div class="side-list-info"> 192k followers </div>
-                                    </div>
-                                    <button class="button bg-primary-soft text-primary dark:text-white">follow</button>
-                                </div>
-                                
-                                <button class="bg-secondery w-full text-black py-1.5 rounded-md text-sm dark:text-white dark:bg-white/20">See more </button>
-                            </div>
-
-                        </div>
-
-                        <!-- latest marketplace items -->
-                        <div class="box p-5 px-6 border1 dark:bg-dark2">
-                            
-                            <div class="flex justify-between text-black dark:text-white">
-                                <h3 class="font-bold text-base"> Latest marketplace </h3>
-                                <button type="button"> <ion-icon name="sync-outline" class="text-xl"></ion-icon> </button>
-                            </div>
-
-                            <div class="relative capitalize font-normal text-sm text-black mt-4 dark:text-white" tabindex="-1" uk-slider="autoplay: true;finite: true">
-
-                                <div class="overflow-hidden uk-slider-container">
-                                
-                                    <ul class="uk-slider-items">
-                                        
-                                        <li class="w-1/2 pr-3">
-                                            <a href="product-view-1.html">
-                                                <div class="relative overflow-hidden rounded-lg">
-                                                    <div class="relative w-full h-40">
-                                                        <img src="assets/images/product/product-1.jpg" alt="" class="object-cover w-full h-full inset-0">
-                                                    </div> 
-                                                    <div class="absolute right-0 top-0 m-2 bg-white/60 rounded-full py-0.5 px-2 text-sm font-semibold dark:bg-slate-800/60"> $12 </div>
-                                                </div>
-                                                <div class="mt-3 w-full"> Chill Lotion </div>
-                                            </a> 
-                                        </li>
-
-                                        <li class="w-1/2 pr-3">
-                                            <a href="product-view-1.html">
-                                                <div class="relative overflow-hidden rounded-lg">
-                                                    <div class="relative w-full h-40">
-                                                        <img src="assets/images/product/product-2.jpg" alt="" class="object-cover w-full h-full inset-0">
-                                                    </div> 
-                                                    <div class="absolute right-0 top-0 m-2 bg-white/60 rounded-full py-0.5 px-2 text-sm font-semibold dark:bg-slate-800/60"> $18 </div>
-                                                </div>
-                                                <div class="mt-3 w-full">  Gaming mouse </div>
-                                            </a> 
-                                        </li>
-
-                                        <li class="w-1/2 pr-3">
-                                            <a href="product-view-1.html">
-                                                <div class="relative overflow-hidden rounded-lg">
-                                                    <div class="relative w-full h-40">
-                                                        <img src="assets/images/product/product-3.jpg" alt="" class="object-cover w-full h-full inset-0">
-                                                    </div> 
-                                                    <div class="absolute right-0 top-0 m-2 bg-white/60 rounded-full py-0.5 px-2 text-sm font-semibold dark:bg-slate-800/60"> $12 </div>
-                                                </div>
-                                                <div class="mt-3 w-full"> Herbal Shampoo </div>
-                                            </a> 
-                                        </li>
-
-                                        <li class="w-1/2 pr-3">
-                                            <a href="product-view-1.html">
-                                                <div class="relative overflow-hidden rounded-lg">
-                                                    <div class="relative w-full h-40">
-                                                        <img src="assets/images/product/product-4.jpg" alt="" class="object-cover w-full h-full inset-0">
-                                                    </div> 
-                                                    <div class="absolute right-0 top-0 m-2 bg-white/60 rounded-full py-0.5 px-2 text-sm font-semibold dark:bg-slate-800/60"> $25 </div>
-                                                </div>
-                                                <div class="mt-3 w-full"> Gaming Keyboard </div>
-                                            </a> 
-                                        </li>
-
-                                    </ul>
-                                
-                                </div>
-                                
-                                <!-- slide nav icons -->
-                                <div class="dark:hidden">
-                                    <a class="nav-prev !bottom-4 !top-auto" href="#" uk-slider-item="previous"> <ion-icon name="chevron-back" class="text-2xl"></ion-icon> </a>
-                                    <a class="nav-next !bottom-4 !top-auto" href="#" uk-slider-item="next"> <ion-icon name="chevron-forward" class="text-2xl"></ion-icon> </a>
-                                </div>
-                                
-                                <!-- slide nav -->
-                                <div class="flex justify-center">
-                                    <ul class="inline-flex flex-wrap justify-center mt-2 -mb-1 uk-dotnav uk-slider-nav gap-2"> </ul>
-                                </div>
-
-                            </div>
-                        </div>
-
-                        <!-- Pro Members -->
-                        <div class="box p-5 px-6 border1 dark:bg-dark2">
-                            
-                            <div class="flex justify-between text-black dark:text-white">
-                                <h3 class="font-bold text-base"> Pro Members </h3>
-                            </div>
-
-                            <div class="relative mt-4" tabindex="-1" uk-slider="finite: true">
-
-                                <div class="overflow-hidden uk-slider-container">
-                                
-                                    <ul class="uk-slider-items w-[calc(100%+20px)]">
-                                        
-                                        <li class="pr-3">
-                                            <div class="flex flex-col items-center shadow-sm p-2 rounded-xl border1">
-                                                <a href="timeline.html">
-                                                    <div class="relative w-16 h-16 mx-auto mt-2">
-                                                        <img src="assets/images/avatars/avatar-5.jpg" alt="" class="h-full object-cover rounded-full shadow-sm w-full">
-                                                    </div>
-                                                </a>
-                                                <div class="mt-5 text-center w-full">
-                                                    <a href="timeline.html"> <h5 class="font-semibold text-sm text-black dark:text-white"> Martin </h5> </a>
-                                                    <div class="text-xs text-gray-400 mt-0.5 font-medium"> Turkey </div>
-                                                    <div class="flex justify-center mt-2">
-                                                        <button type="button" class="button bg-primary-soft text-primary text-xs">Follow</button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </li>
-
-                                        <li class="pr-3">
-                                            <div class="flex flex-col items-center shadow-sm p-2 rounded-xl border1">
-                                                <a href="timeline.html">
-                                                    <div class="relative w-16 h-16 mx-auto mt-2">
-                                                        <img src="assets/images/avatars/avatar-4.jpg" alt="" class="h-full object-cover rounded-full shadow-sm w-full">
-                                                    </div>
-                                                </a>
-                                                <div class="mt-5 text-center w-full">
-                                                    <a href="timeline.html"> <h5 class="font-semibold text-sm text-black dark:text-white"> Alexa </h5> </a>
-                                                    <div class="text-xs text-gray-400 mt-0.5 font-medium"> Sub Editor </div>
-                                                    <div class="flex justify-center mt-2">
-                                                        <button type="button" class="button bg-primary-soft text-primary text-xs">Follow</button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </li>
-
-                                        <li class="pr-3">
-                                            <div class="flex flex-col items-center shadow-sm p-2 rounded-xl border1">
-                                                <a href="timeline.html">
-                                                    <div class="relative w-16 h-16 mx-auto mt-2">
-                                                        <img src="assets/images/avatars/avatar-6.jpg" alt="" class="h-full object-cover rounded-full shadow-sm w-full">
-                                                    </div>
-                                                </a>
-                                                <div class="mt-5 text-center w-full">
-                                                    <a href="timeline.html"> <h5 class="font-semibold text-sm text-black dark:text-white"> Sarah </h5> </a>
-                                                    <div class="text-xs text-gray-400 mt-0.5 font-medium"> Freelancer </div>
-                                                    <div class="flex justify-center mt-2">
-                                                        <button type="button" class="button bg-primary-soft text-primary text-xs">Follow</button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </li>
-
-                                    </ul>
-                                
-                                </div>
-                                
-                                <!-- slide nav icons -->
-                                <div class="dark:hidden">
-                                    <a class="nav-prev !bottom-16 !top-auto" href="#" uk-slider-item="previous"> <ion-icon name="chevron-back" class="text-2xl"></ion-icon> </a>
-                                    <a class="nav-next !bottom-16 !top-auto" href="#" uk-slider-item="next"> <ion-icon name="chevron-forward" class="text-2xl"></ion-icon> </a>
-                                </div>
-
-                            </div>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
+      <!-- Login Modal -->
+      <div
+        id="loginModal"
+        class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center hidden"
+      >
+        <div
+          class="bg-white dark:bg-dark2 rounded-lg shadow-xl w-full max-w-md mx-4"
+        >
+          <div class="p-6">
+            <div class="flex items-center justify-between mb-4">
+              <h2 class="text-xl font-bold text-black dark:text-white">
+                Login to Nexify
+              </h2>
+              <button
+                id="closeLoginModal"
+                class="text-gray-400 hover:text-gray-600"
+              >
+                <ion-icon name="close" class="w-6 h-6"></ion-icon>
+              </button>
             </div>
 
-        </main>
+            <form id="loginForm" class="space-y-4">
+              <div>
+                <label
+                  for="email"
+                  class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+                  >Email</label
+                >
+                <input
+                  type="email"
+                  id="email"
+                  required
+                  class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                />
+              </div>
 
+              <div>
+                <label
+                  for="password"
+                  class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+                  >Password</label
+                >
+                <input
+                  type="password"
+                  id="password"
+                  required
+                  class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                />
+              </div>
+
+              <div id="loginError" class="text-red-500 text-sm hidden"></div>
+
+              <div class="bg-blue-50 dark:bg-blue-900/30 p-3 rounded-lg mb-4">
+                <p
+                  class="text-sm text-blue-700 dark:text-blue-300 font-medium mb-1"
+                >
+                  Demo Credentials:
+                </p>
+                <p class="text-xs text-blue-600 dark:text-blue-400">
+                  Email: <strong>john@example.com</strong><br />
+                  Email: <strong>jane@example.com</strong><br />
+                  Password: <strong>password123</strong>
+                </p>
+              </div>
+
+              <button
+                type="submit"
+                class="w-full bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed"
+              >
+                <span id="loginBtnText">Login</span>
+                <span id="loginSpinner" class="hidden">
+                  <div
+                    class="animate-spin rounded-full h-4 w-4 border-b-2 border-white inline-block"
+                  ></div>
+                </span>
+              </button>
+            </form>
+
+            <div class="mt-4 text-center">
+              <p class="text-gray-600 dark:text-gray-400">
+                Don't have an account?
+                <a
+                  href="#"
+                  id="showRegisterModal"
+                  class="text-blue-500 hover:text-blue-600"
+                  >Sign up</a
+                >
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- main content -->
+      <main
+        id="site__main"
+        class="2xl:ml-[--w-side] xl:ml-[--w-side-sm] py-10 p-2.5 h-[calc(100vh-var(--m-top))] mt-[--m-top]"
+      >
+        <div
+          class="lg:flex 2xl:gap-12 gap-10 2xl:max-w-[1220px] max-w-[1065px] mx-auto lg:mt-2 mt-6"
+          id="js-oversized"
+        >
+          <!-- sidebar -->
+          <div
+            id="site__sidebar"
+            class="fixed top-0 left-0 z-[99] pt-[--m-top] overflow-hidden transition-transform xl:relative xl:top-auto xl:left-auto xl:pt-0 xl:translate-x-0 xl:z-auto xl:w-[--w-side] 2xl:w-[--w-side-big] max-xl:-translate-x-full bg-white shadow-2xl dark:bg-dark2"
+          >
+            <!-- sidebar inner -->
+            <div class="2xl:py-6 py-3 text-black text-sm dark:text-white">
+              <nav id="side">
+                <ul>
+                  <li class="active">
+                    <a href="index.html">
+                      <img
+                        src="assets/images/icons/home.png"
+                        alt="feed"
+                        class="w-6"
+                      />
+                      <span> Feed </span>
+                    </a>
+                  </li>
+                  <li>
+                    <a href="messages.html">
+                      <img
+                        src="assets/images/icons/message.png"
+                        alt="messages"
+                        class="w-5"
+                      />
+                      <span> messages </span>
+                    </a>
+                  </li>
+                  <li>
+                    <a href="video.html">
+                      <img
+                        src="assets/images/icons/video.png"
+                        alt="video"
+                        class="w-6"
+                      />
+                      <span> video </span>
+                    </a>
+                  </li>
+                  <li>
+                    <a href="event.html">
+                      <img
+                        src="assets/images/icons/event.png"
+                        alt="event"
+                        class="w-6"
+                      />
+                      <span> event </span>
+                    </a>
+                  </li>
+                  <li>
+                    <a href="pages.html">
+                      <img
+                        src="assets/images/icons/page.png"
+                        alt="pages"
+                        class="w-6"
+                      />
+                      <span> pages </span>
+                    </a>
+                  </li>
+                  <li>
+                    <a href="groups.html">
+                      <img
+                        src="assets/images/icons/group.png"
+                        alt="groups"
+                        class="w-6"
+                      />
+                      <span> groups </span>
+                    </a>
+                  </li>
+                  <li>
+                    <a href="market.html">
+                      <img
+                        src="assets/images/icons/market.png"
+                        alt="market"
+                        class="w-7 -ml-1"
+                      />
+                      <span> market </span>
+                    </a>
+                  </li>
+                  <li>
+                    <a href="blog.html">
+                      <img
+                        src="assets/images/icons/blog.png"
+                        alt="blog"
+                        class="w-6"
+                      />
+                      <span> blog </span>
+                    </a>
+                  </li>
+                  <li class="!hidden" id="show__more">
+                    <a href="games.html">
+                      <img
+                        src="assets/images/icons/game.png"
+                        alt="games"
+                        class="w-6"
+                      />
+                      <span> games </span>
+                    </a>
+                  </li>
+                  <li class="!hidden" id="show__more">
+                    <a href="funding.html">
+                      <img
+                        src="assets/images/icons/fund.png"
+                        alt="funding"
+                        class="w-6"
+                      />
+                      <span> funding </span>
+                    </a>
+                  </li>
+                </ul>
+
+                <button
+                  type="button"
+                  class="flex items-center gap-4 py-2 px-4 w-full hover:bg-secondery rounded-lg dark:hover:bg-white/10"
+                  uk-toggle="target: #show__more ; cls: !hidden"
+                >
+                  <svg
+                    class="w-6"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M5 12h.01M12 12h.01M19 12h.01M6 12a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0z"
+                    />
+                  </svg>
+                  <span class="text-sm"> See all </span>
+                </button>
+              </nav>
+
+              <div
+                class="font-medium text-gray-500 text-sm p-3 pt-6 dark:text-white"
+              >
+                <div class="flex items-center justify-between">
+                  <div>Shortcut</div>
+                  <ion-icon name="add" class="text-lg"></ion-icon>
+                </div>
+              </div>
+
+              <nav id="side" class="mt-2">
+                <ul>
+                  <li>
+                    <a href="timeline-group.html">
+                      <img
+                        src="assets/images/group/group-1.jpg"
+                        alt=""
+                        class="w-6 rounded-full object-cover"
+                      />
+                      <span> Delicious Foods </span>
+                    </a>
+                  </li>
+                  <li>
+                    <a href="timeline-group.html">
+                      <img
+                        src="assets/images/group/group-2.jpg"
+                        alt=""
+                        class="w-6 rounded-full object-cover"
+                      />
+                      <span> Abstract minimal </span>
+                    </a>
+                  </li>
+                  <li>
+                    <a href="timeline-group.html">
+                      <img
+                        src="assets/images/group/group-3.jpg"
+                        alt=""
+                        class="w-6 rounded-full object-cover"
+                      />
+                      <span> Delicious Foods </span>
+                    </a>
+                  </li>
+                </ul>
+              </nav>
+            </div>
+
+            <!-- overly -->
+            <div
+              id="site__sidebar__overly"
+              class="absolute top-0 left-0 z-20 w-screen h-screen xl:hidden backdrop-blur-sm"
+              uk-toggle="target: #site__sidebar ; cls :!-translate-x-full"
+            ></div>
+          </div>
+
+          <!-- main -->
+          <div class="flex-1 xl:space-y-6 space-y-3">
+            <!-- stories -->
+            <div
+              class="bg-white rounded-xl shadow-sm p-4 space-y-4 text-xs font-medium border1 dark:bg-dark2"
+            >
+              <div class="flex gap-3">
+                <a
+                  href="#"
+                  class="block w-16 h-16 rounded-full relative border-2 border-dashed border-gray-300 shrink-0"
+                  uk-toggle="target: #create-status"
+                >
+                  <img
+                    id="storyUserAvatar"
+                    src="assets/images/avatars/avatar-2.jpg"
+                    alt=""
+                    class="absolute -top-0.5 left-1/2 w-full h-full rounded-full object-cover -translate-x-1/2"
+                  />
+                  <div
+                    class="w-5 h-5 rounded-full bg-blue-600 border border-white absolute -bottom-0 right-0 flex justify-center items-center"
+                  >
+                    <ion-icon name="add" class="text-white text-sm"></ion-icon>
+                  </div>
+                </a>
+
+                <div
+                  class="flex-1 rounded-xl relative overflow-hidden"
+                  tabindex="-1"
+                  uk-slider="finite: true"
+                >
+                  <div class="uk-slider-container">
+                    <ul
+                      class="uk-slider-items w-[calc(100%+14px)]"
+                      id="storiesList"
+                    >
+                      <!-- Dynamic stories will be inserted here -->
+                    </ul>
+                  </div>
+
+                  <div class="max-md:hidden">
+                    <button
+                      type="button"
+                      class="absolute -translate-y-1/2 bg-white shadow rounded-full top-1/2 -left-3.5 grid w-8 h-8 place-items-center dark:bg-dark3"
+                      uk-slider-item="previous"
+                    >
+                      <ion-icon name="chevron-back" class="text-2xl"></ion-icon>
+                    </button>
+                    <button
+                      type="button"
+                      class="absolute -right-2 -translate-y-1/2 bg-white shadow rounded-full top-1/2 grid w-8 h-8 place-items-center dark:bg-dark3"
+                      uk-slider-item="next"
+                    >
+                      <ion-icon
+                        name="chevron-forward"
+                        class="text-2xl"
+                      ></ion-icon>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- feed story -->
+            <div class="md:max-w-[580px] mx-auto flex-1 xl:space-y-6 space-y-3">
+              <!-- add story -->
+              <div
+                class="bg-white rounded-xl shadow-sm md:p-4 p-2 space-y-4 text-sm font-medium border1 dark:bg-dark2"
+              >
+                <div class="flex items-center md:gap-3 gap-1">
+                  <div
+                    class="flex-1 bg-slate-100 hover:bg-opacity-80 transition-all rounded-lg cursor-pointer dark:bg-dark3"
+                    uk-toggle="target: #create-status"
+                  >
+                    <div class="py-2.5 text-center dark:text-white">
+                      What do you have in mind?
+                    </div>
+                  </div>
+                  <div
+                    class="cursor-pointer hover:bg-opacity-80 p-1 px-1.5 rounded-xl transition-all bg-pink-100/60 hover:bg-pink-100 dark:bg-white/10 dark:hover:bg-white/20"
+                    uk-toggle="target: #create-status"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      class="w-8 h-8 stroke-pink-600 fill-pink-200/70"
+                      viewBox="0 0 24 24"
+                      stroke-width="1.5"
+                      stroke="#2c3e50"
+                      fill="none"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                      <path d="M15 8h.01" />
+                      <path
+                        d="M12 3c7.2 0 9 1.8 9 9s-1.8 9 -9 9s-9 -1.8 -9 -9s1.8 -9 9 -9z"
+                      />
+                      <path
+                        d="M3.5 15.5l4.5 -4.5c.928 -.893 2.072 -.893 3 0l5 5"
+                      />
+                      <path
+                        d="M14 14l1 -1c.928 -.893 2.072 -.893 3 0l2.5 2.5"
+                      />
+                    </svg>
+                  </div>
+                  <div
+                    class="cursor-pointer hover:bg-opacity-80 p-1 px-1.5 rounded-xl transition-all bg-sky-100/60 hover:bg-sky-100 dark:bg-white/10 dark:hover:bg-white/20"
+                    uk-toggle="target: #create-status"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      class="w-8 h-8 stroke-sky-600 fill-sky-200/70"
+                      viewBox="0 0 24 24"
+                      stroke-width="1.5"
+                      stroke="#2c3e50"
+                      fill="none"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                      <path
+                        d="M15 10l4.553 -2.276a1 1 0 0 1 1.447 .894v6.764a1 1 0 0 1 -1.447 .894l-4.553 -2.276v-4z"
+                      />
+                      <path
+                        d="M3 6m0 2a2 2 0 0 1 2 -2h8a2 2 0 0 1 2 2v8a2 2 0 0 1 -2 2h-8a2 2 0 0 1 -2 -2z"
+                      />
+                    </svg>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Posts Container -->
+              <div id="postsContainer">
+                <!-- Dynamic posts will be loaded here -->
+                <div class="text-center py-8">
+                  <div class="animate-pulse">
+                    <div
+                      class="h-4 bg-gray-200 dark:bg-gray-700 rounded w-32 mx-auto mb-2"
+                    ></div>
+                    <div
+                      class="h-3 bg-gray-200 dark:bg-gray-700 rounded w-48 mx-auto"
+                    ></div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Load More Button -->
+              <div id="loadMoreContainer" class="text-center mt-8 hidden">
+                <button
+                  id="loadMoreBtn"
+                  class="bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 px-6 py-3 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
+                >
+                  Load More Posts
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- right sidebar -->
+          <div class="2xl:w-[380px] lg:w-[330px] w-full">
+            <div
+              class="lg:space-y-4 lg:pb-8 max-lg:grid sm:grid-cols-2 max-lg:gap-6"
+            >
+              <div class="box p-5 px-6">
+                <div
+                  class="flex items-baseline justify-between text-black dark:text-white"
+                >
+                  <h3 class="font-bold text-base">Suggested for you</h3>
+                  <a href="#" class="text-sm text-blue-500">See all</a>
+                </div>
+
+                <div class="side-list">
+                  <div class="side-list-item">
+                    <a href="timeline.html">
+                      <img
+                        src="assets/images/avatars/avatar-2.jpg"
+                        alt=""
+                        class="side-list-image rounded-full"
+                      />
+                    </a>
+                    <div class="flex-1">
+                      <a href="timeline.html"
+                        ><h4 class="side-list-title">John Michael</h4></a
+                      >
+                      <div class="side-list-info">125k followers</div>
+                    </div>
+                    <button
+                      class="button bg-primary-soft text-primary dark:text-white"
+                    >
+                      follow
+                    </button>
+                  </div>
+
+                  <div class="side-list-item">
+                    <a href="timeline.html">
+                      <img
+                        src="assets/images/avatars/avatar-3.jpg"
+                        alt=""
+                        class="side-list-image rounded-full"
+                      />
+                    </a>
+                    <div class="flex-1">
+                      <a href="timeline.html"
+                        ><h4 class="side-list-title">Monroe Parker</h4></a
+                      >
+                      <div class="side-list-info">320k followers</div>
+                    </div>
+                    <button
+                      class="button bg-primary-soft text-primary dark:text-white"
+                    >
+                      follow
+                    </button>
+                  </div>
+
+                  <div class="side-list-item">
+                    <a href="timeline.html">
+                      <img
+                        src="assets/images/avatars/avatar-5.jpg"
+                        alt=""
+                        class="side-list-image rounded-full"
+                      />
+                    </a>
+                    <div class="flex-1">
+                      <a href="timeline.html"
+                        ><h4 class="side-list-title">James Lewis</h4></a
+                      >
+                      <div class="side-list-info">192k followers</div>
+                    </div>
+                    <button
+                      class="button bg-primary-soft text-primary dark:text-white"
+                    >
+                      follow
+                    </button>
+                  </div>
+
+                  <div class="side-list-item">
+                    <a href="timeline.html">
+                      <img
+                        src="assets/images/avatars/avatar-6.jpg"
+                        alt=""
+                        class="side-list-image rounded-full"
+                      />
+                    </a>
+                    <div class="flex-1">
+                      <a href="timeline.html"
+                        ><h4 class="side-list-title">Alexa stella</h4></a
+                      >
+                      <div class="side-list-info">192k followers</div>
+                    </div>
+                    <button
+                      class="button bg-primary-soft text-primary dark:text-white"
+                    >
+                      follow
+                    </button>
+                  </div>
+
+                  <button
+                    class="bg-secondery w-full text-black py-1.5 rounded-md text-sm dark:text-white dark:bg-white/20"
+                  >
+                    See more
+                  </button>
+                </div>
+              </div>
+
+              <!-- latest marketplace items -->
+              <div class="box p-5 px-6 border1 dark:bg-dark2">
+                <div class="flex justify-between text-black dark:text-white">
+                  <h3 class="font-bold text-base">Latest marketplace</h3>
+                  <button type="button">
+                    <ion-icon name="sync-outline" class="text-xl"></ion-icon>
+                  </button>
+                </div>
+
+                <div
+                  class="relative capitalize font-normal text-sm text-black mt-4 dark:text-white"
+                  tabindex="-1"
+                  uk-slider="autoplay: true;finite: true"
+                >
+                  <div class="overflow-hidden uk-slider-container">
+                    <ul class="uk-slider-items">
+                      <li class="w-1/2 pr-3">
+                        <a href="product-view-1.html">
+                          <div class="relative overflow-hidden rounded-lg">
+                            <div class="relative w-full h-40">
+                              <img
+                                src="assets/images/product/product-1.jpg"
+                                alt=""
+                                class="object-cover w-full h-full inset-0"
+                              />
+                            </div>
+                            <div
+                              class="absolute right-0 top-0 m-2 bg-white/60 rounded-full py-0.5 px-2 text-sm font-semibold dark:bg-slate-800/60"
+                            >
+                              $12
+                            </div>
+                          </div>
+                          <div class="mt-3 w-full">Chill Lotion</div>
+                        </a>
+                      </li>
+
+                      <li class="w-1/2 pr-3">
+                        <a href="product-view-1.html">
+                          <div class="relative overflow-hidden rounded-lg">
+                            <div class="relative w-full h-40">
+                              <img
+                                src="assets/images/product/product-2.jpg"
+                                alt=""
+                                class="object-cover w-full h-full inset-0"
+                              />
+                            </div>
+                            <div
+                              class="absolute right-0 top-0 m-2 bg-white/60 rounded-full py-0.5 px-2 text-sm font-semibold dark:bg-slate-800/60"
+                            >
+                              $18
+                            </div>
+                          </div>
+                          <div class="mt-3 w-full">Gaming mouse</div>
+                        </a>
+                      </li>
+
+                      <li class="w-1/2 pr-3">
+                        <a href="product-view-1.html">
+                          <div class="relative overflow-hidden rounded-lg">
+                            <div class="relative w-full h-40">
+                              <img
+                                src="assets/images/product/product-3.jpg"
+                                alt=""
+                                class="object-cover w-full h-full inset-0"
+                              />
+                            </div>
+                            <div
+                              class="absolute right-0 top-0 m-2 bg-white/60 rounded-full py-0.5 px-2 text-sm font-semibold dark:bg-slate-800/60"
+                            >
+                              $12
+                            </div>
+                          </div>
+                          <div class="mt-3 w-full">Herbal Shampoo</div>
+                        </a>
+                      </li>
+
+                      <li class="w-1/2 pr-3">
+                        <a href="product-view-1.html">
+                          <div class="relative overflow-hidden rounded-lg">
+                            <div class="relative w-full h-40">
+                              <img
+                                src="assets/images/product/product-4.jpg"
+                                alt=""
+                                class="object-cover w-full h-full inset-0"
+                              />
+                            </div>
+                            <div
+                              class="absolute right-0 top-0 m-2 bg-white/60 rounded-full py-0.5 px-2 text-sm font-semibold dark:bg-slate-800/60"
+                            >
+                              $25
+                            </div>
+                          </div>
+                          <div class="mt-3 w-full">Gaming Keyboard</div>
+                        </a>
+                      </li>
+                    </ul>
+                  </div>
+
+                  <!-- slide nav icons -->
+                  <div class="dark:hidden">
+                    <a
+                      class="nav-prev !bottom-4 !top-auto"
+                      href="#"
+                      uk-slider-item="previous"
+                    >
+                      <ion-icon name="chevron-back" class="text-2xl"></ion-icon>
+                    </a>
+                    <a
+                      class="nav-next !bottom-4 !top-auto"
+                      href="#"
+                      uk-slider-item="next"
+                    >
+                      <ion-icon
+                        name="chevron-forward"
+                        class="text-2xl"
+                      ></ion-icon>
+                    </a>
+                  </div>
+
+                  <!-- slide nav -->
+                  <div class="flex justify-center">
+                    <ul
+                      class="inline-flex flex-wrap justify-center mt-2 -mb-1 uk-dotnav uk-slider-nav gap-2"
+                    ></ul>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Pro Members -->
+              <div class="box p-5 px-6 border1 dark:bg-dark2">
+                <div class="flex justify-between text-black dark:text-white">
+                  <h3 class="font-bold text-base">Pro Members</h3>
+                </div>
+
+                <div
+                  class="relative mt-4"
+                  tabindex="-1"
+                  uk-slider="finite: true"
+                >
+                  <div class="overflow-hidden uk-slider-container">
+                    <ul class="uk-slider-items w-[calc(100%+20px)]">
+                      <li class="pr-3">
+                        <div
+                          class="flex flex-col items-center shadow-sm p-2 rounded-xl border1"
+                        >
+                          <a href="timeline.html">
+                            <div class="relative w-16 h-16 mx-auto mt-2">
+                              <img
+                                src="assets/images/avatars/avatar-5.jpg"
+                                alt=""
+                                class="h-full object-cover rounded-full shadow-sm w-full"
+                              />
+                            </div>
+                          </a>
+                          <div class="mt-5 text-center w-full">
+                            <a href="timeline.html">
+                              <h5
+                                class="font-semibold text-sm text-black dark:text-white"
+                              >
+                                Martin
+                              </h5>
+                            </a>
+                            <div
+                              class="text-xs text-gray-400 mt-0.5 font-medium"
+                            >
+                              Turkey
+                            </div>
+                            <div class="flex justify-center mt-2">
+                              <button
+                                type="button"
+                                class="button bg-primary-soft text-primary text-xs"
+                              >
+                                Follow
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      </li>
+
+                      <li class="pr-3">
+                        <div
+                          class="flex flex-col items-center shadow-sm p-2 rounded-xl border1"
+                        >
+                          <a href="timeline.html">
+                            <div class="relative w-16 h-16 mx-auto mt-2">
+                              <img
+                                src="assets/images/avatars/avatar-4.jpg"
+                                alt=""
+                                class="h-full object-cover rounded-full shadow-sm w-full"
+                              />
+                            </div>
+                          </a>
+                          <div class="mt-5 text-center w-full">
+                            <a href="timeline.html">
+                              <h5
+                                class="font-semibold text-sm text-black dark:text-white"
+                              >
+                                Alexa
+                              </h5>
+                            </a>
+                            <div
+                              class="text-xs text-gray-400 mt-0.5 font-medium"
+                            >
+                              Sub Editor
+                            </div>
+                            <div class="flex justify-center mt-2">
+                              <button
+                                type="button"
+                                class="button bg-primary-soft text-primary text-xs"
+                              >
+                                Follow
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      </li>
+
+                      <li class="pr-3">
+                        <div
+                          class="flex flex-col items-center shadow-sm p-2 rounded-xl border1"
+                        >
+                          <a href="timeline.html">
+                            <div class="relative w-16 h-16 mx-auto mt-2">
+                              <img
+                                src="assets/images/avatars/avatar-6.jpg"
+                                alt=""
+                                class="h-full object-cover rounded-full shadow-sm w-full"
+                              />
+                            </div>
+                          </a>
+                          <div class="mt-5 text-center w-full">
+                            <a href="timeline.html">
+                              <h5
+                                class="font-semibold text-sm text-black dark:text-white"
+                              >
+                                Sarah
+                              </h5>
+                            </a>
+                            <div
+                              class="text-xs text-gray-400 mt-0.5 font-medium"
+                            >
+                              Freelancer
+                            </div>
+                            <div class="flex justify-center mt-2">
+                              <button
+                                type="button"
+                                class="button bg-primary-soft text-primary text-xs"
+                              >
+                                Follow
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      </li>
+                    </ul>
+                  </div>
+
+                  <!-- slide nav icons -->
+                  <div class="dark:hidden">
+                    <a
+                      class="nav-prev !bottom-16 !top-auto"
+                      href="#"
+                      uk-slider-item="previous"
+                    >
+                      <ion-icon name="chevron-back" class="text-2xl"></ion-icon>
+                    </a>
+                    <a
+                      class="nav-next !bottom-16 !top-auto"
+                      href="#"
+                      uk-slider-item="next"
+                    >
+                      <ion-icon
+                        name="chevron-forward"
+                        class="text-2xl"
+                      ></ion-icon>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
     </div>
 
     <!-- Javascript  -->
     <script src="assets/js/uikit.min.js"></script>
     <script src="assets/js/simplebar.js"></script>
     <script src="assets/js/script.js"></script>
-    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
-    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+    <script
+      type="module"
+      src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"
+    ></script>
+    <script
+      nomodule
+      src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"
+    ></script>
     <script src="src/assets/js/main.js"></script>
 
     <!-- Quick authentication check for immediate login prompt -->
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const token = localStorage.getItem('nexify_token');
-            if (!token) {
-                setTimeout(() => {
-                    if (typeof app !== 'undefined') {
-                        console.log('No authentication found, showing login modal');
-                        app.showLoginModal();
-                    }
-                }, 1500);
+      document.addEventListener("DOMContentLoaded", () => {
+        const token = localStorage.getItem("nexify_token");
+        if (!token) {
+          setTimeout(() => {
+            if (typeof app !== "undefined") {
+              console.log("No authentication found, showing login modal");
+              app.showLoginModal();
             }
-        });
+          }, 1500);
+        }
+      });
     </script>
-
-</body>
+  </body>
 </html>
