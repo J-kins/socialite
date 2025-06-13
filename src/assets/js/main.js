@@ -1,5 +1,5 @@
-// Socialite Main JavaScript - Fixed for initial setup
-class SocialiteApp {
+// Nexify Main JavaScript - Dynamic functionality for the original Nexify template
+class NexifyApp {
   constructor() {
     this.currentUser = null;
     this.posts = [];
@@ -13,7 +13,7 @@ class SocialiteApp {
 
   async initializeApp() {
     try {
-      console.log("Initializing Socialite app...");
+      console.log("Initializing Nexify app...");
 
       // Check authentication status
       await this.checkAuthStatus();
@@ -21,7 +21,10 @@ class SocialiteApp {
       // Initialize UI components
       this.initializeUI();
 
-      // Load initial posts (fallback to sample data if backend not available)
+      // Load sample stories
+      this.loadStories();
+
+      // Load initial posts
       await this.loadPosts();
 
       // Hide loading spinner and show content
@@ -30,16 +33,14 @@ class SocialiteApp {
       console.error("Failed to initialize app:", error);
       this.showToast("Failed to load application", "error");
       this.hideLoading();
-      // Show login modal if initialization fails
-      this.showLoginModal();
     }
   }
 
   async checkAuthStatus() {
     try {
       // Check localStorage for existing session
-      const token = localStorage.getItem("socialite_token");
-      const userStr = localStorage.getItem("socialite_user");
+      const token = localStorage.getItem("nexify_token");
+      const userStr = localStorage.getItem("nexify_user");
 
       if (token && userStr) {
         try {
@@ -49,8 +50,8 @@ class SocialiteApp {
           return;
         } catch (e) {
           console.warn("Invalid user data in localStorage");
-          localStorage.removeItem("socialite_token");
-          localStorage.removeItem("socialite_user");
+          localStorage.removeItem("nexify_token");
+          localStorage.removeItem("nexify_user");
         }
       }
 
@@ -109,21 +110,6 @@ class SocialiteApp {
   }
 
   initializeHeader() {
-    // User menu dropdown
-    const userMenuBtn = document.getElementById("userMenuBtn");
-    const userDropdown = document.getElementById("userDropdown");
-
-    if (userMenuBtn && userDropdown) {
-      userMenuBtn.addEventListener("click", (e) => {
-        e.stopPropagation();
-        userDropdown.classList.toggle("hidden");
-      });
-
-      document.addEventListener("click", () => {
-        userDropdown.classList.add("hidden");
-      });
-    }
-
     // Logout functionality
     const logoutBtn = document.getElementById("logoutBtn");
     if (logoutBtn) {
@@ -138,19 +124,17 @@ class SocialiteApp {
   }
 
   initializePostCreation() {
-    const postContent = document.getElementById("postContent");
-    const postBtn = document.getElementById("postBtn");
-
-    if (postContent && postBtn) {
-      postContent.addEventListener("input", () => {
-        const hasContent = postContent.value.trim().length > 0;
-        postBtn.disabled = !hasContent;
-        postBtn.classList.toggle("bg-gray-400", !hasContent);
-        postBtn.classList.toggle("bg-blue-500", hasContent);
+    // Handle "What do you have in mind?" click to open create modal
+    const createPostTriggers = document.querySelectorAll(
+      '[uk-toggle="target: #create-status"]',
+    );
+    createPostTriggers.forEach((trigger) => {
+      trigger.addEventListener("click", () => {
+        if (!this.currentUser) {
+          this.showLoginModal();
+        }
       });
-
-      postBtn.addEventListener("click", () => this.handleCreatePost());
-    }
+    });
   }
 
   initializeLoginModal() {
@@ -207,6 +191,49 @@ class SocialiteApp {
     }
   }
 
+  loadStories() {
+    const storiesList = document.getElementById("storiesList");
+    if (!storiesList) return;
+
+    const sampleStories = [
+      {
+        id: 1,
+        username: "monroe",
+        avatar: "assets/images/avatars/avatar-3.jpg",
+      },
+      { id: 2, username: "john", avatar: "assets/images/avatars/avatar-5.jpg" },
+      {
+        id: 3,
+        username: "alexa",
+        avatar: "assets/images/avatars/avatar-6.jpg",
+      },
+      {
+        id: 4,
+        username: "james",
+        avatar: "assets/images/avatars/avatar-2.jpg",
+      },
+      {
+        id: 5,
+        username: "sarah",
+        avatar: "assets/images/avatars/avatar-4.jpg",
+      },
+    ];
+
+    storiesList.innerHTML = sampleStories
+      .map(
+        (story) => `
+            <li class="md:pr-3 pr-2 hover:scale-[1.15] hover:-rotate-2 duration-300">
+                <a href="#" data-caption="Story by ${story.username}">
+                    <div class="md:w-16 md:h-16 w-12 h-12 relative md:border-4 border-2 shadow border-white rounded-full overflow-hidden dark:border-slate-700">
+                        <img src="${story.avatar}" alt="${story.username}" class="absolute w-full h-full object-cover">
+                    </div>
+                </a>
+            </li>
+        `,
+      )
+      .join("");
+  }
+
   async loadPosts(page = 1) {
     if (this.isLoading) return;
 
@@ -260,42 +287,47 @@ class SocialiteApp {
     return [
       {
         id: 1,
-        username: "john_doe",
-        first_name: "John",
-        last_name: "Doe",
-        user_avatar: "src/assets/img/default-avatar.png",
+        username: "Monroe Parker",
+        user_handle: "@monroe",
+        user_avatar: "assets/images/avatars/avatar-3.jpg",
         content:
-          "Welcome to Socialite! This is a sample post to show how the platform works. The backend API will provide real data once configured.",
-        created_at: new Date(Date.now() - 3600000).toISOString(), // 1 hour ago
-        likes_count: 15,
-        comments_count: 3,
+          "Just captured this amazing sunset! Photography is truly about finding beauty in everyday moments. 📸✨",
+        image_url: "assets/images/post/img-2.jpg",
+        created_at: new Date(Date.now() - 7200000).toISOString(), // 2 hours ago
+        likes_count: 127,
+        comments_count: 23,
         is_liked: false,
+        post_type: "image",
       },
       {
         id: 2,
-        username: "jane_smith",
-        first_name: "Jane",
-        last_name: "Smith",
-        user_avatar: "src/assets/img/default-avatar.png",
+        username: "John Michael",
+        user_handle: "@john_m",
+        user_avatar: "assets/images/avatars/avatar-5.jpg",
         content:
-          "Just finished working on a new design project. Really excited about the direction we're taking! #design #creativity",
-        created_at: new Date(Date.now() - 1800000).toISOString(), // 30 minutes ago
-        likes_count: 8,
-        comments_count: 1,
+          "Photography is the art of capturing light with a camera. It can be used to create images that tell stories, express emotions, or document reality. it can be fun, challenging, or rewarding. It can also be a hobby, a profession, or a passion. 📷",
+        created_at: new Date(Date.now() - 14400000).toISOString(), // 4 hours ago
+        likes_count: 89,
+        comments_count: 12,
         is_liked: true,
+        post_type: "text",
       },
       {
         id: 3,
-        username: "john_doe",
-        first_name: "John",
-        last_name: "Doe",
-        user_avatar: "src/assets/img/default-avatar.png",
+        username: "Alexa Gray",
+        user_handle: "@alexa_g",
+        user_avatar: "assets/images/avatars/avatar-6.jpg",
         content:
-          "Beautiful sunset today! Sometimes you need to take a break from coding and appreciate nature. 🌅",
-        created_at: new Date(Date.now() - 600000).toISOString(), // 10 minutes ago
-        likes_count: 23,
-        comments_count: 5,
+          "Working on some exciting new designs today! The creative process never gets old. 🎨",
+        images: [
+          "assets/images/post/img-3.jpg",
+          "assets/images/post/img-4.jpg",
+        ],
+        created_at: new Date(Date.now() - 21600000).toISOString(), // 6 hours ago
+        likes_count: 156,
+        comments_count: 34,
         is_liked: false,
+        post_type: "gallery",
       },
     ];
   }
@@ -332,44 +364,131 @@ class SocialiteApp {
 
   createPostHTML(post) {
     const timeAgo = this.getTimeAgo(post.created_at);
-    const userAvatar = post.user_avatar || "src/assets/img/default-avatar.png";
+    const userAvatar = post.user_avatar || "assets/images/avatars/avatar-2.jpg";
+
+    // Handle different post types
+    let mediaContent = "";
+    if (post.post_type === "image" && post.image_url) {
+      mediaContent = `
+                <a href="#preview_modal" uk-toggle>
+                    <div class="relative w-full lg:h-96 h-full sm:px-4">
+                        <img src="${post.image_url}" alt="" class="sm:rounded-lg w-full h-full object-cover">
+                    </div>
+                </a>
+            `;
+    } else if (post.post_type === "gallery" && post.images) {
+      mediaContent = `
+                <div class="relative uk-visible-toggle sm:px-4" tabindex="-1" uk-slideshow="animation: push;ratio: 4:3">
+                    <ul class="uk-slideshow-items overflow-hidden rounded-xl" uk-lightbox="animation: fade">
+                        ${post.images
+                          .map(
+                            (img) => `
+                            <li class="w-full">
+                                <a class="inline" href="${img}" data-caption="Image"> 
+                                    <img src="${img}" alt="" class="w-full h-full absolute object-cover insta-0">
+                                </a>
+                            </li>
+                        `,
+                          )
+                          .join("")}
+                    </ul>
+                    <a class="nav-prev left-6" href="#" uk-slideshow-item="previous"> <ion-icon name="chevron-back" class="text-2xl"></ion-icon> </a>
+                    <a class="nav-next right-6" href="#" uk-slideshow-item="next"> <ion-icon name="chevron-forward" class="text-2xl"></ion-icon></a>
+                </div>
+            `;
+    }
 
     return `
-            <article class="post-card bg-white dark:bg-gray-800 rounded-lg shadow-md border border-gray-200 dark:border-gray-700 fade-in" data-post-id="${post.id}">
-                <div class="p-6">
-                    <!-- Post Header -->
-                    <div class="flex items-center gap-3 mb-4">
-                        <img src="${userAvatar}" alt="${post.username}" class="w-10 h-10 rounded-full object-cover bg-gray-200">
-                        <div class="flex-1">
-                            <h3 class="font-semibold text-gray-900 dark:text-white">${post.first_name} ${post.last_name}</h3>
-                            <p class="text-sm text-gray-500 dark:text-gray-400">@${post.username} • ${timeAgo}</p>
+            <div class="bg-white rounded-xl shadow-sm text-sm font-medium border1 dark:bg-dark2" data-post-id="${post.id}">
+                <!-- post heading -->
+                <div class="flex gap-3 sm:p-4 p-2.5 text-sm font-medium">
+                    <a href="timeline.html"> <img src="${userAvatar}" alt="${post.username}" class="w-9 h-9 rounded-full"> </a>  
+                    <div class="flex-1">
+                        <a href="timeline.html"> <h4 class="text-black dark:text-white">${post.username}</h4> </a>  
+                        <div class="text-xs text-gray-500 dark:text-white/80">${timeAgo}</div>
+                    </div>
+
+                    <div class="-mr-1">
+                        <button type="button" class="button-icon w-8 h-8"> <ion-icon class="text-xl" name="ellipsis-horizontal"></ion-icon> </button>
+                        <div class="w-[245px]" uk-dropdown="pos: bottom-right; animation: uk-animation-scale-up uk-transform-origin-top-right; animate-out: true; mode: click"> 
+                            <nav> 
+                                <a href="#"> <ion-icon class="text-xl shrink-0" name="bookmark-outline"></ion-icon>  Add to favorites </a>  
+                                <a href="#"> <ion-icon class="text-xl shrink-0" name="notifications-off-outline"></ion-icon> Mute Notification </a>  
+                                <a href="#"> <ion-icon class="text-xl shrink-0" name="flag-outline"></ion-icon>  Report this post </a>  
+                                <a href="#"> <ion-icon class="text-xl shrink-0" name="share-outline"></ion-icon>  Share your profile </a>  
+                                <hr>
+                                <a href="#" class="text-red-400 hover:!bg-red-50 dark:hover:!bg-red-500/50"> <ion-icon class="text-xl shrink-0" name="stop-circle-outline"></ion-icon>  Unfollow </a>  
+                            </nav>
                         </div>
                     </div>
-
-                    <!-- Post Content -->
-                    <div class="mb-4">
-                        <p class="text-gray-900 dark:text-white whitespace-pre-wrap">${post.content}</p>
-                    </div>
-
-                    <!-- Post Stats -->
-                    <div class="flex items-center gap-6 py-3 border-t border-gray-200 dark:border-gray-700">
-                        <button class="like-btn flex items-center gap-2 text-gray-600 dark:text-gray-400 hover:text-red-500 transition-colors ${post.is_liked ? "liked text-red-500" : ""}" data-post-id="${post.id}">
-                            <ion-icon name="${post.is_liked ? "heart" : "heart-outline"}" class="w-5 h-5"></ion-icon>
-                            <span class="like-count">${post.likes_count || 0}</span>
-                        </button>
-                        
-                        <button class="comment-btn flex items-center gap-2 text-gray-600 dark:text-gray-400 hover:text-blue-500 transition-colors" data-post-id="${post.id}">
-                            <ion-icon name="chatbubble-outline" class="w-5 h-5"></ion-icon>
-                            <span>${post.comments_count || 0}</span>
-                        </button>
-                        
-                        <button class="share-btn flex items-center gap-2 text-gray-600 dark:text-gray-400 hover:text-green-500 transition-colors" data-post-id="${post.id}">
-                            <ion-icon name="share-outline" class="w-5 h-5"></ion-icon>
-                            <span>Share</span>
-                        </button>
-                    </div>
                 </div>
-            </article>
+                
+                ${
+                  post.content
+                    ? `
+                <div class="sm:px-4 p-2.5 pt-0">
+                    <p class="font-normal">${post.content}</p>
+                </div>
+                `
+                    : ""
+                }
+                
+                ${mediaContent}
+
+                <!-- post icons -->
+                <div class="sm:p-4 p-2.5 flex items-center gap-4 text-xs font-semibold">
+                    <div>
+                        <div class="flex items-center gap-2.5">
+                            <button type="button" class="like-btn button-icon ${post.is_liked ? "text-red-500 bg-red-100" : "bg-slate-200/70"} dark:bg-slate-700" data-post-id="${post.id}"> 
+                                <ion-icon class="text-lg" name="${post.is_liked ? "heart" : "heart-outline"}"></ion-icon> 
+                            </button>
+                            <a href="#" class="like-count">${post.likes_count}</a>
+                        </div>
+                        <div class="p-1 px-2 bg-white rounded-full drop-shadow-md w-[212px] dark:bg-slate-700 text-2xl"
+                                uk-drop="offset:10;pos: top-left; animate-out: true; animation: uk-animation-scale-up uk-transform-origin-bottom-left"> 
+                            
+                            <div class="flex gap-2" uk-scrollspy="target: > button; cls: uk-animation-scale-up; delay: 100 ;repeat: true">
+                                <button type="button" class="text-red-600 hover:scale-125 duration-300"> <span> 👍 </span></button>
+                                <button type="button" class="text-red-600 hover:scale-125 duration-300"> <span> ❤️ </span></button>
+                                <button type="button" class="text-red-600 hover:scale-125 duration-300"> <span> 😂 </span></button>
+                                <button type="button" class="text-red-600 hover:scale-125 duration-300"> <span> 😯 </span></button>
+                                <button type="button" class="text-red-600 hover:scale-125 duration-300"> <span> 😢 </span></button>
+                            </div>
+                            
+                            <div class="w-2.5 h-2.5 absolute -bottom-1 left-3 bg-white rotate-45 hidden"></div>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <button type="button" class="comment-btn button-icon bg-slate-200/70 dark:bg-slate-700" data-post-id="${post.id}"> 
+                            <ion-icon class="text-lg" name="chatbubble-ellipses"></ion-icon> 
+                        </button>
+                        <span class="comment-count">${post.comments_count}</span>
+                    </div>
+                    <button type="button" class="share-btn button-icon ml-auto" data-post-id="${post.id}"> 
+                        <ion-icon class="text-xl" name="paper-plane-outline"></ion-icon> 
+                    </button>
+                    <button type="button" class="button-icon"> <ion-icon class="text-xl" name="share-outline"></ion-icon> </button>
+                </div>
+
+                <!-- comments -->
+                <div class="comments-section sm:p-4 p-2.5 border-t border-gray-100 font-normal space-y-3 relative dark:border-slate-700/40 hidden"> 
+                    <div class="comments-list"></div>
+                    ${
+                      this.currentUser
+                        ? `
+                    <!-- add comment -->
+                    <div class="sm:px-4 sm:py-3 p-2.5 border-t border-gray-100 flex items-center gap-1 dark:border-slate-700/40">
+                        <img src="${this.currentUser.avatar || "assets/images/avatars/avatar-2.jpg"}" alt="" class="w-6 h-6 rounded-full">
+                        <div class="flex-1 relative overflow-hidden h-10">
+                            <textarea placeholder="Add Comment...." rows="1" class="comment-input w-full resize-none !bg-transparent px-4 py-2 focus:!border-transparent focus:!ring-transparent"></textarea>
+                        </div>
+                        <button type="submit" class="submit-comment-btn text-sm rounded-full py-1.5 px-3.5 bg-secondery">Reply</button>
+                    </div>
+                    `
+                        : ""
+                    }
+                </div>
+            </div>
         `;
   }
 
@@ -388,75 +507,11 @@ class SocialiteApp {
     document.querySelectorAll(".share-btn").forEach((btn) => {
       btn.addEventListener("click", (e) => this.handleShare(e));
     });
-  }
 
-  async handleCreatePost() {
-    if (!this.currentUser) {
-      this.showLoginModal();
-      return;
-    }
-
-    const content = document.getElementById("postContent").value.trim();
-    if (!content) return;
-
-    try {
-      const postBtn = document.getElementById("postBtn");
-      postBtn.disabled = true;
-      postBtn.textContent = "Posting...";
-
-      // Try to create post via API
-      let newPost;
-      try {
-        const response = await fetch("/api/posts", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("socialite_token")}`,
-          },
-          body: JSON.stringify({ content }),
-        });
-
-        if (response.ok) {
-          const data = await response.json();
-          newPost = data.data;
-        } else {
-          throw new Error("API not available");
-        }
-      } catch (apiError) {
-        // Fallback: create post locally
-        newPost = {
-          id: Date.now(),
-          username: this.currentUser.username,
-          first_name: this.currentUser.first_name,
-          last_name: this.currentUser.last_name,
-          user_avatar:
-            this.currentUser.avatar_url || "src/assets/img/default-avatar.png",
-          content: content,
-          created_at: new Date().toISOString(),
-          likes_count: 0,
-          comments_count: 0,
-          is_liked: false,
-        };
-      }
-
-      // Add new post to the beginning of the posts array
-      this.posts.unshift(newPost);
-      this.renderPosts();
-
-      // Clear the form
-      document.getElementById("postContent").value = "";
-      postBtn.disabled = true;
-      postBtn.textContent = "Post";
-
-      this.showToast("Post created successfully!", "success");
-    } catch (error) {
-      console.error("Failed to create post:", error);
-      this.showToast("Failed to create post", "error");
-
-      const postBtn = document.getElementById("postBtn");
-      postBtn.disabled = false;
-      postBtn.textContent = "Post";
-    }
+    // Submit comment buttons
+    document.querySelectorAll(".submit-comment-btn").forEach((btn) => {
+      btn.addEventListener("click", (e) => this.handleSubmitComment(e));
+    });
   }
 
   async handleLike(e) {
@@ -470,16 +525,18 @@ class SocialiteApp {
     const btn = e.currentTarget;
     const postId = btn.dataset.postId;
     const icon = btn.querySelector("ion-icon");
-    const countSpan = btn.querySelector(".like-count");
-    const isLiked = btn.classList.contains("liked");
+    const countSpan = btn.parentNode.querySelector(".like-count");
+    const isLiked = btn.classList.contains("text-red-500");
 
     // Optimistic update
     if (isLiked) {
-      btn.classList.remove("liked", "text-red-500");
+      btn.classList.remove("text-red-500", "bg-red-100");
+      btn.classList.add("bg-slate-200/70");
       icon.setAttribute("name", "heart-outline");
       countSpan.textContent = parseInt(countSpan.textContent) - 1;
     } else {
-      btn.classList.add("liked", "text-red-500");
+      btn.classList.add("text-red-500", "bg-red-100");
+      btn.classList.remove("bg-slate-200/70");
       icon.setAttribute("name", "heart");
       countSpan.textContent = parseInt(countSpan.textContent) + 1;
     }
@@ -490,7 +547,7 @@ class SocialiteApp {
       await fetch(`/api/posts/${postId}/like`, {
         method: method,
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("socialite_token")}`,
+          Authorization: `Bearer ${localStorage.getItem("nexify_token")}`,
         },
       });
     } catch (apiError) {
@@ -500,7 +557,130 @@ class SocialiteApp {
 
   async handleShowComments(e) {
     e.preventDefault();
-    this.showToast("Comments feature coming soon!", "info");
+
+    const btn = e.currentTarget;
+    const postId = btn.dataset.postId;
+    const postCard = btn.closest("[data-post-id]");
+    const commentsSection = postCard.querySelector(".comments-section");
+
+    if (commentsSection.classList.contains("hidden")) {
+      commentsSection.classList.remove("hidden");
+      await this.loadComments(postId, postCard);
+    } else {
+      commentsSection.classList.add("hidden");
+    }
+  }
+
+  async loadComments(postId, postCard) {
+    try {
+      // Try to load from API first
+      let comments = [];
+      try {
+        const response = await fetch(`/api/posts/${postId}/comments`);
+        if (response.ok) {
+          const data = await response.json();
+          comments = data.data || [];
+        }
+      } catch (apiError) {
+        // Fallback sample comments
+        comments = [
+          {
+            id: 1,
+            username: "Steeve",
+            user_avatar: "assets/images/avatars/avatar-2.jpg",
+            content: "What a beautiful photo! I love it. 😍",
+            created_at: new Date(Date.now() - 1800000).toISOString(),
+          },
+          {
+            id: 2,
+            username: "Monroe",
+            user_avatar: "assets/images/avatars/avatar-3.jpg",
+            content: "You captured the moment perfectly! 😎",
+            created_at: new Date(Date.now() - 900000).toISOString(),
+          },
+        ];
+      }
+
+      const commentsListContainer = postCard.querySelector(".comments-list");
+
+      if (comments.length === 0) {
+        commentsListContainer.innerHTML =
+          '<p class="text-gray-500 dark:text-gray-400 text-sm">No comments yet.</p>';
+        return;
+      }
+
+      commentsListContainer.innerHTML = comments
+        .map(
+          (comment) => `
+                <div class="flex items-start gap-3 relative">
+                    <a href="timeline.html"> <img src="${comment.user_avatar || "assets/images/avatars/avatar-2.jpg"}" alt="" class="w-6 h-6 mt-1 rounded-full"> </a>
+                    <div class="flex-1">
+                        <a href="timeline.html" class="text-black font-medium inline-block dark:text-white">${comment.username}</a>
+                        <p class="mt-0.5">${comment.content}</p>
+                    </div>
+                </div>
+            `,
+        )
+        .join("");
+    } catch (error) {
+      console.error("Failed to load comments:", error);
+      this.showToast("Failed to load comments", "error");
+    }
+  }
+
+  async handleSubmitComment(e) {
+    e.preventDefault();
+
+    if (!this.currentUser) {
+      this.showLoginModal();
+      return;
+    }
+
+    const btn = e.currentTarget;
+    const postCard = btn.closest("[data-post-id]");
+    const postId = postCard.dataset.postId;
+    const textarea = postCard.querySelector(".comment-input");
+    const content = textarea.value.trim();
+
+    if (!content) return;
+
+    try {
+      btn.disabled = true;
+      btn.textContent = "Posting...";
+
+      // Add comment to the comments list
+      const commentsListContainer = postCard.querySelector(".comments-list");
+      const newCommentHTML = `
+                <div class="flex items-start gap-3 relative">
+                    <a href="timeline.html"> <img src="${this.currentUser.avatar || "assets/images/avatars/avatar-2.jpg"}" alt="" class="w-6 h-6 mt-1 rounded-full"> </a>
+                    <div class="flex-1">
+                        <a href="timeline.html" class="text-black font-medium inline-block dark:text-white">${this.currentUser.username || "You"}</a>
+                        <p class="mt-0.5">${content}</p>
+                    </div>
+                </div>
+            `;
+
+      if (commentsListContainer.innerHTML.includes("No comments yet")) {
+        commentsListContainer.innerHTML = newCommentHTML;
+      } else {
+        commentsListContainer.insertAdjacentHTML("beforeend", newCommentHTML);
+      }
+
+      // Update comment count
+      const commentCountSpan = postCard.querySelector(".comment-count");
+      commentCountSpan.textContent = parseInt(commentCountSpan.textContent) + 1;
+
+      // Clear textarea
+      textarea.value = "";
+
+      this.showToast("Comment posted!", "success");
+    } catch (error) {
+      console.error("Failed to post comment:", error);
+      this.showToast("Failed to post comment", "error");
+    } finally {
+      btn.disabled = false;
+      btn.textContent = "Reply";
+    }
   }
 
   async handleShare(e) {
@@ -512,8 +692,8 @@ class SocialiteApp {
     try {
       if (navigator.share) {
         await navigator.share({
-          title: "Socialite Post",
-          text: "Check out this post on Socialite!",
+          title: "Nexify Post",
+          text: "Check out this post on Nexify!",
           url: `${window.location.origin}/post/${postId}`,
         });
       } else {
@@ -569,8 +749,8 @@ class SocialiteApp {
         if (response.ok) {
           const data = await response.json();
           if (data.success) {
-            localStorage.setItem("socialite_token", data.token);
-            localStorage.setItem("socialite_user", JSON.stringify(data.user));
+            localStorage.setItem("nexify_token", data.token);
+            localStorage.setItem("nexify_user", JSON.stringify(data.user));
             userData = data.user;
             loginSuccess = true;
           }
@@ -588,14 +768,17 @@ class SocialiteApp {
           userData = {
             id: email === "john@example.com" ? 1 : 2,
             email: email,
-            username: email === "john@example.com" ? "john_doe" : "jane_smith",
-            first_name: email === "john@example.com" ? "John" : "Jane",
-            last_name: email === "john@example.com" ? "Doe" : "Smith",
-            avatar_url: "src/assets/img/default-avatar.png",
+            username:
+              email === "john@example.com" ? "John Michael" : "Jane Smith",
+            handle: email === "john@example.com" ? "@john_m" : "@jane_s",
+            avatar:
+              email === "john@example.com"
+                ? "assets/images/avatars/avatar-5.jpg"
+                : "assets/images/avatars/avatar-6.jpg",
           };
 
-          localStorage.setItem("socialite_token", "demo-token-" + Date.now());
-          localStorage.setItem("socialite_user", JSON.stringify(userData));
+          localStorage.setItem("nexify_token", "demo-token-" + Date.now());
+          localStorage.setItem("nexify_user", JSON.stringify(userData));
           loginSuccess = true;
         } else {
           this.showError(
@@ -609,7 +792,7 @@ class SocialiteApp {
         this.currentUser = userData;
         this.hideLoginModal();
         this.updateUIForAuthenticatedUser();
-        this.showToast("Login successful!", "success");
+        this.showToast("Welcome to Nexify!", "success");
 
         // Reload posts to show user-specific content
         await this.loadPosts();
@@ -631,7 +814,7 @@ class SocialiteApp {
         await fetch("/api/auth/logout", {
           method: "POST",
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("socialite_token")}`,
+            Authorization: `Bearer ${localStorage.getItem("nexify_token")}`,
           },
         });
       } catch (apiError) {
@@ -639,8 +822,8 @@ class SocialiteApp {
       }
 
       // Clear local storage
-      localStorage.removeItem("socialite_token");
-      localStorage.removeItem("socialite_user");
+      localStorage.removeItem("nexify_token");
+      localStorage.removeItem("nexify_user");
 
       this.currentUser = null;
       this.updateUIForGuestUser();
@@ -664,10 +847,7 @@ class SocialiteApp {
     const filteredPosts = this.posts.filter(
       (post) =>
         post.content.toLowerCase().includes(query.toLowerCase()) ||
-        post.username.toLowerCase().includes(query.toLowerCase()) ||
-        `${post.first_name} ${post.last_name}`
-          .toLowerCase()
-          .includes(query.toLowerCase()),
+        post.username.toLowerCase().includes(query.toLowerCase()),
     );
 
     const container = document.getElementById("postsContainer");
@@ -685,36 +865,57 @@ class SocialiteApp {
       this.currentUser.username,
     );
 
-    // Show user elements
-    const userMenu = document.getElementById("userMenu");
-    const createPostSection = document.getElementById("createPostSection");
+    // Hide login button
     const loginBtn = document.getElementById("loginBtn");
-
-    if (userMenu) userMenu.classList.remove("hidden");
-    if (createPostSection) createPostSection.classList.remove("hidden");
     if (loginBtn) loginBtn.classList.add("hidden");
 
-    // Update user avatar and info
-    const userAvatar = document.getElementById("userAvatar");
-    const createPostAvatar = document.getElementById("createPostAvatar");
+    // Update user avatars
+    const headerUserAvatar = document.getElementById("headerUserAvatar");
+    const dropdownUserAvatar = document.getElementById("dropdownUserAvatar");
+    const storyUserAvatar = document.getElementById("storyUserAvatar");
 
-    if (this.currentUser.avatar_url) {
-      if (userAvatar) userAvatar.src = this.currentUser.avatar_url;
-      if (createPostAvatar) createPostAvatar.src = this.currentUser.avatar_url;
+    if (this.currentUser.avatar) {
+      if (headerUserAvatar) headerUserAvatar.src = this.currentUser.avatar;
+      if (dropdownUserAvatar) dropdownUserAvatar.src = this.currentUser.avatar;
+      if (storyUserAvatar) storyUserAvatar.src = this.currentUser.avatar;
     }
+
+    // Update user info in dropdown
+    const dropdownUserName = document.getElementById("dropdownUserName");
+    const dropdownUserEmail = document.getElementById("dropdownUserEmail");
+
+    if (dropdownUserName)
+      dropdownUserName.textContent = this.currentUser.username;
+    if (dropdownUserEmail)
+      dropdownUserEmail.textContent =
+        this.currentUser.handle || this.currentUser.email;
   }
 
   updateUIForGuestUser() {
     console.log("Updating UI for guest user");
 
-    // Hide user elements
-    const userMenu = document.getElementById("userMenu");
-    const createPostSection = document.getElementById("createPostSection");
+    // Show login button
     const loginBtn = document.getElementById("loginBtn");
-
-    if (userMenu) userMenu.classList.add("hidden");
-    if (createPostSection) createPostSection.classList.add("hidden");
     if (loginBtn) loginBtn.classList.remove("hidden");
+
+    // Reset avatars to default
+    const headerUserAvatar = document.getElementById("headerUserAvatar");
+    const dropdownUserAvatar = document.getElementById("dropdownUserAvatar");
+    const storyUserAvatar = document.getElementById("storyUserAvatar");
+
+    if (headerUserAvatar)
+      headerUserAvatar.src = "assets/images/avatars/avatar-2.jpg";
+    if (dropdownUserAvatar)
+      dropdownUserAvatar.src = "assets/images/avatars/avatar-2.jpg";
+    if (storyUserAvatar)
+      storyUserAvatar.src = "assets/images/avatars/avatar-2.jpg";
+
+    // Reset user info
+    const dropdownUserName = document.getElementById("dropdownUserName");
+    const dropdownUserEmail = document.getElementById("dropdownUserEmail");
+
+    if (dropdownUserName) dropdownUserName.textContent = "Guest User";
+    if (dropdownUserEmail) dropdownUserEmail.textContent = "@guest";
   }
 
   showLoginModal() {
@@ -759,7 +960,7 @@ class SocialiteApp {
 
   showToast(message, type = "info") {
     const toast = document.createElement("div");
-    toast.className = `toast ${type} fixed top-4 right-4 z-50 max-w-sm p-4 rounded-lg shadow-lg text-white`;
+    toast.className = `fixed top-4 right-4 z-50 max-w-sm p-4 rounded-lg shadow-lg text-white`;
 
     // Set background color based on type
     const colors = {
@@ -775,9 +976,7 @@ class SocialiteApp {
             <div class="flex items-center gap-2">
                 <span class="flex-1">${message}</span>
                 <button class="close-toast text-white hover:text-gray-200">
-                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                        <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path>
-                    </svg>
+                    <ion-icon name="close" class="w-4 h-4"></ion-icon>
                 </button>
             </div>
         `;
@@ -802,7 +1001,7 @@ class SocialiteApp {
       return `
                 <div class="text-center py-12">
                     <ion-icon name="person-outline" class="w-16 h-16 text-gray-400 mx-auto mb-4"></ion-icon>
-                    <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-2">Welcome to Socialite!</h3>
+                    <h3 class="text-lg font-medium text-black dark:text-white mb-2">Welcome to Nexify!</h3>
                     <p class="text-gray-600 dark:text-gray-400 mb-4">Please log in to see posts and start sharing.</p>
                     <button onclick="app.showLoginModal()" class="bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600">
                         Login
@@ -814,7 +1013,7 @@ class SocialiteApp {
     return `
             <div class="text-center py-12">
                 <ion-icon name="document-outline" class="w-16 h-16 text-gray-400 mx-auto mb-4"></ion-icon>
-                <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-2">No posts yet</h3>
+                <h3 class="text-lg font-medium text-black dark:text-white mb-2">No posts yet</h3>
                 <p class="text-gray-600 dark:text-gray-400">Be the first to share something!</p>
             </div>
         `;
@@ -826,7 +1025,7 @@ class SocialiteApp {
       container.innerHTML = `
                 <div class="text-center py-12">
                     <ion-icon name="warning-outline" class="w-16 h-16 text-red-400 mx-auto mb-4"></ion-icon>
-                    <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-2">Error loading posts</h3>
+                    <h3 class="text-lg font-medium text-black dark:text-white mb-2">Error loading posts</h3>
                     <p class="text-gray-600 dark:text-gray-400 mb-4">Something went wrong. Please try again.</p>
                     <button onclick="location.reload()" class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600">
                         Retry
@@ -855,8 +1054,8 @@ class SocialiteApp {
 // Initialize app when DOM is loaded
 let app;
 document.addEventListener("DOMContentLoaded", () => {
-  console.log("DOM loaded, initializing Socialite...");
-  app = new SocialiteApp();
+  console.log("DOM loaded, initializing Nexify...");
+  app = new NexifyApp();
 });
 
 // Handle theme changes
