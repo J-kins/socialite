@@ -364,6 +364,23 @@
     </div>
 
     <!-- Scripts -->
-    <script type="module" src="src/assets/js/main.js"></script>
+    <script src="src/assets/js/main.js"></script>
+
+    <!-- Quick authentication check -->
+    <script>
+      // Show login modal immediately if no token found
+      document.addEventListener("DOMContentLoaded", () => {
+        const token = localStorage.getItem("socialite_token");
+        if (!token) {
+          setTimeout(() => {
+            const loginModal = document.getElementById("loginModal");
+            if (loginModal && typeof app !== "undefined") {
+              console.log("No authentication found, showing login modal");
+              app.showLoginModal();
+            }
+          }, 1000); // Give the app time to initialize
+        }
+      });
+    </script>
   </body>
 </html>
