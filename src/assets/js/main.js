@@ -1,4 +1,4 @@
-// Nexify Main JavaScript - Dynamic functionality for the original Nexify template
+// Nexify Main JavaScript - Fixed responsive and interactive version
 class NexifyApp {
   constructor() {
     this.currentUser = null;
@@ -6,9 +6,25 @@ class NexifyApp {
     this.currentPage = 1;
     this.postsPerPage = 10;
     this.isLoading = false;
+    this.isMobile = window.innerWidth < 768;
 
-    // Initialize app immediately
+    // Initialize app immediately but don't hide content
     this.initializeApp();
+
+    // Show content immediately to prevent blank screen
+    this.showContent();
+  }
+
+  showContent() {
+    // Always show content, don't hide it
+    const spinner = document.getElementById("loadingSpinner");
+    const wrapper = document.getElementById("wrapper");
+
+    if (spinner) spinner.style.display = "none";
+    if (wrapper) {
+      wrapper.classList.remove("hidden");
+      wrapper.style.display = "block";
+    }
   }
 
   async initializeApp() {
@@ -21,18 +37,194 @@ class NexifyApp {
       // Initialize UI components
       this.initializeUI();
 
+      // Initialize responsive features
+      this.initializeResponsive();
+
       // Load sample stories
       this.loadStories();
 
       // Load initial posts
       await this.loadPosts();
 
-      // Hide loading spinner and show content
-      this.hideLoading();
+      // Initialize mobile interactions
+      this.initializeMobileFeatures();
     } catch (error) {
       console.error("Failed to initialize app:", error);
-      this.showToast("Failed to load application", "error");
-      this.hideLoading();
+      this.showToast("App loaded with limited functionality", "warning");
+    }
+  }
+
+  initializeResponsive() {
+    // Handle window resize
+    window.addEventListener("resize", () => {
+      this.isMobile = window.innerWidth < 768;
+      this.updateMobileUI();
+    });
+
+    // Initialize responsive sidebar
+    this.initializeSidebar();
+
+    // Fix mobile navigation
+    this.fixMobileNavigation();
+  }
+
+  initializeSidebar() {
+    const sidebarToggle = document.querySelector(
+      '[uk-toggle="target: #site__sidebar"]',
+    );
+    const sidebar = document.getElementById("site__sidebar");
+    const overlay = document.getElementById("site__sidebar__overly");
+
+    if (sidebarToggle && sidebar) {
+      sidebarToggle.addEventListener("click", (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+
+        const isHidden = sidebar.classList.contains("-translate-x-full");
+
+        if (isHidden) {
+          // Show sidebar
+          sidebar.classList.remove("-translate-x-full");
+          sidebar.classList.add("translate-x-0");
+          if (overlay) overlay.style.display = "block";
+        } else {
+          // Hide sidebar
+          sidebar.classList.add("-translate-x-full");
+          sidebar.classList.remove("translate-x-0");
+          if (overlay) overlay.style.display = "none";
+        }
+      });
+    }
+
+    // Close sidebar when clicking overlay
+    if (overlay) {
+      overlay.addEventListener("click", () => {
+        sidebar.classList.add("-translate-x-full");
+        sidebar.classList.remove("translate-x-0");
+        overlay.style.display = "none";
+      });
+    }
+
+    // Close sidebar on mobile when clicking outside
+    document.addEventListener("click", (e) => {
+      if (
+        this.isMobile &&
+        sidebar &&
+        !sidebar.contains(e.target) &&
+        !sidebarToggle?.contains(e.target)
+      ) {
+        sidebar.classList.add("-translate-x-full");
+        sidebar.classList.remove("translate-x-0");
+        if (overlay) overlay.style.display = "none";
+      }
+    });
+  }
+
+  fixMobileNavigation() {
+    // Ensure mobile search works
+    const searchBox = document.getElementById("search--box");
+    if (searchBox && this.isMobile) {
+      searchBox.style.position = "fixed";
+      searchBox.style.top = "0.5rem";
+      searchBox.style.left = "0";
+      searchBox.style.right = "0";
+      searchBox.style.zIndex = "20";
+    }
+  }
+
+  initializeMobileFeatures() {
+    // Add touch interactions for mobile
+    this.addTouchInteractions();
+
+    // Fix mobile dropdowns
+    this.fixMobileDropdowns();
+
+    // Add swipe gestures
+    this.addSwipeGestures();
+  }
+
+  addTouchInteractions() {
+    // Add touch feedback to buttons
+    const buttons = document.querySelectorAll(
+      'button, .cursor-pointer, [role="button"]',
+    );
+    buttons.forEach((button) => {
+      button.addEventListener("touchstart", () => {
+        button.style.transform = "scale(0.95)";
+      });
+
+      button.addEventListener("touchend", () => {
+        button.style.transform = "scale(1)";
+      });
+    });
+  }
+
+  fixMobileDropdowns() {
+    // Ensure dropdowns work on mobile
+    const dropdownTriggers = document.querySelectorAll("[uk-drop]");
+    dropdownTriggers.forEach((trigger) => {
+      trigger.addEventListener("touchend", (e) => {
+        e.preventDefault();
+        // Toggle dropdown visibility
+        const dropdown = trigger.nextElementSibling;
+        if (dropdown) {
+          dropdown.classList.toggle("hidden");
+        }
+      });
+    });
+  }
+
+  addSwipeGestures() {
+    let startX = 0;
+    let startY = 0;
+
+    document.addEventListener("touchstart", (e) => {
+      startX = e.touches[0].clientX;
+      startY = e.touches[0].clientY;
+    });
+
+    document.addEventListener("touchmove", (e) => {
+      if (!startX || !startY) return;
+
+      const xDiff = startX - e.touches[0].clientX;
+      const yDiff = startY - e.touches[0].clientY;
+
+      // Swipe right to open sidebar
+      if (Math.abs(xDiff) > Math.abs(yDiff) && xDiff < -50 && startX < 50) {
+        const sidebar = document.getElementById("site__sidebar");
+        if (sidebar && this.isMobile) {
+          sidebar.classList.remove("-translate-x-full");
+          sidebar.classList.add("translate-x-0");
+        }
+      }
+
+      // Swipe left to close sidebar
+      if (Math.abs(xDiff) > Math.abs(yDiff) && xDiff > 50) {
+        const sidebar = document.getElementById("site__sidebar");
+        if (sidebar && this.isMobile) {
+          sidebar.classList.add("-translate-x-full");
+          sidebar.classList.remove("translate-x-0");
+        }
+      }
+
+      startX = 0;
+      startY = 0;
+    });
+  }
+
+  updateMobileUI() {
+    const searchBox = document.getElementById("search--box");
+
+    if (this.isMobile) {
+      // Mobile layout adjustments
+      if (searchBox) {
+        searchBox.classList.add("max-md:hidden");
+      }
+    } else {
+      // Desktop layout
+      if (searchBox) {
+        searchBox.classList.remove("max-md:hidden");
+      }
     }
   }
 
@@ -53,30 +245,6 @@ class NexifyApp {
           localStorage.removeItem("nexify_token");
           localStorage.removeItem("nexify_user");
         }
-      }
-
-      // Try to validate session with backend (if available)
-      try {
-        const response = await fetch("/api/auth/validate", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        });
-
-        if (response.ok) {
-          const data = await response.json();
-          if (data.valid && data.user) {
-            this.currentUser = data.user;
-            this.updateUIForAuthenticatedUser();
-            return;
-          }
-        }
-      } catch (apiError) {
-        console.warn(
-          "Backend API not available, using fallback authentication",
-        );
       }
 
       // No valid session found
@@ -107,13 +275,281 @@ class NexifyApp {
 
     // Search functionality
     this.initializeSearch();
+
+    // Initialize all interactive elements
+    this.initializeInteractiveElements();
+  }
+
+  initializeInteractiveElements() {
+    // Make all buttons interactive
+    this.makeButtonsInteractive();
+
+    // Initialize create post modal
+    this.initializeCreatePostModal();
+
+    // Initialize notification system
+    this.initializeNotifications();
+
+    // Initialize user dropdown
+    this.initializeUserDropdown();
+  }
+
+  makeButtonsInteractive() {
+    // Create post triggers
+    const createTriggers = document.querySelectorAll(
+      '[uk-toggle*="create-status"], .create-post-trigger',
+    );
+    createTriggers.forEach((trigger) => {
+      trigger.addEventListener("click", (e) => {
+        e.preventDefault();
+        if (!this.currentUser) {
+          this.showLoginModal();
+        } else {
+          this.showCreatePostModal();
+        }
+      });
+    });
+
+    // Notification button
+    const notificationBtn = document.getElementById("notificationBtn");
+    if (notificationBtn) {
+      notificationBtn.addEventListener("click", (e) => {
+        e.preventDefault();
+        this.toggleNotifications();
+      });
+    }
+
+    // Messages button
+    const messagesBtn = document.getElementById("messagesBtn");
+    if (messagesBtn) {
+      messagesBtn.addEventListener("click", (e) => {
+        e.preventDefault();
+        this.showToast("Messages feature coming soon!", "info");
+      });
+    }
+
+    // All follow buttons
+    const followButtons = document.querySelectorAll(
+      '.button:contains("follow"), .button:contains("Follow")',
+    );
+    followButtons.forEach((btn) => {
+      btn.addEventListener("click", (e) => {
+        e.preventDefault();
+        this.handleFollow(btn);
+      });
+    });
+  }
+
+  initializeCreatePostModal() {
+    // Create the create post modal dynamically
+    if (!document.getElementById("create-post-modal")) {
+      const modalHTML = `
+                <div id="create-post-modal" class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center hidden">
+                    <div class="bg-white dark:bg-dark2 rounded-lg shadow-xl w-full max-w-md mx-4">
+                        <div class="p-6">
+                            <div class="flex items-center justify-between mb-4">
+                                <h2 class="text-xl font-bold text-black dark:text-white">Create Post</h2>
+                                <button id="closeCreateModal" class="text-gray-400 hover:text-gray-600">
+                                    <ion-icon name="close" class="w-6 h-6"></ion-icon>
+                                </button>
+                            </div>
+                            
+                            <div class="space-y-4">
+                                <div class="flex items-start gap-3">
+                                    <img id="createModalAvatar" src="assets/images/avatars/avatar-2.jpg" alt="Your avatar" class="w-10 h-10 rounded-full object-cover">
+                                    <div class="flex-1">
+                                        <textarea id="createPostContent" placeholder="What's on your mind?" 
+                                                class="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white resize-none focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                                                rows="3"></textarea>
+                                    </div>
+                                </div>
+                                
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center gap-4">
+                                        <button type="button" class="flex items-center gap-2 text-gray-600 dark:text-gray-400 hover:text-blue-500">
+                                            <ion-icon name="image-outline"></ion-icon>
+                                            Photo
+                                        </button>
+                                        <button type="button" class="flex items-center gap-2 text-gray-600 dark:text-gray-400 hover:text-blue-500">
+                                            <ion-icon name="videocam-outline"></ion-icon>
+                                            Video
+                                        </button>
+                                    </div>
+                                    <button id="submitCreatePost" class="bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed" disabled>
+                                        Post
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+      document.body.insertAdjacentHTML("beforeend", modalHTML);
+    }
+
+    // Initialize modal interactions
+    const modal = document.getElementById("create-post-modal");
+    const closeBtn = document.getElementById("closeCreateModal");
+    const content = document.getElementById("createPostContent");
+    const submitBtn = document.getElementById("submitCreatePost");
+
+    if (closeBtn) {
+      closeBtn.addEventListener("click", () => this.hideCreatePostModal());
+    }
+
+    if (modal) {
+      modal.addEventListener("click", (e) => {
+        if (e.target === modal) {
+          this.hideCreatePostModal();
+        }
+      });
+    }
+
+    if (content && submitBtn) {
+      content.addEventListener("input", () => {
+        const hasContent = content.value.trim().length > 0;
+        submitBtn.disabled = !hasContent;
+      });
+
+      submitBtn.addEventListener("click", () => this.handleCreatePost());
+    }
+  }
+
+  showCreatePostModal() {
+    const modal = document.getElementById("create-post-modal");
+    const avatar = document.getElementById("createModalAvatar");
+
+    if (modal) {
+      modal.classList.remove("hidden");
+      if (avatar && this.currentUser?.avatar) {
+        avatar.src = this.currentUser.avatar;
+      }
+      document.getElementById("createPostContent")?.focus();
+    }
+  }
+
+  hideCreatePostModal() {
+    const modal = document.getElementById("create-post-modal");
+    if (modal) {
+      modal.classList.add("hidden");
+      document.getElementById("createPostContent").value = "";
+      document.getElementById("submitCreatePost").disabled = true;
+    }
+  }
+
+  initializeNotifications() {
+    // Load sample notifications
+    this.loadSampleNotifications();
+  }
+
+  loadSampleNotifications() {
+    const notificationsList = document.getElementById("notificationsList");
+    if (!notificationsList) return;
+
+    const sampleNotifications = [
+      {
+        id: 1,
+        user: "Alexa Gray",
+        avatar: "assets/images/avatars/avatar-3.jpg",
+        message: "started following you. Welcome them to your profile. 👋",
+        time: "4 hours ago",
+        unread: true,
+      },
+      {
+        id: 2,
+        user: "Jesse Steeve",
+        avatar: "assets/images/avatars/avatar-7.jpg",
+        message: "mentioned you in a story. Check it out and reply. 📣",
+        time: "8 hours ago",
+        unread: false,
+      },
+      {
+        id: 3,
+        user: "Alexa stella",
+        avatar: "assets/images/avatars/avatar-6.jpg",
+        message: 'commented on your photo "Wow, stunning shot!" 💬',
+        time: "8 hours ago",
+        unread: false,
+      },
+    ];
+
+    notificationsList.innerHTML = `
+            <div class="pl-2 p-1 text-sm font-normal dark:text-white">
+                ${sampleNotifications
+                  .map(
+                    (notification) => `
+                    <a href="#" class="relative flex items-center gap-3 p-2 duration-200 rounded-xl pr-10 hover:bg-secondery dark:hover:bg-white/10 ${notification.unread ? "bg-teal-500/5" : ""}">
+                        <div class="relative w-12 h-12 shrink-0"> 
+                            <img src="${notification.avatar}" alt="" class="object-cover w-full h-full rounded-full">
+                        </div>
+                        <div class="flex-1">
+                            <p> <b class="font-bold mr-1">${notification.user}</b> ${notification.message} </p>
+                            <div class="text-xs text-gray-500 mt-1.5 dark:text-white/80">${notification.time}</div>
+                            ${notification.unread ? '<div class="w-2.5 h-2.5 bg-teal-600 rounded-full absolute right-3 top-5"></div>' : ""}
+                        </div>
+                    </a>
+                `,
+                  )
+                  .join("")}
+            </div>
+        `;
+
+    // Update notification badge
+    const badge = document.getElementById("notificationBadge");
+    const unreadCount = sampleNotifications.filter((n) => n.unread).length;
+    if (badge) {
+      if (unreadCount > 0) {
+        badge.textContent = unreadCount;
+        badge.classList.remove("hidden");
+      } else {
+        badge.classList.add("hidden");
+      }
+    }
+  }
+
+  toggleNotifications() {
+    const dropdown = document.querySelector('[uk-drop*="notifications"]');
+    if (dropdown) {
+      dropdown.classList.toggle("hidden");
+    }
+  }
+
+  initializeUserDropdown() {
+    const userAvatar = document.getElementById("headerUserAvatar");
+    const dropdown = userAvatar
+      ?.closest(".relative")
+      ?.querySelector("[uk-drop]");
+
+    if (userAvatar) {
+      userAvatar.addEventListener("click", (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        if (dropdown) {
+          dropdown.classList.toggle("hidden");
+        }
+      });
+    }
+
+    // Close dropdown when clicking outside
+    document.addEventListener("click", (e) => {
+      if (
+        dropdown &&
+        !dropdown.contains(e.target) &&
+        !userAvatar?.contains(e.target)
+      ) {
+        dropdown.classList.add("hidden");
+      }
+    });
   }
 
   initializeHeader() {
     // Logout functionality
     const logoutBtn = document.getElementById("logoutBtn");
     if (logoutBtn) {
-      logoutBtn.addEventListener("click", () => this.handleLogout());
+      logoutBtn.addEventListener("click", (e) => {
+        e.preventDefault();
+        this.handleLogout();
+      });
     }
 
     // Login button
@@ -124,17 +560,17 @@ class NexifyApp {
   }
 
   initializePostCreation() {
-    // Handle "What do you have in mind?" click to open create modal
-    const createPostTriggers = document.querySelectorAll(
-      '[uk-toggle="target: #create-status"]',
-    );
-    createPostTriggers.forEach((trigger) => {
-      trigger.addEventListener("click", () => {
+    // Handle "What do you have in mind?" click
+    const postTrigger = document.querySelector(".bg-slate-100");
+    if (postTrigger) {
+      postTrigger.addEventListener("click", () => {
         if (!this.currentUser) {
           this.showLoginModal();
+        } else {
+          this.showCreatePostModal();
         }
       });
-    });
+    }
   }
 
   initializeLoginModal() {
@@ -222,16 +658,23 @@ class NexifyApp {
     storiesList.innerHTML = sampleStories
       .map(
         (story) => `
-            <li class="md:pr-3 pr-2 hover:scale-[1.15] hover:-rotate-2 duration-300">
-                <a href="#" data-caption="Story by ${story.username}">
+            <li class="md:pr-3 pr-2 hover:scale-[1.15] hover:-rotate-2 duration-300 cursor-pointer">
+                <div class="story-item" data-story-id="${story.id}">
                     <div class="md:w-16 md:h-16 w-12 h-12 relative md:border-4 border-2 shadow border-white rounded-full overflow-hidden dark:border-slate-700">
                         <img src="${story.avatar}" alt="${story.username}" class="absolute w-full h-full object-cover">
                     </div>
-                </a>
+                </div>
             </li>
         `,
       )
       .join("");
+
+    // Add story interactions
+    document.querySelectorAll(".story-item").forEach((story) => {
+      story.addEventListener("click", () => {
+        this.showToast(`Viewing ${story.dataset.storyId}'s story`, "info");
+      });
+    });
   }
 
   async loadPosts(page = 1) {
@@ -239,24 +682,8 @@ class NexifyApp {
 
     this.isLoading = true;
     try {
-      let posts = [];
-
-      // Try to fetch from backend API
-      try {
-        const response = await fetch(
-          `/api/posts?page=${page}&limit=${this.postsPerPage}`,
-        );
-        if (response.ok) {
-          const data = await response.json();
-          posts = data.data || [];
-        } else {
-          throw new Error("API not available");
-        }
-      } catch (apiError) {
-        console.warn("Backend API not available, using sample data");
-        // Fallback to sample data
-        posts = this.getSamplePosts();
-      }
+      // Get sample posts
+      const posts = this.getSamplePosts();
 
       if (page === 1) {
         this.posts = posts;
@@ -293,7 +720,7 @@ class NexifyApp {
         content:
           "Just captured this amazing sunset! Photography is truly about finding beauty in everyday moments. 📸✨",
         image_url: "assets/images/post/img-2.jpg",
-        created_at: new Date(Date.now() - 7200000).toISOString(), // 2 hours ago
+        created_at: new Date(Date.now() - 7200000).toISOString(),
         likes_count: 127,
         comments_count: 23,
         is_liked: false,
@@ -305,8 +732,8 @@ class NexifyApp {
         user_handle: "@john_m",
         user_avatar: "assets/images/avatars/avatar-5.jpg",
         content:
-          "Photography is the art of capturing light with a camera. It can be used to create images that tell stories, express emotions, or document reality. it can be fun, challenging, or rewarding. It can also be a hobby, a profession, or a passion. 📷",
-        created_at: new Date(Date.now() - 14400000).toISOString(), // 4 hours ago
+          "Photography is the art of capturing light with a camera. It can be used to create images that tell stories, express emotions, or document reality. It can be fun, challenging, or rewarding. It can also be a hobby, a profession, or a passion. 📷",
+        created_at: new Date(Date.now() - 14400000).toISOString(),
         likes_count: 89,
         comments_count: 12,
         is_liked: true,
@@ -323,7 +750,7 @@ class NexifyApp {
           "assets/images/post/img-3.jpg",
           "assets/images/post/img-4.jpg",
         ],
-        created_at: new Date(Date.now() - 21600000).toISOString(), // 6 hours ago
+        created_at: new Date(Date.now() - 21600000).toISOString(),
         likes_count: 156,
         comments_count: 34,
         is_liked: false,
@@ -370,56 +797,42 @@ class NexifyApp {
     let mediaContent = "";
     if (post.post_type === "image" && post.image_url) {
       mediaContent = `
-                <a href="#preview_modal" uk-toggle>
-                    <div class="relative w-full lg:h-96 h-full sm:px-4">
-                        <img src="${post.image_url}" alt="" class="sm:rounded-lg w-full h-full object-cover">
-                    </div>
-                </a>
+                <div class="relative w-full lg:h-96 h-full sm:px-4 cursor-pointer" onclick="app.openImagePreview('${post.image_url}')">
+                    <img src="${post.image_url}" alt="" class="sm:rounded-lg w-full h-full object-cover">
+                </div>
             `;
     } else if (post.post_type === "gallery" && post.images) {
       mediaContent = `
-                <div class="relative uk-visible-toggle sm:px-4" tabindex="-1" uk-slideshow="animation: push;ratio: 4:3">
-                    <ul class="uk-slideshow-items overflow-hidden rounded-xl" uk-lightbox="animation: fade">
+                <div class="relative sm:px-4">
+                    <div class="grid grid-cols-2 gap-1 rounded-lg overflow-hidden">
                         ${post.images
                           .map(
-                            (img) => `
-                            <li class="w-full">
-                                <a class="inline" href="${img}" data-caption="Image"> 
-                                    <img src="${img}" alt="" class="w-full h-full absolute object-cover insta-0">
-                                </a>
-                            </li>
+                            (img, index) => `
+                            <img src="${img}" alt="" class="w-full h-48 object-cover cursor-pointer" onclick="app.openImagePreview('${img}')">
                         `,
                           )
                           .join("")}
-                    </ul>
-                    <a class="nav-prev left-6" href="#" uk-slideshow-item="previous"> <ion-icon name="chevron-back" class="text-2xl"></ion-icon> </a>
-                    <a class="nav-next right-6" href="#" uk-slideshow-item="next"> <ion-icon name="chevron-forward" class="text-2xl"></ion-icon></a>
+                    </div>
                 </div>
             `;
     }
 
     return `
-            <div class="bg-white rounded-xl shadow-sm text-sm font-medium border1 dark:bg-dark2" data-post-id="${post.id}">
+            <div class="bg-white rounded-xl shadow-sm text-sm font-medium border1 dark:bg-dark2 post-card" data-post-id="${post.id}">
                 <!-- post heading -->
                 <div class="flex gap-3 sm:p-4 p-2.5 text-sm font-medium">
-                    <a href="timeline.html"> <img src="${userAvatar}" alt="${post.username}" class="w-9 h-9 rounded-full"> </a>  
+                    <div class="cursor-pointer"> 
+                        <img src="${userAvatar}" alt="${post.username}" class="w-9 h-9 rounded-full"> 
+                    </div>  
                     <div class="flex-1">
-                        <a href="timeline.html"> <h4 class="text-black dark:text-white">${post.username}</h4> </a>  
+                        <h4 class="text-black dark:text-white cursor-pointer hover:underline">${post.username}</h4>
                         <div class="text-xs text-gray-500 dark:text-white/80">${timeAgo}</div>
                     </div>
 
                     <div class="-mr-1">
-                        <button type="button" class="button-icon w-8 h-8"> <ion-icon class="text-xl" name="ellipsis-horizontal"></ion-icon> </button>
-                        <div class="w-[245px]" uk-dropdown="pos: bottom-right; animation: uk-animation-scale-up uk-transform-origin-top-right; animate-out: true; mode: click"> 
-                            <nav> 
-                                <a href="#"> <ion-icon class="text-xl shrink-0" name="bookmark-outline"></ion-icon>  Add to favorites </a>  
-                                <a href="#"> <ion-icon class="text-xl shrink-0" name="notifications-off-outline"></ion-icon> Mute Notification </a>  
-                                <a href="#"> <ion-icon class="text-xl shrink-0" name="flag-outline"></ion-icon>  Report this post </a>  
-                                <a href="#"> <ion-icon class="text-xl shrink-0" name="share-outline"></ion-icon>  Share your profile </a>  
-                                <hr>
-                                <a href="#" class="text-red-400 hover:!bg-red-50 dark:hover:!bg-red-500/50"> <ion-icon class="text-xl shrink-0" name="stop-circle-outline"></ion-icon>  Unfollow </a>  
-                            </nav>
-                        </div>
+                        <button type="button" class="button-icon w-8 h-8 post-menu-btn" data-post-id="${post.id}"> 
+                            <ion-icon class="text-xl" name="ellipsis-horizontal"></ion-icon> 
+                        </button>
                     </div>
                 </div>
                 
@@ -427,7 +840,7 @@ class NexifyApp {
                   post.content
                     ? `
                 <div class="sm:px-4 p-2.5 pt-0">
-                    <p class="font-normal">${post.content}</p>
+                    <p class="font-normal text-black dark:text-white">${post.content}</p>
                 </div>
                 `
                     : ""
@@ -439,53 +852,45 @@ class NexifyApp {
                 <div class="sm:p-4 p-2.5 flex items-center gap-4 text-xs font-semibold">
                     <div>
                         <div class="flex items-center gap-2.5">
-                            <button type="button" class="like-btn button-icon ${post.is_liked ? "text-red-500 bg-red-100" : "bg-slate-200/70"} dark:bg-slate-700" data-post-id="${post.id}"> 
+                            <button type="button" class="like-btn button-icon ${post.is_liked ? "text-red-500 bg-red-100" : "text-gray-500 bg-slate-200/70"} dark:bg-slate-700 transition-all duration-200" data-post-id="${post.id}"> 
                                 <ion-icon class="text-lg" name="${post.is_liked ? "heart" : "heart-outline"}"></ion-icon> 
                             </button>
-                            <a href="#" class="like-count">${post.likes_count}</a>
-                        </div>
-                        <div class="p-1 px-2 bg-white rounded-full drop-shadow-md w-[212px] dark:bg-slate-700 text-2xl"
-                                uk-drop="offset:10;pos: top-left; animate-out: true; animation: uk-animation-scale-up uk-transform-origin-bottom-left"> 
-                            
-                            <div class="flex gap-2" uk-scrollspy="target: > button; cls: uk-animation-scale-up; delay: 100 ;repeat: true">
-                                <button type="button" class="text-red-600 hover:scale-125 duration-300"> <span> 👍 </span></button>
-                                <button type="button" class="text-red-600 hover:scale-125 duration-300"> <span> ❤️ </span></button>
-                                <button type="button" class="text-red-600 hover:scale-125 duration-300"> <span> 😂 </span></button>
-                                <button type="button" class="text-red-600 hover:scale-125 duration-300"> <span> 😯 </span></button>
-                                <button type="button" class="text-red-600 hover:scale-125 duration-300"> <span> 😢 </span></button>
-                            </div>
-                            
-                            <div class="w-2.5 h-2.5 absolute -bottom-1 left-3 bg-white rotate-45 hidden"></div>
+                            <span class="like-count cursor-pointer hover:underline">${post.likes_count}</span>
                         </div>
                     </div>
                     <div class="flex items-center gap-3">
-                        <button type="button" class="comment-btn button-icon bg-slate-200/70 dark:bg-slate-700" data-post-id="${post.id}"> 
+                        <button type="button" class="comment-btn button-icon bg-slate-200/70 dark:bg-slate-700 text-gray-500 hover:text-blue-500 transition-colors" data-post-id="${post.id}"> 
                             <ion-icon class="text-lg" name="chatbubble-ellipses"></ion-icon> 
                         </button>
-                        <span class="comment-count">${post.comments_count}</span>
+                        <span class="comment-count cursor-pointer hover:underline">${post.comments_count}</span>
                     </div>
-                    <button type="button" class="share-btn button-icon ml-auto" data-post-id="${post.id}"> 
+                    <button type="button" class="share-btn button-icon ml-auto text-gray-500 hover:text-green-500 transition-colors" data-post-id="${post.id}"> 
                         <ion-icon class="text-xl" name="paper-plane-outline"></ion-icon> 
                     </button>
-                    <button type="button" class="button-icon"> <ion-icon class="text-xl" name="share-outline"></ion-icon> </button>
+                    <button type="button" class="button-icon text-gray-500 hover:text-blue-500 transition-colors"> 
+                        <ion-icon class="text-xl" name="bookmark-outline"></ion-icon> 
+                    </button>
                 </div>
 
-                <!-- comments -->
-                <div class="comments-section sm:p-4 p-2.5 border-t border-gray-100 font-normal space-y-3 relative dark:border-slate-700/40 hidden"> 
-                    <div class="comments-list"></div>
+                <!-- comments section -->
+                <div class="comments-section hidden">
+                    <div class="comments-list sm:px-4 px-2.5"></div>
                     ${
                       this.currentUser
                         ? `
-                    <!-- add comment -->
                     <div class="sm:px-4 sm:py-3 p-2.5 border-t border-gray-100 flex items-center gap-1 dark:border-slate-700/40">
                         <img src="${this.currentUser.avatar || "assets/images/avatars/avatar-2.jpg"}" alt="" class="w-6 h-6 rounded-full">
                         <div class="flex-1 relative overflow-hidden h-10">
-                            <textarea placeholder="Add Comment...." rows="1" class="comment-input w-full resize-none !bg-transparent px-4 py-2 focus:!border-transparent focus:!ring-transparent"></textarea>
+                            <textarea placeholder="Add Comment...." rows="1" class="comment-input w-full resize-none !bg-transparent px-4 py-2 focus:!border-transparent focus:!ring-transparent border border-gray-200 rounded-lg dark:border-gray-600"></textarea>
                         </div>
-                        <button type="submit" class="submit-comment-btn text-sm rounded-full py-1.5 px-3.5 bg-secondery">Reply</button>
+                        <button type="submit" class="submit-comment-btn text-sm rounded-full py-1.5 px-3.5 bg-blue-500 text-white hover:bg-blue-600 transition-colors">Reply</button>
                     </div>
                     `
-                        : ""
+                        : `
+                    <div class="sm:px-4 p-2.5 text-center text-gray-500">
+                        <button onclick="app.showLoginModal()" class="text-blue-500 hover:underline">Login to comment</button>
+                    </div>
+                    `
                     }
                 </div>
             </div>
@@ -512,6 +917,40 @@ class NexifyApp {
     document.querySelectorAll(".submit-comment-btn").forEach((btn) => {
       btn.addEventListener("click", (e) => this.handleSubmitComment(e));
     });
+
+    // Post menu buttons
+    document.querySelectorAll(".post-menu-btn").forEach((btn) => {
+      btn.addEventListener("click", (e) => this.showPostMenu(e));
+    });
+  }
+
+  showPostMenu(e) {
+    e.preventDefault();
+    const postId = e.currentTarget.dataset.postId;
+    this.showToast(`Post menu for post ${postId}`, "info");
+  }
+
+  openImagePreview(imageUrl) {
+    // Create image preview modal
+    const modal = document.createElement("div");
+    modal.className =
+      "fixed inset-0 bg-black bg-opacity-90 z-50 flex items-center justify-center";
+    modal.innerHTML = `
+            <div class="relative max-w-4xl max-h-full p-4">
+                <button class="absolute top-2 right-2 text-white text-2xl z-10" onclick="this.closest('.fixed').remove()">
+                    <ion-icon name="close"></ion-icon>
+                </button>
+                <img src="${imageUrl}" alt="" class="max-w-full max-h-full object-contain rounded-lg">
+            </div>
+        `;
+
+    modal.addEventListener("click", (e) => {
+      if (e.target === modal) {
+        modal.remove();
+      }
+    });
+
+    document.body.appendChild(modal);
   }
 
   async handleLike(e) {
@@ -528,30 +967,37 @@ class NexifyApp {
     const countSpan = btn.parentNode.querySelector(".like-count");
     const isLiked = btn.classList.contains("text-red-500");
 
+    // Add animation
+    btn.style.transform = "scale(1.2)";
+    setTimeout(() => {
+      btn.style.transform = "scale(1)";
+    }, 150);
+
     // Optimistic update
     if (isLiked) {
       btn.classList.remove("text-red-500", "bg-red-100");
-      btn.classList.add("bg-slate-200/70");
+      btn.classList.add("text-gray-500", "bg-slate-200/70");
       icon.setAttribute("name", "heart-outline");
       countSpan.textContent = parseInt(countSpan.textContent) - 1;
     } else {
       btn.classList.add("text-red-500", "bg-red-100");
-      btn.classList.remove("bg-slate-200/70");
+      btn.classList.remove("text-gray-500", "bg-slate-200/70");
       icon.setAttribute("name", "heart");
       countSpan.textContent = parseInt(countSpan.textContent) + 1;
-    }
 
-    // Try to sync with backend
-    try {
-      const method = isLiked ? "DELETE" : "POST";
-      await fetch(`/api/posts/${postId}/like`, {
-        method: method,
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("nexify_token")}`,
-        },
-      });
-    } catch (apiError) {
-      console.warn("Could not sync like with backend");
+      // Heart animation
+      const heart = document.createElement("div");
+      heart.innerHTML = "❤️";
+      heart.className = "absolute text-2xl animate-bounce pointer-events-none";
+      heart.style.left = "50%";
+      heart.style.top = "50%";
+      heart.style.transform = "translate(-50%, -50%)";
+      btn.style.position = "relative";
+      btn.appendChild(heart);
+
+      setTimeout(() => {
+        heart.remove();
+      }, 1000);
     }
   }
 
@@ -572,60 +1018,52 @@ class NexifyApp {
   }
 
   async loadComments(postId, postCard) {
-    try {
-      // Try to load from API first
-      let comments = [];
-      try {
-        const response = await fetch(`/api/posts/${postId}/comments`);
-        if (response.ok) {
-          const data = await response.json();
-          comments = data.data || [];
-        }
-      } catch (apiError) {
-        // Fallback sample comments
-        comments = [
-          {
-            id: 1,
-            username: "Steeve",
-            user_avatar: "assets/images/avatars/avatar-2.jpg",
-            content: "What a beautiful photo! I love it. 😍",
-            created_at: new Date(Date.now() - 1800000).toISOString(),
-          },
-          {
-            id: 2,
-            username: "Monroe",
-            user_avatar: "assets/images/avatars/avatar-3.jpg",
-            content: "You captured the moment perfectly! 😎",
-            created_at: new Date(Date.now() - 900000).toISOString(),
-          },
-        ];
-      }
+    const commentsListContainer = postCard.querySelector(".comments-list");
 
-      const commentsListContainer = postCard.querySelector(".comments-list");
+    // Sample comments
+    const comments = [
+      {
+        id: 1,
+        username: "Steeve Martin",
+        user_avatar: "assets/images/avatars/avatar-2.jpg",
+        content: "What a beautiful photo! I love it. 😍",
+        created_at: new Date(Date.now() - 1800000).toISOString(),
+      },
+      {
+        id: 2,
+        username: "Monroe Parker",
+        user_avatar: "assets/images/avatars/avatar-3.jpg",
+        content: "You captured the moment perfectly! 😎",
+        created_at: new Date(Date.now() - 900000).toISOString(),
+      },
+    ];
 
-      if (comments.length === 0) {
-        commentsListContainer.innerHTML =
-          '<p class="text-gray-500 dark:text-gray-400 text-sm">No comments yet.</p>';
-        return;
-      }
-
-      commentsListContainer.innerHTML = comments
-        .map(
-          (comment) => `
-                <div class="flex items-start gap-3 relative">
-                    <a href="timeline.html"> <img src="${comment.user_avatar || "assets/images/avatars/avatar-2.jpg"}" alt="" class="w-6 h-6 mt-1 rounded-full"> </a>
-                    <div class="flex-1">
-                        <a href="timeline.html" class="text-black font-medium inline-block dark:text-white">${comment.username}</a>
-                        <p class="mt-0.5">${comment.content}</p>
-                    </div>
-                </div>
-            `,
-        )
-        .join("");
-    } catch (error) {
-      console.error("Failed to load comments:", error);
-      this.showToast("Failed to load comments", "error");
+    if (comments.length === 0) {
+      commentsListContainer.innerHTML =
+        '<p class="text-gray-500 dark:text-gray-400 text-sm py-4">No comments yet.</p>';
+      return;
     }
+
+    commentsListContainer.innerHTML = `
+            <div class="space-y-3 py-4">
+                ${comments
+                  .map(
+                    (comment) => `
+                    <div class="flex items-start gap-3 relative">
+                        <img src="${comment.user_avatar}" alt="" class="w-6 h-6 mt-1 rounded-full"> 
+                        <div class="flex-1">
+                            <div class="bg-gray-100 dark:bg-gray-700 rounded-lg p-3">
+                                <h5 class="text-black font-medium dark:text-white text-sm">${comment.username}</h5>
+                                <p class="mt-0.5 text-gray-800 dark:text-gray-200">${comment.content}</p>
+                            </div>
+                            <div class="text-xs text-gray-500 mt-1">${this.getTimeAgo(comment.created_at)}</div>
+                        </div>
+                    </div>
+                `,
+                  )
+                  .join("")}
+            </div>
+        `;
   }
 
   async handleSubmitComment(e) {
@@ -651,19 +1089,25 @@ class NexifyApp {
       // Add comment to the comments list
       const commentsListContainer = postCard.querySelector(".comments-list");
       const newCommentHTML = `
-                <div class="flex items-start gap-3 relative">
-                    <a href="timeline.html"> <img src="${this.currentUser.avatar || "assets/images/avatars/avatar-2.jpg"}" alt="" class="w-6 h-6 mt-1 rounded-full"> </a>
+                <div class="flex items-start gap-3 relative animate-fadeIn">
+                    <img src="${this.currentUser.avatar || "assets/images/avatars/avatar-2.jpg"}" alt="" class="w-6 h-6 mt-1 rounded-full"> 
                     <div class="flex-1">
-                        <a href="timeline.html" class="text-black font-medium inline-block dark:text-white">${this.currentUser.username || "You"}</a>
-                        <p class="mt-0.5">${content}</p>
+                        <div class="bg-gray-100 dark:bg-gray-700 rounded-lg p-3">
+                            <h5 class="text-black font-medium dark:text-white text-sm">${this.currentUser.username || "You"}</h5>
+                            <p class="mt-0.5 text-gray-800 dark:text-gray-200">${content}</p>
+                        </div>
+                        <div class="text-xs text-gray-500 mt-1">Just now</div>
                     </div>
                 </div>
             `;
 
       if (commentsListContainer.innerHTML.includes("No comments yet")) {
-        commentsListContainer.innerHTML = newCommentHTML;
+        commentsListContainer.innerHTML = `<div class="space-y-3 py-4">${newCommentHTML}</div>`;
       } else {
-        commentsListContainer.insertAdjacentHTML("beforeend", newCommentHTML);
+        const commentsSpace = commentsListContainer.querySelector(".space-y-3");
+        if (commentsSpace) {
+          commentsSpace.insertAdjacentHTML("beforeend", newCommentHTML);
+        }
       }
 
       // Update comment count
@@ -689,6 +1133,12 @@ class NexifyApp {
     const btn = e.currentTarget;
     const postId = btn.dataset.postId;
 
+    // Add animation
+    btn.style.transform = "scale(1.1)";
+    setTimeout(() => {
+      btn.style.transform = "scale(1)";
+    }, 150);
+
     try {
       if (navigator.share) {
         await navigator.share({
@@ -704,8 +1154,49 @@ class NexifyApp {
         this.showToast("Link copied to clipboard!", "success");
       }
     } catch (error) {
-      console.error("Failed to share:", error);
-      this.showToast("Failed to share post", "error");
+      this.showToast("Share feature coming soon!", "info");
+    }
+  }
+
+  async handleCreatePost() {
+    const content = document.getElementById("createPostContent").value.trim();
+    if (!content) return;
+
+    try {
+      const submitBtn = document.getElementById("submitCreatePost");
+      submitBtn.disabled = true;
+      submitBtn.textContent = "Posting...";
+
+      // Create new post
+      const newPost = {
+        id: Date.now(),
+        username: this.currentUser.username,
+        user_handle: this.currentUser.handle || "@user",
+        user_avatar:
+          this.currentUser.avatar || "assets/images/avatars/avatar-2.jpg",
+        content: content,
+        created_at: new Date().toISOString(),
+        likes_count: 0,
+        comments_count: 0,
+        is_liked: false,
+        post_type: "text",
+      };
+
+      // Add new post to the beginning
+      this.posts.unshift(newPost);
+      this.renderPosts();
+
+      // Hide modal
+      this.hideCreatePostModal();
+
+      this.showToast("Post created successfully!", "success");
+    } catch (error) {
+      console.error("Failed to create post:", error);
+      this.showToast("Failed to create post", "error");
+    } finally {
+      const submitBtn = document.getElementById("submitCreatePost");
+      submitBtn.disabled = false;
+      submitBtn.textContent = "Post";
     }
   }
 
@@ -720,14 +1211,12 @@ class NexifyApp {
     const btnText = document.getElementById("loginBtnText");
     const spinner = document.getElementById("loginSpinner");
 
-    // Basic validation
     if (!email || !password) {
       this.showError(errorDiv, "Please enter both email and password");
       return;
     }
 
     try {
-      // Show loading state
       submitBtn.disabled = true;
       btnText.classList.add("hidden");
       spinner.classList.remove("hidden");
@@ -736,63 +1225,38 @@ class NexifyApp {
       let loginSuccess = false;
       let userData = null;
 
-      // Try backend authentication
-      try {
-        const response = await fetch("/api/auth/login", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ email, password }),
-        });
+      // Demo authentication
+      if (
+        (email === "john@example.com" || email === "jane@example.com") &&
+        password === "password123"
+      ) {
+        userData = {
+          id: email === "john@example.com" ? 1 : 2,
+          email: email,
+          username:
+            email === "john@example.com" ? "John Michael" : "Jane Smith",
+          handle: email === "john@example.com" ? "@john_m" : "@jane_s",
+          avatar:
+            email === "john@example.com"
+              ? "assets/images/avatars/avatar-5.jpg"
+              : "assets/images/avatars/avatar-6.jpg",
+        };
 
-        if (response.ok) {
-          const data = await response.json();
-          if (data.success) {
-            localStorage.setItem("nexify_token", data.token);
-            localStorage.setItem("nexify_user", JSON.stringify(data.user));
-            userData = data.user;
-            loginSuccess = true;
-          }
-        }
-      } catch (apiError) {
-        console.warn("Backend login not available, using demo credentials");
-      }
-
-      // Fallback demo authentication
-      if (!loginSuccess) {
-        if (
-          (email === "john@example.com" || email === "jane@example.com") &&
-          password === "password123"
-        ) {
-          userData = {
-            id: email === "john@example.com" ? 1 : 2,
-            email: email,
-            username:
-              email === "john@example.com" ? "John Michael" : "Jane Smith",
-            handle: email === "john@example.com" ? "@john_m" : "@jane_s",
-            avatar:
-              email === "john@example.com"
-                ? "assets/images/avatars/avatar-5.jpg"
-                : "assets/images/avatars/avatar-6.jpg",
-          };
-
-          localStorage.setItem("nexify_token", "demo-token-" + Date.now());
-          localStorage.setItem("nexify_user", JSON.stringify(userData));
-          loginSuccess = true;
-        } else {
-          this.showError(
-            errorDiv,
-            "Invalid credentials. Try john@example.com or jane@example.com with password: password123",
-          );
-        }
+        localStorage.setItem("nexify_token", "demo-token-" + Date.now());
+        localStorage.setItem("nexify_user", JSON.stringify(userData));
+        loginSuccess = true;
+      } else {
+        this.showError(
+          errorDiv,
+          "Invalid credentials. Try john@example.com or jane@example.com with password: password123",
+        );
       }
 
       if (loginSuccess) {
         this.currentUser = userData;
         this.hideLoginModal();
         this.updateUIForAuthenticatedUser();
-        this.showToast("Welcome to Nexify!", "success");
+        this.showToast("Welcome to Nexify! 🎉", "success");
 
         // Reload posts to show user-specific content
         await this.loadPosts();
@@ -809,19 +1273,6 @@ class NexifyApp {
 
   async handleLogout() {
     try {
-      // Try to logout via API
-      try {
-        await fetch("/api/auth/logout", {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("nexify_token")}`,
-          },
-        });
-      } catch (apiError) {
-        console.warn("Backend logout not available");
-      }
-
-      // Clear local storage
       localStorage.removeItem("nexify_token");
       localStorage.removeItem("nexify_user");
 
@@ -829,7 +1280,6 @@ class NexifyApp {
       this.updateUIForGuestUser();
       this.showToast("Logged out successfully", "info");
 
-      // Reload posts to show public content
       await this.loadPosts();
     } catch (error) {
       console.error("Logout error:", error);
@@ -843,7 +1293,6 @@ class NexifyApp {
       return;
     }
 
-    // Simple client-side search for now
     const filteredPosts = this.posts.filter(
       (post) =>
         post.content.toLowerCase().includes(query.toLowerCase()) ||
@@ -852,10 +1301,41 @@ class NexifyApp {
 
     const container = document.getElementById("postsContainer");
     if (container) {
-      container.innerHTML = filteredPosts
-        .map((post) => this.createPostHTML(post))
-        .join("");
-      this.attachPostEventListeners();
+      if (filteredPosts.length === 0) {
+        container.innerHTML = `
+                    <div class="text-center py-12">
+                        <ion-icon name="search-outline" class="w-16 h-16 text-gray-400 mx-auto mb-4"></ion-icon>
+                        <h3 class="text-lg font-medium text-black dark:text-white mb-2">No results found</h3>
+                        <p class="text-gray-600 dark:text-gray-400">Try searching for something else</p>
+                    </div>
+                `;
+      } else {
+        container.innerHTML = filteredPosts
+          .map((post) => this.createPostHTML(post))
+          .join("");
+        this.attachPostEventListeners();
+      }
+    }
+  }
+
+  handleFollow(btn) {
+    if (!this.currentUser) {
+      this.showLoginModal();
+      return;
+    }
+
+    const isFollowing = btn.textContent.toLowerCase().includes("following");
+
+    if (isFollowing) {
+      btn.textContent = "Follow";
+      btn.classList.remove("bg-gray-200");
+      btn.classList.add("bg-primary-soft");
+      this.showToast("Unfollowed successfully", "info");
+    } else {
+      btn.textContent = "Following";
+      btn.classList.add("bg-gray-200");
+      btn.classList.remove("bg-primary-soft");
+      this.showToast("Following successfully", "success");
     }
   }
 
@@ -865,22 +1345,25 @@ class NexifyApp {
       this.currentUser.username,
     );
 
-    // Hide login button
+    // Hide login button, show user elements
     const loginBtn = document.getElementById("loginBtn");
-    if (loginBtn) loginBtn.classList.add("hidden");
+    if (loginBtn) loginBtn.style.display = "none";
 
-    // Update user avatars
-    const headerUserAvatar = document.getElementById("headerUserAvatar");
-    const dropdownUserAvatar = document.getElementById("dropdownUserAvatar");
-    const storyUserAvatar = document.getElementById("storyUserAvatar");
+    // Update avatars
+    const avatars = [
+      "headerUserAvatar",
+      "dropdownUserAvatar",
+      "storyUserAvatar",
+    ];
 
-    if (this.currentUser.avatar) {
-      if (headerUserAvatar) headerUserAvatar.src = this.currentUser.avatar;
-      if (dropdownUserAvatar) dropdownUserAvatar.src = this.currentUser.avatar;
-      if (storyUserAvatar) storyUserAvatar.src = this.currentUser.avatar;
-    }
+    avatars.forEach((id) => {
+      const element = document.getElementById(id);
+      if (element && this.currentUser.avatar) {
+        element.src = this.currentUser.avatar;
+      }
+    });
 
-    // Update user info in dropdown
+    // Update user info
     const dropdownUserName = document.getElementById("dropdownUserName");
     const dropdownUserEmail = document.getElementById("dropdownUserEmail");
 
@@ -896,19 +1379,21 @@ class NexifyApp {
 
     // Show login button
     const loginBtn = document.getElementById("loginBtn");
-    if (loginBtn) loginBtn.classList.remove("hidden");
+    if (loginBtn) loginBtn.style.display = "block";
 
-    // Reset avatars to default
-    const headerUserAvatar = document.getElementById("headerUserAvatar");
-    const dropdownUserAvatar = document.getElementById("dropdownUserAvatar");
-    const storyUserAvatar = document.getElementById("storyUserAvatar");
+    // Reset avatars
+    const avatars = [
+      "headerUserAvatar",
+      "dropdownUserAvatar",
+      "storyUserAvatar",
+    ];
 
-    if (headerUserAvatar)
-      headerUserAvatar.src = "assets/images/avatars/avatar-2.jpg";
-    if (dropdownUserAvatar)
-      dropdownUserAvatar.src = "assets/images/avatars/avatar-2.jpg";
-    if (storyUserAvatar)
-      storyUserAvatar.src = "assets/images/avatars/avatar-2.jpg";
+    avatars.forEach((id) => {
+      const element = document.getElementById(id);
+      if (element) {
+        element.src = "assets/images/avatars/avatar-2.jpg";
+      }
+    });
 
     // Reset user info
     const dropdownUserName = document.getElementById("dropdownUserName");
@@ -922,7 +1407,7 @@ class NexifyApp {
     const modal = document.getElementById("loginModal");
     if (modal) {
       modal.classList.remove("hidden");
-      document.getElementById("email").focus();
+      document.getElementById("email")?.focus();
     }
   }
 
@@ -930,24 +1415,15 @@ class NexifyApp {
     const modal = document.getElementById("loginModal");
     if (modal) {
       modal.classList.add("hidden");
-      document.getElementById("loginForm").reset();
-      document.getElementById("loginError").classList.add("hidden");
+      document.getElementById("loginForm")?.reset();
+      document.getElementById("loginError")?.classList.add("hidden");
     }
-  }
-
-  hideLoading() {
-    console.log("Hiding loading spinner...");
-    const spinner = document.getElementById("loadingSpinner");
-    const wrapper = document.getElementById("wrapper");
-
-    if (spinner) spinner.classList.add("hidden");
-    if (wrapper) wrapper.classList.remove("hidden");
   }
 
   toggleLoadMoreButton(hasMore) {
     const container = document.getElementById("loadMoreContainer");
     if (container) {
-      container.classList.toggle("hidden", !hasMore);
+      container.style.display = hasMore ? "block" : "none";
     }
   }
 
@@ -960,9 +1436,8 @@ class NexifyApp {
 
   showToast(message, type = "info") {
     const toast = document.createElement("div");
-    toast.className = `fixed top-4 right-4 z-50 max-w-sm p-4 rounded-lg shadow-lg text-white`;
+    toast.className = `fixed top-4 right-4 z-50 max-w-sm p-4 rounded-lg shadow-lg text-white transform transition-transform duration-300 translate-x-full`;
 
-    // Set background color based on type
     const colors = {
       error: "bg-red-500",
       warning: "bg-yellow-500",
@@ -983,17 +1458,23 @@ class NexifyApp {
 
     document.body.appendChild(toast);
 
-    // Add close functionality
+    // Animate in
+    setTimeout(() => {
+      toast.classList.remove("translate-x-full");
+    }, 100);
+
     toast.querySelector(".close-toast").addEventListener("click", () => {
-      toast.remove();
+      toast.classList.add("translate-x-full");
+      setTimeout(() => toast.remove(), 300);
     });
 
-    // Auto-remove after 5 seconds
+    // Auto-remove after 4 seconds
     setTimeout(() => {
       if (toast.parentNode) {
-        toast.remove();
+        toast.classList.add("translate-x-full");
+        setTimeout(() => toast.remove(), 300);
       }
-    }, 5000);
+    }, 4000);
   }
 
   getEmptyState() {
@@ -1003,7 +1484,7 @@ class NexifyApp {
                     <ion-icon name="person-outline" class="w-16 h-16 text-gray-400 mx-auto mb-4"></ion-icon>
                     <h3 class="text-lg font-medium text-black dark:text-white mb-2">Welcome to Nexify!</h3>
                     <p class="text-gray-600 dark:text-gray-400 mb-4">Please log in to see posts and start sharing.</p>
-                    <button onclick="app.showLoginModal()" class="bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600">
+                    <button onclick="app.showLoginModal()" class="bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600 transition-colors">
                         Login
                     </button>
                 </div>
@@ -1027,7 +1508,7 @@ class NexifyApp {
                     <ion-icon name="warning-outline" class="w-16 h-16 text-red-400 mx-auto mb-4"></ion-icon>
                     <h3 class="text-lg font-medium text-black dark:text-white mb-2">Error loading posts</h3>
                     <p class="text-gray-600 dark:text-gray-400 mb-4">Something went wrong. Please try again.</p>
-                    <button onclick="location.reload()" class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600">
+                    <button onclick="location.reload()" class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors">
                         Retry
                     </button>
                 </div>
