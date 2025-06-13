@@ -1,6 +1,6 @@
-# Socialite - Dynamic Social Media Platform
+# Nexify - Dynamic Social Media Platform
 
-A modern, dynamic social media platform built with JavaScript frontend and PHP backend.
+A modern, dynamic social media platform built with JavaScript frontend and PHP backend, based on the original Nexify template.
 
 ## 🚀 Features
 
